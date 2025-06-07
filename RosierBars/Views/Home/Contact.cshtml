@@ -1,0 +1,519 @@
+﻿@model RosierBars.Models.ContactForm
+
+@{
+    ViewBag.Title = "Contact";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    /* Chocolate Color Palette */
+    :root {
+        --chocolate-dark: #2a1505;
+        --chocolate-medium: #4a2a10;
+        --chocolate-light: #6b4423;
+        --chocolate-lighter: #8b5a2b;
+        --chocolate-cream: #f8ede5;
+        --chocolate-gold: #d4af37;
+        --chocolate-milk: #e6d5c3;
+        --chocolate-white: #fff9f5;
+    }
+
+    /* Base Styles */
+    body {
+        background-color: var(--chocolate-white);
+        font-family: 'Montserrat', sans-serif;
+        color: var(--chocolate-medium);
+        line-height: 1.6;
+    }
+
+    /* Contact Page Container */
+    .contact-container {
+        max-width: 1200px;
+        margin: 3rem auto;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 15px 40px rgba(42, 21, 5, 0.15);
+        position: relative;
+        background: white;
+        margin-top: 100px;
+    }
+
+    /* Decorative Elements */
+    .chocolate-swirl {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, var(--chocolate-gold) 0%, transparent 70%);
+        opacity: 0.1;
+        z-index: 0;
+    }
+
+    .swirl-1 {
+        top: -150px;
+        right: -150px;
+    }
+
+    .swirl-2 {
+        bottom: -100px;
+        left: -100px;
+        transform: rotate(180deg);
+    }
+
+    .chocolate-drip {
+        position: absolute;
+        width: 100%;
+        height: 80px;
+        bottom: 0;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="%234a2a10"/><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" fill="%234a2a10"/><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="%234a2a10"/></svg>');
+        background-size: cover;
+        background-repeat: no-repeat;
+        z-index: 1;
+    }
+
+    /* Content Section */
+    .contact-content {
+        background: linear-gradient(135deg, var(--chocolate-dark), var(--chocolate-medium));
+        color: white;
+        padding: 3rem;
+        position: relative;
+        z-index: 2;
+    }
+
+        .contact-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--chocolate-cream);
+            position: relative;
+            display: inline-block;
+        }
+
+            .contact-content h1:after {
+                content: '';
+                position: absolute;
+                bottom: -10px;
+                left: 0;
+                width: 60px;
+                height: 4px;
+                background: var(--chocolate-gold);
+                border-radius: 2px;
+            }
+
+        .contact-content p {
+            font-size: 1.1rem;
+            color: var(--chocolate-milk);
+            margin-bottom: 2rem;
+            max-width: 90%;
+        }
+
+    .contact-info {
+        margin-top: 2rem;
+    }
+
+        .contact-info a {
+            display: flex;
+            align-items: center;
+            color: var(--chocolate-cream) !important;
+            text-decoration: none;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            font-size: 1.05rem;
+        }
+
+            .contact-info a:hover {
+                color: var(--chocolate-gold) !important;
+                transform: translateX(8px);
+            }
+
+        .contact-info i {
+            margin-right: 12px;
+            font-size: 1.2rem;
+            width: 24px;
+            text-align: center;
+        }
+
+    /* Map Container */
+    .map-container {
+        margin-top: 3rem;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s ease;
+    }
+
+        .map-container:hover {
+            transform: translateY(-5px);
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 300px;
+            border: none;
+        }
+
+    /* Form Section */
+    .contact-form {
+        padding: 3rem;
+        background: white;
+        position: relative;
+        z-index: 2;
+    }
+
+    .form-header h2 {
+        font-family: 'Playfair Display', serif;
+        font-size: 2.2rem;
+        color: var(--chocolate-medium);
+        margin-bottom: 0.5rem;
+        font-weight: 700;
+    }
+
+    .form-header h3 {
+        font-size: 1.3rem;
+        color: var(--chocolate-light);
+        margin-bottom: 2rem;
+        font-weight: 400;
+    }
+
+    /* Form Elements */
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: var(--chocolate-medium);
+        font-weight: 500;
+        font-size: 0.95rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid var(--chocolate-milk);
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background-color: var(--chocolate-white);
+    }
+
+        .form-control:focus {
+            border-color: var(--chocolate-light);
+            box-shadow: 0 0 0 3px rgba(139, 90, 43, 0.2);
+            outline: none;
+        }
+
+    textarea.form-control {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    .select-emp {
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234a2a10' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        background-size: 16px;
+    }
+
+    /* Button Styles */
+    .submit-btn {
+        background: linear-gradient(135deg, var(--chocolate-medium), var(--chocolate-dark));
+        color: white;
+        border: none;
+        padding: 14px 30px;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        box-shadow: 0 4px 15px rgba(74, 42, 16, 0.2);
+    }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, var(--chocolate-dark), var(--chocolate-light));
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(74, 42, 16, 0.3);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+    /* Validation Styles */
+    .text-danger {
+        color: #dc3545;
+        font-size: 0.85rem;
+        margin-top: 0.25rem;
+        display: block;
+    }
+
+    .input-validation-error {
+        border-color: #dc3545 !important;
+    }
+
+        .input-validation-error:focus {
+            box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.25);
+        }
+
+    /* Responsive Layout */
+    .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1.5fr;
+    }
+
+    @@media (max-width: 992px) {
+        .contact-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .contact-content {
+            border-radius: 20px 20px 0 0;
+        }
+
+        .contact-form {
+            border-radius: 0 0 20px 20px;
+        }
+
+        .map-container {
+            margin-bottom: 2rem;
+        }
+    }
+
+    /* Animations */
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-fade {
+        animation: fadeIn 0.6s ease forwards;
+    }
+
+    .delay-1 {
+        animation-delay: 0.1s;
+    }
+
+    .delay-2 {
+        animation-delay: 0.2s;
+    }
+
+    .delay-3 {
+        animation-delay: 0.3s;
+    }
+
+    .delay-4 {
+        animation-delay: 0.4s;
+    }
+
+    /* Chocolate Pattern Background */
+    .chocolate-pattern {
+        height: 200px;
+        background-color: var(--chocolate-cream);
+        background-image: radial-gradient(var(--chocolate-light) 1px, transparent 1px);
+        background-size: 20px 20px;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .chocolate-pattern:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: linear-gradient(to bottom, rgba(248, 237, 229, 1), rgba(248, 237, 229, 0));
+        }
+
+    .alert-chocolate {
+        background: linear-gradient(135deg, #f8ede5, #e6d5c3);
+        color: #4a2a10;
+        border-left: 4px solid #d4af37;
+        padding: 15px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        transition: opacity 0.5s ease;
+    }
+
+        .alert-chocolate.success {
+            border-left-color: #28a745;
+        }
+
+        .alert-chocolate.error {
+            border-left-color: #dc3545;
+        }
+</style>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="contact-container">
+        @if (ViewBag.ShowMessage != null && (bool)ViewBag.ShowMessage)
+        {
+            <div id="statusMessage" class="alert alert-chocolate animate-fade mb-4">
+                <i class="fas text-center @((ViewBag.Message.Contains("success") ? "fa-check-circle" : "fa-exclamation-circle")) me-2"></i>
+                @ViewBag.Message
+            </div>
+        }
+        <div class="chocolate-swirl swirl-1"></div>
+        <div class="chocolate-swirl swirl-2"></div>
+
+        <div class="contact-grid">
+            <!-- Left Column - Contact Info -->
+            <div class="contact-content animate-fade">
+                <h1 class="animate-fade delay-1">Contact Us</h1>
+                <p class="animate-fade delay-2 text-start pt-2 pb-2">
+                    Indulge your curiosity about our premium chocolates. The artisans at Rosier Chocolates
+                    are ready to delight you with sweet solutions and answer all your cocoa-related inquiries.
+                </p>
+
+                <div class="contact-info">
+                    <a href="mailto:contact@rosierchocolates.com" class="animate-fade delay-3">
+                        <i class="fa-solid fa-envelope"></i>contact@rosierchocolates.com
+                    </a>
+                    <a href="tel:+919408271133" class="animate-fade delay-4">
+                        <i class="fa-solid fa-phone"></i>+91 94082 71133
+                    </a>
+                    <a href="https://wa.me/9408271133?text=Hello%20Rosier%20Chocolates!" class="animate-fade delay-4">
+                        <i class="fa-brands fa-whatsapp"></i>Chat on WhatsApp
+                    </a>
+                </div>
+
+                <div class="map-container animate-fade delay-4">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3498.1700877664034!2d77.19815757496094!3d28.744338278995606!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cff7cb2f23d15%3A0x6df23d2ce7724f5f!2sRosier%20Foods%20Private%20Limited!5e0!3m2!1sen!2sin!4v1744372021292!5m2!1sen!2sin"
+                            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+
+            <!-- Right Column - Contact Form -->
+            <div class="contact-form">
+                <div class="form-header animate-fade">
+                    <h2>We'd love to hear from you!</h2>
+                    <h3>Let's create something delicious together</h3>
+                </div>
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger animate-fade delay-1" })
+
+                <div class="row animate-fade delay-1">
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", placeholder = "First name" } })
+                        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", placeholder = "Last name" } })
+                        @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group animate-fade delay-2">
+                    <label class="form-label">Gender</label>
+                    <select name="Gender" id="Gender" class="form-control select-emp">
+                        <option value="" disabled selected>Select your gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                        <option value="Prefer not to say">Prefer not to say</option>
+                    </select>
+                </div>
+
+                <div class="row animate-fade delay-2">
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "your.email@example.com" } })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.Phone, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control", placeholder = "+91 94082 71133" } })
+                        @Html.ValidationMessageFor(model => model.Phone, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="row animate-fade delay-3">
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control", placeholder = "Your city" } })
+                        @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(model => model.State, new { htmlAttributes = new { @class = "form-control", placeholder = "Your state/province" } })
+                        @Html.ValidationMessageFor(model => model.State, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group animate-fade delay-3">
+                    @Html.LabelFor(model => model.Country, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.Country, new { htmlAttributes = new { @class = "form-control", placeholder = "Your country" } })
+                    @Html.ValidationMessageFor(model => model.Country, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group animate-fade delay-4">
+                    @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "form-label" })
+                    @Html.TextAreaFor(model => model.Address, new { @class = "form-control", placeholder = "Your full address", rows = "4" })
+                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group animate-fade delay-4">
+                    <button type="submit" class="submit-btn">
+                        <i class="fa-solid fa-paper-plane me-2"></i> Send Message
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="chocolate-pattern">
+        <div class="chocolate-drip"></div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Chocolate-inspired hover effects on form controls
+            document.querySelectorAll('.form-control').forEach(input => {
+                input.addEventListener('focus', function () {
+                    this.parentElement.style.transform = 'translateY(-2px)';
+                    this.parentElement.style.transition = 'all 0.3s ease';
+                });
+
+                input.addEventListener('blur', function () {
+                    this.parentElement.style.transform = 'translateY(0)';
+                });
+            });
+
+            // jQuery logic: Fade out status message after 3 seconds
+            if (typeof $ !== 'undefined') {
+                $(function () {
+                    if ('@ViewBag.ShowMessage' === 'True') {
+                        setTimeout(function () {
+                            $('#statusMessage').fadeOut(500, function () {
+                                $(this).remove();
+                            });
+                        }, 3000);
+                    }
+                });
+            }
+        });
+    </script>
+}

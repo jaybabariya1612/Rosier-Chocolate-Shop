@@ -1,0 +1,18 @@
+﻿.emp_bg {
+    background-color: #f4ebe2;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    padding:25px;
+    margin-top:25px;
+}
+
+.small_textarea {
+    height: 440px !important;
+}
+
+.select_emp {
+    max-width: 100% !important;
+    width: 100% !important;
+    text-align: center !important;
+    height:35px !important;
+}

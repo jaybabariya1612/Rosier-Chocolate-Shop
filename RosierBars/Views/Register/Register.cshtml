@@ -1,0 +1,498 @@
+﻿@model RosierBars.Models.RegisterModel
+
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    /* Chocolate Color Palette */
+    :root {
+        --chocolate-dark: #2a1505;
+        --chocolate-medium: #4a2a10;
+        --chocolate-light: #6b4423;
+        --chocolate-lighter: #8b5a2b;
+        --chocolate-cream: #f8ede5;
+        --chocolate-gold: #d4af37;
+        --chocolate-milk: #e6d5c3;
+        --chocolate-white: #fff9f5;
+    }
+
+    /* Base Styles */
+    .register-container {
+        min-height: 100vh;
+        background-color: var(--chocolate-white);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        padding-top:70px;
+    }
+
+    /* Decorative Elements */
+    .chocolate-swirl {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, var(--chocolate-gold) 0%, transparent 70%);
+        opacity: 0.08;
+        z-index: 0;
+    }
+
+    .swirl-1 {
+        top: -100px;
+        left: -100px;
+    }
+
+    .swirl-2 {
+        bottom: -50px;
+        right: -50px;
+    }
+
+    /* Registration Panel */
+    .register-panel {
+        display: flex;
+        max-width: 1200px;
+        width: 100%;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 15px 40px rgba(42, 21, 5, 0.15);
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Info Panel */
+    .info-panel {
+        flex: 1;
+        background: linear-gradient(135deg, var(--chocolate-dark), var(--chocolate-medium));
+        padding: 4rem;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .app-name {
+        font-family: 'Playfair Display', serif;
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--chocolate-cream);
+        margin-bottom: 1rem;
+        position: relative;
+    }
+
+        .app-name:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--chocolate-gold);
+        }
+
+    .app-tagline {
+        font-size: 1.2rem;
+        color: var(--chocolate-milk);
+        margin-bottom: 3rem;
+        text-align: center;
+    }
+
+    .register-illustration {
+        max-width: 100%;
+        height: auto;
+        margin-top: 2rem;
+    }
+
+    /* Form Panel */
+    .form-panel {
+        flex: 1;
+        background: white;
+        padding: 4rem;
+    }
+
+    .signup-title {
+        font-family: 'Playfair Display', serif;
+        color: var(--chocolate-medium);
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 2rem;
+        text-align: center;
+        position: relative;
+    }
+
+        .signup-title:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--chocolate-gold);
+        }
+
+    /* Form Elements */
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: var(--chocolate-medium);
+        font-weight: 500;
+        font-size: 0.95rem;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid var(--chocolate-milk);
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background-color: var(--chocolate-white);
+    }
+
+        .form-control:focus {
+            border-color: var(--chocolate-light);
+            box-shadow: 0 0 0 3px rgba(139, 90, 43, 0.2);
+            outline: none;
+        }
+
+    .select-emp {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid var(--chocolate-milk);
+        border-radius: 8px;
+        background-color: var(--chocolate-white);
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%234a2a10' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        background-size: 16px;
+    }
+
+    textarea.form-control {
+        min-height: 100px;
+    }
+
+    /* Checkbox Styles */
+    .checkbox-container {
+        display: flex;
+        align-items: center;
+        margin-top: 1rem;
+    }
+
+        .checkbox-container input[type="checkbox"] {
+            margin-right: 10px;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--chocolate-medium);
+        }
+
+        .checkbox-container label {
+            color: var(--chocolate-medium);
+            font-size: 0.9rem;
+        }
+
+    /* Button Styles */
+    .register-btn {
+        background: linear-gradient(135deg, var(--chocolate-medium), var(--chocolate-dark));
+        color: white;
+        border: none;
+        padding: 14px 30px;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        box-shadow: 0 4px 15px rgba(74, 42, 16, 0.2);
+        width: 100%;
+        margin-top: 1.5rem;
+    }
+
+        .register-btn:hover {
+            background: linear-gradient(135deg, var(--chocolate-dark), var(--chocolate-light));
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(74, 42, 16, 0.3);
+        }
+
+        .register-btn:active {
+            transform: translateY(0);
+        }
+
+    /* Login Link */
+    .login-link {
+        text-align: center;
+        margin-top: 1.5rem;
+        color: var(--chocolate-light);
+    }
+
+        .login-link a {
+            color: var(--chocolate-medium);
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid transparent;
+        }
+
+            .login-link a:hover {
+                color: var(--chocolate-dark);
+                border-bottom-color: var(--chocolate-gold);
+            }
+
+    /* Success Message */
+    .success-message {
+        text-align: center;
+        color: #28a745;
+        font-weight: 500;
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    /* Validation Styles */
+    .text-danger {
+        color: #dc3545;
+        font-size: 0.85rem;
+        margin-top: 0.25rem;
+        display: block;
+    }
+
+    .field-validation-error {
+        color: #dc3545;
+    }
+
+    /* password */
+    .password-input-container {
+        position: relative;
+    }
+
+    .password-toggle {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--chocolate-light);
+        padding: 0.5rem;
+        z-index: 2;
+    }
+
+        .password-toggle:hover {
+            color: var(--chocolate-medium);
+        }
+
+        .password-toggle:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(139, 90, 43, 0.3);
+        }
+
+    /* Adjust padding for password fields to prevent text overlap */
+    .form-control[type="password"],
+    .form-control[type="text"] {
+        padding-right: 40px;
+    }
+
+    /* Responsive Design */
+    @@media (max-width: 992px) {
+        .register-panel {
+            flex-direction: column;
+        }
+
+        .info-panel, .form-panel {
+            padding: 3rem;
+        }
+
+        .app-name {
+            font-size: 2.5rem;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .info-panel, .form-panel {
+            padding: 2rem;
+        }
+
+        .signup-title {
+            font-size: 1.8rem;
+        }
+    }
+</style>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="register-container">
+
+        <div class="register-panel">
+            <!-- Info Panel -->
+            <div class="info-panel">
+                <h1 class="app-name">Rosier Chocolates</h1>
+                <p class="app-tagline">Create your account and indulge in the finest chocolate experience</p>
+                <img src="~/Content/images/signup-illustration.svg.svg"
+                     alt="Register Illustration"
+                     class="register-illustration">
+            </div>
+
+            <!-- Form Panel -->
+            <div class="form-panel">
+                @if (ViewBag.successRegister != null)
+                {
+                    <div class="success-message" id="successMessage">
+                        <i class="fas fa-check-circle"></i>
+                        @ViewBag.successRegister
+                    </div>
+                }
+
+                <h2 class="signup-title">Create Your Account</h2>
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="row">
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter your first name" } })
+                        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter your last name" } })
+                        @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "form-label" })
+                    <select name="Gender" id="Gender" class="select-emp">
+                        <option value="" disabled selected>Select your gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.DOB, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.DOB, new { htmlAttributes = new { @class = "form-control", placeholder = "MM/DD/YYYY" } })
+                    @Html.ValidationMessageFor(model => model.DOB, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MobileNo, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.MobileNo, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter your mobile number" } })
+                    @Html.ValidationMessageFor(model => model.MobileNo, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter your email address" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    @if (ViewBag.RegisterMessage != null)
+                    {
+                        <span class="text-danger">@ViewBag.RegisterMessage</span>
+                    }
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "form-label" })
+                    @Html.TextAreaFor(model => model.Address, new { @class = "form-control", placeholder = "Enter your address", rows = "3" })
+                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "form-label" })
+                    <div class="password-input-container">
+                        @Html.PasswordFor(model => model.Password, new { @class = "form-control", placeholder = "Create a password", id = "password-field" })
+                        <button type="button" class="password-toggle" onclick="togglePassword('password-field', 'password-toggle-icon')">
+                            <i id="password-toggle-icon" class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ConfirmPassword, htmlAttributes: new { @class = "form-label" })
+                    <div class="password-input-container">
+                        @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm your password", id = "confirm-password-field" })
+                        <button type="button" class="password-toggle" onclick="togglePassword('confirm-password-field', 'confirm-password-toggle-icon')">
+                            <i id="confirm-password-toggle-icon" class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    @Html.ValidationMessageFor(model => model.ConfirmPassword, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="checkbox-container">
+                    @Html.CheckBoxFor(model => model.IsTermAgree, new { @class = "form-check-input" })
+                    <label>I agree to the terms and conditions</label>
+                </div>
+                @Html.ValidationMessageFor(model => model.IsTermAgree, "", new { @class = "text-danger" })
+
+                <button type="submit" class="register-btn">
+                    <i class="fas fa-user-plus me-2"></i> Create Account
+                </button>
+
+                <div class="login-link">
+                    Already have an account? @Html.ActionLink("Login here", "Login", null, new { @class = "text-decoration-none" })
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+       // Password toggle functionality
+function togglePassword(fieldId, iconId) {
+    const passwordField = document.getElementById(fieldId);
+    const icon = document.getElementById(iconId);
+
+    if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        icon.classList.remove('fa-eye');
+        icon.classList.add('fa-eye-slash');
+    } else {
+        passwordField.type = 'password';
+        icon.classList.remove('fa-eye-slash');
+        icon.classList.add('fa-eye');
+    }
+}
+
+// Add focus effects to form inputs
+document.querySelectorAll('.form-control').forEach(input => {
+    input.addEventListener('focus', function() {
+        this.parentElement.style.transform = 'translateY(-2px)';
+        this.parentElement.style.transition = 'all 0.3s ease';
+    });
+
+    input.addEventListener('blur', function() {
+        this.parentElement.style.transform = 'translateY(0)';
+    });
+});
+
+// Auto-redirect after successful registration
+$(document).ready(function() {
+    @if (ViewBag.successRegister != null)
+    {
+        <text>
+        setTimeout(function() {
+            window.location.href = '@Url.Action("Login", "Register")';
+        }, 3000);
+        </text>
+    }
+});
+    </script>
+}

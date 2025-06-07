@@ -1,0 +1,21 @@
+﻿@model RosierBars.Models.DashboardViewModel
+
+<div class="account-main">
+    <h2 class="account-section-title">Account Overview</h2>
+     <div class="account-card">
+     <h3 class="card-title">Account Details</h3>
+     <p class="card-content">
+         <strong>Name:</strong> @Session["UserName"]<br />
+         <strong>Email:</strong> @Session["Email"]<br />
+         <strong>Member since:</strong> @DateTime.Now.AddYears(-1).ToString("MMMM yyyy")
+     </p>
+ </div>
+    <div class="account-card">
+        @if (Model?.RecentOrders != null && Model.RecentOrders.Any())
+        {
+            @Html.Partial("_RecentOrders", Model.RecentOrders)
+        }
+    </div>
+
+   
+</div>

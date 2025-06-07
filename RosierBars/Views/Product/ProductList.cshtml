@@ -1,0 +1,781 @@
+﻿@model IEnumerable<RosierBars.Models.ProductModel>
+
+@{
+    ViewBag.Title = "Product List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    :root {
+        --chocolate-dark: #4B2C20;
+        --chocolate-medium: #7B3F00;
+        --chocolate-light: #D2691E;
+        --chocolate-cream: #FFF8E1;
+        --chocolate-gold: #FFD700;
+        --chocolate-milk: #F5F5DC;
+        --card-shadow: 0 10px 20px rgba(75, 44, 32, 0.15);
+    }
+
+    body {
+        font-family: 'Montserrat', sans-serif;
+        background-color: var(--chocolate-cream);
+    }
+
+    .product-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding-top:100px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid var(--chocolate-light);
+    }
+
+    .product-title {
+        color: var(--chocolate-dark);
+        font-weight: 700;
+        position: relative;
+        font-size: 1.8rem;
+    }
+
+        .product-title:after {
+            content: "";
+            position: absolute;
+            bottom: -17px;
+            left: 0;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--chocolate-gold), var(--chocolate-light));
+            border-radius: 2px;
+        }
+
+    .btn-create {
+        background-color: var(--chocolate-medium);
+        border-color: var(--chocolate-medium);
+        color: white;
+        font-weight: 600;
+        border-radius: 50px;
+        padding: 10px 20px;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(123, 63, 0, 0.3);
+    }
+
+        .btn-create:hover {
+            background-color: var(--chocolate-dark);
+            border-color: var(--chocolate-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(75, 44, 32, 0.4);
+            color: white;
+        }
+
+    /* Product Cards Grid */
+    .products-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 25px;
+        padding: 20px 0;
+    }
+
+    .product-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: var(--card-shadow);
+        transition: all 0.3s ease;
+        border: 1px solid var(--chocolate-light);
+        display: flex;
+        flex-direction: column;
+    }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(75, 44, 32, 0.2);
+        }
+
+    .product-image-container {
+        position: relative;
+        height: 200px;
+        overflow: hidden;
+    }
+
+    .product-main-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .product-card:hover .product-main-image {
+        transform: scale(1.05);
+    }
+
+    .product-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: var(--chocolate-gold);
+        color: var(--chocolate-dark);
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .product-details {
+        padding: 20px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .product-brand {
+        color: var(--chocolate-medium);
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .product-name {
+        color: var(--chocolate-dark);
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 10px;
+        line-height: 1.3;
+    }
+
+    .product-description {
+        color: #666;
+        font-size: 0.9rem;
+        margin-bottom: 15px;
+        flex-grow: 1;
+    }
+
+    .product-price-section {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .product-price {
+        font-size: 1.4rem;
+        font-weight: 700;
+        color: var(--chocolate-dark);
+    }
+
+    .product-original-price {
+        text-decoration: line-through;
+        color: #999;
+        margin-left: 10px;
+        font-size: 1rem;
+    }
+
+    .product-discount {
+        background-color: #ff4d4d;
+        color: white;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        margin-left: 10px;
+        font-weight: 600;
+    }
+
+    .product-meta {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        font-size: 0.85rem;
+    }
+
+    .product-rating {
+        display: flex;
+        align-items: center;
+        color: var(--chocolate-medium);
+    }
+
+    .rating-stars {
+        color: var(--chocolate-gold);
+        margin-right: 5px;
+    }
+
+    .product-stock {
+        display: inline-block;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .in-stock {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .out-of-stock {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .product-specs {
+        margin-bottom: 15px;
+    }
+
+    .spec-item {
+        display: flex;
+        margin-bottom: 5px;
+        font-size: 0.85rem;
+    }
+
+    .spec-label {
+        font-weight: 600;
+        color: var(--chocolate-medium);
+        min-width: 120px;
+    }
+
+    .spec-value {
+        color: #555;
+    }
+
+    .product-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: auto;
+    }
+
+    .action-btn {
+        flex: 1;
+        padding: 8px 0;
+        text-align: center;
+        font-size: 0.9rem;
+        font-weight: 600;
+        border-radius: 6px;
+        transition: all 0.2s;
+    }
+
+    .btn-edit {
+        background-color: var(--chocolate-light);
+        color: white;
+        margin-right: 8px;
+    }
+
+        .btn-edit:hover {
+            background-color: var(--chocolate-medium);
+        }
+
+    .btn-details {
+        background-color: var(--chocolate-dark);
+        color: white;
+        margin-right: 8px;
+    }
+
+        .btn-details:hover {
+            background-color: #3a2219;
+        }
+
+    .btn-delete {
+        background-color: #dc3545;
+        color: white;
+    }
+
+        .btn-delete:hover {
+            background-color: #c82333;
+        }
+
+    /* Import modal styles */
+    .import-modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .import-modal-content {
+        background-color: var(--chocolate-cream);
+        margin: 10% auto;
+        padding: 30px;
+        border-radius: 10px;
+        width: 50%;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        border: 2px solid var(--chocolate-light);
+    }
+
+    .close-import {
+        color: var(--chocolate-dark);
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+        .close-import:hover {
+            color: var(--chocolate-medium);
+        }
+
+    .import-form {
+        margin-top: 20px;
+    }
+
+    .import-btn {
+        background-color: var(--chocolate-medium);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 15px;
+    }
+
+        .import-btn:hover {
+            background-color: var(--chocolate-dark);
+        }
+
+    .file-input-container {
+        margin-bottom: 20px;
+    }
+
+    .file-input-label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: var(--chocolate-dark);
+    }
+
+    .file-input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid var(--chocolate-light);
+        border-radius: 5px;
+        background-color: white;
+    }
+
+    /* Filter controls */
+    .filter-controls {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .search-box {
+        flex: 1;
+        min-width: 250px;
+        position: relative;
+    }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border: 1px solid var(--chocolate-light);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            background-color: white;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--chocolate-medium);
+        }
+
+    .filter-select {
+        min-width: 180px;
+        padding: 10px 15px;
+        border: 1px solid var(--chocolate-light);
+        border-radius: 50px;
+        font-size: 0.9rem;
+        background-color: white;
+        color: var(--chocolate-dark);
+    }
+
+    /* Responsive adjustments */
+    @@media (max-width: 768px) {
+        .products-grid {
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        }
+
+        .filter-controls {
+            flex-direction: column;
+        }
+
+        .search-box, .filter-select {
+            width: 100%;
+        }
+
+        .import-modal-content {
+            width: 90%;
+            margin: 20% auto;
+        }
+    }
+
+    /* No products message */
+    .no-products {
+        text-align: center;
+        padding: 50px;
+        color: var(--chocolate-medium);
+        font-size: 1.2rem;
+    }
+</style>
+
+<div class="container-fluid py-4">
+    <div class="container">
+        <div class="product-header">
+            <h2 class="product-title">Our Chocolate Collection</h2>
+            <div>
+                @Html.ActionLink("Add New Product", "Product", null, new { @class = "btn btn-create" })
+                <button id="exportExcel" class="btn btn-create">Export to Excel</button>
+                <button id="importExcel" class="btn btn-create">Import from Excel/CSV</button>
+            </div>
+        </div>
+
+        <!-- Filter Controls -->
+        <div class="filter-controls">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Search products..." />
+            </div>
+            <select class="filter-select" id="categoryFilter">
+                <option value="">All Categories</option>
+                <option value="Dark">Dark Chocolate</option>
+                <option value="Milk">Milk Chocolate</option>
+                <option value="White">White Chocolate</option>
+                <option value="Gourmet">Gourmet</option>
+                <option value="Gift">Gift Packs</option>
+            </select>
+            <select class="filter-select" id="availabilityFilter">
+                <option value="">All Availability</option>
+                <option value="Yes">In Stock</option>
+                <option value="No">Out of Stock</option>
+            </select>
+            <select class="filter-select" id="sortFilter">
+                <option value="name-asc">Sort by: Name (A-Z)</option>
+                <option value="name-desc">Sort by: Name (Z-A)</option>
+                <option value="price-asc">Sort by: Price (Low-High)</option>
+                <option value="price-desc">Sort by: Price (High-Low)</option>
+                <option value="rating-desc">Sort by: Highest Rating</option>
+            </select>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="products-grid" id="productsContainer">
+            @if (Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <div class="product-card" data-category="@item.Type" data-availability="@item.Available" data-name="@item.ProductName.ToLower()" data-price="@item.Price" data-rating="@item.Rating">
+                        <div class="product-image-container">
+                            @if (!string.IsNullOrEmpty(item.ImageUrl))
+                            {
+                                var firstImage = item.ImageUrl.Split(',').FirstOrDefault();
+                                <img src="~/Content/images/@firstImage" class="product-main-image" alt="@item.ProductName" />
+                            }
+                            else
+                            {
+                                <img src="~/Content/images/default-chocolate.jpg" class="product-main-image" alt="Default chocolate image" />
+                            }
+
+                            @if (item.IsGourmet == "Yes")
+                            {
+                                <span class="product-badge">Gourmet</span>
+                            }
+                            else if (item.IsGiftPack == "Yes")
+                            {
+                                <span class="product-badge">Gift Pack</span>
+                            }
+                            else if (item.IsHomemade == "Yes")
+                            {
+                                <span class="product-badge">Artisanal</span>
+                            }
+
+                            @if (item.DiscountPercent > 0)
+                            {
+                                <span class="product-badge" style="left: 10px; right: auto; background-color: #ff4d4d;">
+                                    @item.DiscountPercent% OFF
+                                </span>
+                            }
+                        </div>
+
+                        <div class="product-details">
+                            <div class="product-brand">@item.Brand</div>
+                            <h3 class="product-name">@item.ProductName</h3>
+                            <p class="product-description">@(item.Description.Length > 100 ? item.Description.Substring(0, 100) + "..." : item.Description)</p>
+
+                            <div class="product-price-section">
+                                <span class="product-price">₹@item.Price</span>
+                                @if (item.OriginalPrice > item.Price)
+                                {
+                                    <span class="product-original-price">₹@item.OriginalPrice</span>
+                                }
+                                @if (item.DiscountPercent > 0)
+                                {
+                                    <span class="product-discount">Save @item.DiscountPercent%</span>
+                                }
+                            </div>
+
+                            <div class="product-meta">
+                                <div class="product-rating">
+                                    <span class="rating-stars">
+                                        @for (int i = 0; i < 5; i++)
+                                        {
+                                            if (i < Math.Floor(item.Rating))
+                                            {
+                                                <i class="fas fa-star"></i>
+                                            }
+                                            else if (i < item.Rating)
+                                            {
+                                                <i class="fas fa-star-half-alt"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="far fa-star"></i>
+                                            }
+                                        }
+                                    </span>
+                                    (@item.TotalRatings)
+                                </div>
+                                <span class="product-stock @(item.Available == "Yes" ? "in-stock" : "out-of-stock")">
+                                    @(item.Available == "Yes" ? "In Stock" : "Out of Stock")
+                                </span>
+                            </div>
+
+                            <div class="product-specs">
+                                <div class="spec-item">
+                                    <span class="spec-label">Flavor:</span>
+                                    <span class="spec-value">@item.Flavor</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Type:</span>
+                                    <span class="spec-value">@item.Type</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Net Qty:</span>
+                                    <span class="spec-value">@item.NetQuantity</span>
+                                </div>
+                                <div class="spec-item">
+                                    <span class="spec-label">Dietary:</span>
+                                    <span class="spec-value">@item.FoodPreference</span>
+                                </div>
+                            </div>
+
+                            <div class="product-actions">
+                                @Html.ActionLink("Edit", "ProductEdit", new { id = item.ProductId }, new { @class = "action-btn btn-edit" })
+                                @Html.ActionLink("Details", "ProductDetails", new { id = item.ProductId }, new { @class = "action-btn btn-details" })
+                                @Html.ActionLink("Delete", "ProductDelete", new { id = item.ProductId }, new { @class = "action-btn btn-delete" })
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="no-products">
+                    <i class="fas fa-box-open fa-3x mb-3" style="color: var(--chocolate-light);"></i>
+                    <h3>No Products Found</h3>
+                    <p>Add your first chocolate product to get started!</p>
+                    @Html.ActionLink("Add New Product", "Product", null, new { @class = "btn btn-create mt-3" })
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Import Modal -->
+<div id="importModal" class="import-modal">
+    <div class="import-modal-content">
+        <span class="close-import">&times;</span>
+        <h3>Import Products from Excel/CSV</h3>
+        <div class="import-form">
+            @using (Html.BeginForm("ImportProducts", "Product", FormMethod.Post, new { enctype = "multipart/form-data", id = "importForm" }))
+            {
+                <div class="file-input-container">
+                    <label class="file-input-label" for="file">Select Excel/CSV File:</label>
+                    <input type="file" name="file" id="file" class="file-input" accept=".xlsx,.xls,.csv" required />
+                </div>
+                <div>
+                    <button type="submit" class="import-btn">Import Products</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript Libraries -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+<script>
+    // Export to Excel functionality
+    document.getElementById('exportExcel').addEventListener('click', function () {
+        const wb = XLSX.utils.book_new();
+        const table = document.createElement('table');
+
+        // Create header row
+        const headerRow = table.insertRow();
+        const headers = ['Brand', 'Product Name', 'Description', 'Price', 'Original Price', 'Discount %',
+            'Rating', 'Stock', 'Flavor', 'Type', 'Dietary', 'Net Quantity', 'Availability'];
+
+        headers.forEach(headerText => {
+            const th = document.createElement('th');
+            th.textContent = headerText;
+            headerRow.appendChild(th);
+        });
+
+        // Add data rows
+        document.querySelectorAll('.product-card').forEach(card => {
+            const row = table.insertRow();
+
+            const data = [
+                card.querySelector('.product-brand').textContent,
+                card.querySelector('.product-name').textContent,
+                card.querySelector('.product-description').textContent,
+                card.querySelector('.product-price').textContent.replace('₹', ''),
+                card.querySelector('.product-original-price')?.textContent?.replace('₹', '') || '',
+                card.querySelector('.product-discount')?.textContent?.replace('Save ', '').replace('%', '') || '0',
+                card.querySelector('.rating-stars').textContent.trim().length / 2, // Approximate rating
+                card.querySelector('.spec-value:nth-of-type(3)').textContent,
+                card.querySelector('.spec-value:nth-of-type(1)').textContent,
+                card.querySelector('.spec-value:nth-of-type(2)').textContent,
+                card.querySelector('.spec-value:nth-of-type(4)').textContent,
+                card.querySelector('.spec-value:nth-of-type(3)').textContent,
+                card.querySelector('.product-stock').textContent
+            ];
+
+            data.forEach(text => {
+                const cell = row.insertCell();
+                cell.textContent = text;
+            });
+        });
+
+        const ws = XLSX.utils.table_to_sheet(table);
+        XLSX.utils.book_append_sheet(wb, ws, "Products");
+        XLSX.writeFile(wb, 'Chocolate_Products.xlsx');
+    });
+
+    // Import from Excel/CSV functionality
+    $(document).ready(function () {
+        // Open modal when import button is clicked
+        $('#importExcel').click(function () {
+            $('#importModal').css('display', 'block');
+        });
+
+        // Close modal when X is clicked
+        $('.close-import').click(function () {
+            $('#importModal').css('display', 'none');
+        });
+
+        // Close modal when clicking outside of it
+        $(window).click(function (event) {
+            if (event.target == document.getElementById('importModal')) {
+                $('#importModal').css('display', 'none');
+            }
+        });
+
+        // Handle form submission
+        $('#importForm').submit(function (e) {
+            e.preventDefault();
+
+            var formData = new FormData(this);
+
+            $.ajax({
+                url: $(this).attr('action'),
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {
+                    if (response.success) {
+                        alert('Products imported successfully!');
+                        location.reload(); // Refresh the page to show new data
+                    } else {
+                        alert('Error: ' + response.message);
+                    }
+                    $('#importModal').css('display', 'none');
+                },
+                error: function (xhr, status, error) {
+                    alert('Error: ' + error);
+                    $('#importModal').css('display', 'none');
+                }
+            });
+        });
+
+        // Filter and search functionality
+        $('#searchInput, #categoryFilter, #availabilityFilter, #sortFilter').on('input change', function () {
+            filterProducts();
+        });
+
+        function filterProducts() {
+            const searchTerm = $('#searchInput').val().toLowerCase();
+            const category = $('#categoryFilter').val();
+            const availability = $('#availabilityFilter').val();
+            const sortOption = $('#sortFilter').val();
+
+            let visibleCount = 0;
+
+            $('.product-card').each(function () {
+                const name = $(this).data('name');
+                const productCategory = $(this).data('category');
+                const productAvailability = $(this).data('availability');
+                const price = parseFloat($(this).data('price'));
+                const rating = parseFloat($(this).data('rating'));
+
+                const matchesSearch = name.includes(searchTerm);
+                const matchesCategory = !category || productCategory === category;
+                const matchesAvailability = !availability || productAvailability === availability;
+
+                if (matchesSearch && matchesCategory && matchesAvailability) {
+                    $(this).show();
+                    visibleCount++;
+                } else {
+                    $(this).hide();
+                }
+            });
+
+            // Sort products
+            const container = $('#productsContainer');
+            const cards = container.children('.product-card:visible').get();
+
+            cards.sort(function (a, b) {
+                const aName = $(a).data('name');
+                const bName = $(b).data('name');
+                const aPrice = parseFloat($(a).data('price'));
+                const bPrice = parseFloat($(b).data('price'));
+                const aRating = parseFloat($(a).data('rating'));
+                const bRating = parseFloat($(b).data('rating'));
+
+                switch (sortOption) {
+                    case 'name-asc': return aName.localeCompare(bName);
+                    case 'name-desc': return bName.localeCompare(aName);
+                    case 'price-asc': return aPrice - bPrice;
+                    case 'price-desc': return bPrice - aPrice;
+                    case 'rating-desc': return bRating - aRating;
+                    default: return 0;
+                }
+            });
+
+            $.each(cards, function (idx, card) {
+                container.append(card);
+            });
+
+            // Show no products message if none visible
+            if (visibleCount === 0) {
+                $('#productsContainer').append(`
+                    <div class="no-products">
+                        <i class="fas fa-box-open fa-3x mb-3" style="color: var(--chocolate-light);"></i>
+                        <h3>No Products Match Your Search</h3>
+                        <p>Try adjusting your filters or search term</p>
+                    </div>
+                `);
+            } else {
+                $('.no-products').remove();
+            }
+        }
+    });
+</script>

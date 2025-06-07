@@ -1,0 +1,683 @@
+﻿@model RosierBars.Models.ProductModel
+@{
+    ViewBag.Title = Model.ProductName;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+    <style>
+        :root {
+            --primary: #5C2E1F;
+            --secondary: #E8C07D;
+            --accent: #9C4A1A;
+            --light: #FFF9F0;
+            --dark: #2A1609;
+            --highlight: #FF9A76;
+            --text: #3E2723;
+            --text-light: #8D6E63;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .product-hero {
+            max-width: 1400px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-top:150px;
+        }
+
+        .product-gallery {
+            position: relative;
+        }
+
+        .main-image {
+            width: 100%;
+            border-radius: 16px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            transition: transform 0.5s ease;
+        }
+
+            .main-image:hover {
+                transform: scale(1.02);
+            }
+
+        .thumbnail-container {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .thumbnail {
+            width: 80px;
+            height: 80px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+            .thumbnail:hover {
+                border-color: var(--accent);
+                transform: translateY(-3px);
+            }
+
+        .product-info {
+            padding: 2rem 0;
+        }
+
+        .brand-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+        }
+
+        .product-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .product-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+
+        .rating-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .rating {
+            color: var(--secondary);
+            margin-right: 0.8rem;
+            font-size: 1.1rem;
+        }
+
+            .rating .filled {
+                color: #FFC107;
+            }
+
+        .review-count {
+            font-size: 0.95rem;
+            color: var(--text-light);
+        }
+
+        .product-description {
+            color: var(--text);
+            font-size: 1rem;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .flavor-profile {
+            display: flex;
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .flavor-tag {
+            background: rgba(232, 192, 125, 0.2);
+            color: var(--accent);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .price-container {
+            background: rgba(255, 255, 255, 0.7);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .current-price {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .original-price {
+            font-size: 1.2rem;
+            text-decoration: line-through;
+            color: var(--text-light);
+            margin-right: 0.8rem;
+        }
+
+        .discount-badge {
+            background: var(--highlight);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .quantity-btn {
+            width: 40px;
+            height: 40px;
+            background: var(--light);
+            border: 1px solid #ddd;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .quantity-input {
+            width: 60px;
+            height: 40px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-left: none;
+            border-right: none;
+            font-size: 1rem;
+        }
+
+        .action-buttons {
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .add-to-cart {
+            background: var(--primary);
+            flex-grow: 1;
+        }
+
+            .add-to-cart a {
+                color: white;
+            }
+
+            .add-to-cart:hover a {
+                color: #5C2E1F;
+            }
+
+        .buy-now {
+            background: var(--accent);
+            flex-grow: 1;
+        }
+
+        .btn i {
+            margin-right: 0.8rem;
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(156, 74, 26, 0.3);
+        }
+
+            .btn:hover i {
+                transform: scale(1.1);
+            }
+
+        .wishlist-btn {
+            width: 50px;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+            .wishlist-btn:hover {
+                color: var(--accent);
+                border-color: var(--accent);
+                transform: translateY(-3px);
+            }
+
+        .product-meta {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .meta-item {
+            display: flex;
+            margin-bottom: 1rem;
+        }
+
+        .meta-icon {
+            width: 30px;
+            color: var(--accent);
+        }
+
+        .meta-text {
+            flex-grow: 1;
+        }
+
+        .meta-title {
+            font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+
+        .meta-description {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+
+        .gourmet-badge {
+            background: #FFD700;
+            color: #5C2E1F;
+        }
+
+        .homemade-badge {
+            background: #8B4513;
+            color: white;
+        }
+
+        .gift-badge {
+            background: #DC143C;
+            color: white;
+        }
+
+        /* Custom Toastify Styles */
+        .toastify {
+            font-family: 'Montserrat', sans-serif;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            padding: 15px 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .toastify-success {
+            background: linear-gradient(135deg, #5C2E1F, #9C4A1A);
+            color: #FFF9F0;
+        }
+
+        .toastify-error {
+            background: linear-gradient(135deg, #9C4A1A, #5C2E1F);
+            color: #FFF9F0;
+        }
+
+        .toastify-icon {
+            margin-right: 12px;
+            width: 24px;
+            height: 24px;
+        }
+
+        .toastify-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .toastify-close {
+            color: #E8C07D;
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            margin-left: 15px;
+            cursor: pointer;
+        }
+
+        .chocolate-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+        }
+
+        @@media (max-width: 992px) {
+            .product-hero {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .product-title {
+                font-size: 2rem;
+            }
+        }
+
+        @@media (max-width: 576px) {
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .wishlist-btn {
+                width: 100%;
+                height: 50px;
+            }
+
+            .thumbnail-container {
+                justify-content: center;
+            }
+        }
+    </style>
+    <div class="product-hero">
+        <div class="product-gallery">
+            <img src="~/Content/images/@Model.ImageUrl" alt="@Model.ProductName" class="main-image">
+            <div class="thumbnail-container">
+                <!-- You can add additional thumbnails here if available -->
+                <img src="~/Content/images/@Model.ImageUrl" alt="@Model.ProductName" class="thumbnail">
+            </div>
+        </div>
+
+        <div class="product-info">
+            <h1 class="product-title">@Model.ProductName</h1>
+            <p class="product-subtitle">@Model.ModelName</p>
+
+            <div class="rating-container">
+                <div class="rating">
+                    @{
+                        int fullStars = (int)Model.Rating;
+                        bool hasHalfStar = Model.Rating - fullStars >= 0.5m;
+
+                        for (int i = 0; i < fullStars; i++)
+                        {
+                            <i class="fas fa-star filled"></i>
+                        }
+
+                        if (hasHalfStar)
+                        {
+                            <i class="fas fa-star-half-alt filled"></i>
+                            fullStars++;
+                        }
+
+                        for (int i = fullStars; i < 5; i++)
+                        {
+                            <i class="far fa-star"></i>
+                        }
+                    }
+                </div>
+                <span class="review-count">(@Model.TotalRatings ratings, @Model.TotalReviews reviews)</span>
+            </div>
+
+            <div class="badge-container">
+                @if (!string.IsNullOrEmpty(Model.IsGourmet))
+                {
+                    <span class="badge gourmet-badge">GOURMET</span>
+                }
+                @if (!string.IsNullOrEmpty(Model.IsHomemade))
+                {
+                    <span class="badge homemade-badge">HOMEMADE</span>
+                }
+                @if (!string.IsNullOrEmpty(Model.IsGiftPack))
+                {
+                    <span class="badge gift-badge">GIFT PACK</span>
+                }
+            </div>
+
+            <p class="product-description">
+                @Model.Description
+            </p>
+
+            <div class="flavor-profile">
+                <span class="flavor-tag">@Model.Flavor</span>
+                <span class="flavor-tag">@Model.Type</span>
+                <span class="flavor-tag">@Model.FoodPreference</span>
+            </div>
+
+            <div class="price-container">
+                <span class="current-price">@String.Format("{0:C}", Model.Price)</span>
+                @if (Model.DiscountPercent > 0)
+                {
+                    <span class="original-price">@String.Format("{0:C}", Model.OriginalPrice)</span>
+                    <span class="discount-badge">@Model.DiscountPercent% OFF</span>
+                }
+            </div>
+
+            <div class="quantity-selector">
+                <button class="quantity-btn">-</button>
+                <input type="number" value="1" min="1" class="quantity-input">
+                <button class="quantity-btn">+</button>
+            </div>
+
+            <div class="action-buttons">
+                @using (Html.BeginForm("AddToCart", "Shop", FormMethod.Post))
+                {
+                    @Html.Hidden("id", Model.ProductId)
+                    @Html.Hidden("quantity", 1, new { @class = "quantity-value" })
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn add-to-cart">
+                        <i class="fas fa-shopping-cart"></i> Add to Cart
+                    </button>
+                }
+
+            </div>
+
+            <div class="product-meta">
+                <div class="meta-item">
+                    <div class="meta-icon"><i class="fas fa-box-open"></i></div>
+                    <div class="meta-text">
+                        <div class="meta-title">Packaging</div>
+                        <div class="meta-description">Pack of @Model.PackOf, @Model.NetQuantity net quantity</div>
+                    </div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-icon"><i class="fas fa-hourglass-half"></i></div>
+                    <div class="meta-text">
+                        <div class="meta-title">Shelf Life</div>
+                        <div class="meta-description">@Model.ShelfLife</div>
+                    </div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-icon"><i class="fas fa-industry"></i></div>
+                    <div class="meta-text">
+                        <div class="meta-title">Manufacturer</div>
+                        <div class="meta-description">@Model.ManufacturedBy</div>
+                    </div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-icon"><i class="fas fa-list"></i></div>
+                    <div class="meta-text">
+                        <div class="meta-title">Ingredients</div>
+                        <div class="meta-description">@Model.Ingredients</div>
+                    </div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-icon"><i class="fas fa-info-circle"></i></div>
+                    <div class="meta-text">
+                        <div class="meta-title">Nutrition Info</div>
+                        <div class="meta-description">@Model.NutritionInfo</div>
+                    </div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-icon"><i class="fas fa-truck"></i></div>
+                    <div class="meta-text">
+                        <div class="meta-title">Seller</div>
+                        <div class="meta-description">
+                            @Model.Seller
+                            @((Model.NoReturnsAllowed?.ToLower() == "true") ? " (No returns allowed)" : "")
+                            @((Model.GstInvoiceAvailable?.ToLower() == "true") ? " (GST invoice available)" : "")
+                        </div>
+                    </div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-icon"><i class="fas fa-ruler-combined"></i></div>
+                    <div class="meta-text">
+                        <div class="meta-title">Dimensions</div>
+                        <div class="meta-description">@Model.WidthCm cm (W) × @Model.HeightCm cm (H) × @Model.DepthCm cm (D), @Model.WeightG g</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Toastify JS -->
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script>
+
+        // Thumbnail click functionality
+        const thumbnails = document.querySelectorAll('.thumbnail');
+        const mainImage = document.querySelector('.main-image');
+
+        thumbnails.forEach(thumb => {
+            thumb.addEventListener('click', () => {
+                mainImage.src = thumb.src;
+            });
+        });
+        // Quantity selector functionality
+        const minusBtn = document.querySelector('.quantity-btn:first-child');
+        const plusBtn = document.querySelector('.quantity-btn:last-child');
+        const quantityInput = document.querySelector('.quantity-input');
+
+        minusBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (quantityInput.value > 1) {
+                quantityInput.value--;
+            }
+        });
+
+        plusBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            quantityInput.value++;
+        });
+
+        // Update the hidden quantity field when form is submitted
+        document.querySelectorAll('form').forEach(form => {
+            form.addEventListener('submit', function () {
+                const quantityInput = this.querySelector('.quantity-value');
+                const currentQuantity = document.querySelector('.quantity-input').value;
+                quantityInput.value = currentQuantity;
+            });
+        });        // Buy now functionality
+        const buyNowBtn = document.querySelector('.buy-now');
+        buyNowBtn.addEventListener('click', () => {
+            const productName = document.querySelector('.product-title').textContent;
+            const quantity = quantityInput.value;
+            alert(`Proceeding to checkout with ${quantity} ${productName}!`);
+        });
+
+        // Wishlist functionality
+        const wishlistBtn = document.querySelector('.wishlist-btn');
+        wishlistBtn.addEventListener('click', function () {
+            this.innerHTML = this.innerHTML.includes('far')
+                ? '<i class="fas fa-heart"></i>'
+                : '<i class="far fa-heart"></i>';
+
+            if (this.innerHTML.includes('fas')) {
+                this.style.color = 'var(--accent)';
+                this.style.borderColor = 'var(--accent)';
+            } else {
+                this.style.color = '';
+                this.style.borderColor = '#ddd';
+            }
+        });
+
+        @if (TempData["WishlistMessage"] != null)
+{
+    <text>
+        Toastify({
+            text: `
+                <div class="toastify-title">
+                    ${chocolateIcon}
+                    <span>@Model.ProductName</span>
+                </div>
+                <div>@TempData["WishlistMessage"]</div>
+            `,
+            duration: 5000,
+            close: true,
+            gravity: "top",
+            position: "right",
+            className: "toastify-success",
+            escapeMarkup: false,
+            stopOnFocus: true
+        }).showToast();
+    </text>
+}
+
+
+        // Display TempData messages as Toastify notifications
+        const chocolateIcon = `
+            <svg class="chocolate-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="#5C2E1F"/>
+                <path d="M12 17C14.7614 17 17 14.7614 17 12C17 9.23858 14.7614 7 12 7C9.23858 7 7 9.23858 7 12C7 14.7614 9.23858 17 12 17Z" fill="#E8C07D"/>
+                <path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" fill="#5C2E1F"/>
+                <path d="M15 10C15.5523 10 16 9.55228 16 9C16 8.44772 15.5523 8 15 8C14.4477 8 14 8.44772 14 9C14 9.55228 14.4477 10 15 10Z" fill="#5C2E1F"/>
+                <path d="M9 10C9.55228 10 10 9.55228 10 9C10 8.44772 9.55228 8 9 8C8.44772 8 8 8.44772 8 9C8 9.55228 8.44772 10 9 10Z" fill="#5C2E1F"/>
+                <path d="M12 16C12.5523 16 13 15.5523 13 15C13 14.4477 12.5523 14 12 14C11.4477 14 11 14.4477 11 15C11 15.5523 11.4477 16 12 16Z" fill="#5C2E1F"/>
+            </svg>
+        `;
+
+        @if (TempData["CartMessage"] != null)
+        {
+            <text>
+                Toastify({
+                    text: `
+                        <div class="toastify-title">
+                            ${chocolateIcon}
+                            <span>@Model.ProductName </span>
+                        </div>
+                        <div> @TempData["CartMessage"]</div>
+                    `,
+                    duration: 5000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    className: "toastify-success",
+                    escapeMarkup: false,
+                    stopOnFocus: true
+                }).showToast();
+            </text>
+        }
+
+        @if (TempData["CartError"] != null)
+        {
+            <text>
+                Toastify({
+                    text: `
+                        <div class="toastify-title">
+                            ${chocolateIcon}
+                            <span>ChocDelight</span>
+                        </div>
+                        <div>@TempData["CartError"]</div>
+                    `,
+                    duration: 5000,
+                    close: true,
+                    gravity: "top",
+                    position: "right",
+                    className: "toastify-error",
+                    escapeMarkup: false,
+                    stopOnFocus: true
+                }).showToast();
+            </text>
+        }
+    </script>

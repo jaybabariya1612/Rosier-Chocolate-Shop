@@ -1,0 +1,444 @@
+﻿@model RosierBars.Models.OrderModel
+@{
+    ViewBag.Title = "Checkout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    /* Base Styles */
+    :root {
+        --primary-color: #6d4c41;
+        --secondary-color: #8d6e63;
+        --accent-color: #d81b60;
+        --light-color: #efebe9;
+        --dark-color: #3e2723;
+    }
+
+    body {
+        background-color: #f5f5f5;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Animations */
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.02);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    @@keyframes slideInRight {
+        from {
+            transform: translateX(20px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+
+    /* Checkout Container */
+    .checkout-container {
+        max-width: 1200px;
+        margin: 30px auto;
+        animation: fadeInUp 0.6s ease-out;
+    }
+
+    h2 {
+        color: var(--dark-color);
+        position: relative;
+        padding-bottom: 15px;
+        margin-bottom: 30px;
+    }
+
+        h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+            border-radius: 2px;
+        }
+
+    /* Cart Items Section */
+    .cart-items {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        padding: 20px;
+        margin-bottom: 30px;
+    }
+
+    .cart-item {
+        display: flex;
+        align-items: center;
+        padding: 15px 0;
+        border-bottom: 1px solid #eee;
+        animation: slideInRight 0.5s ease-out forwards;
+        opacity: 0;
+    }
+
+        .cart-item:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .cart-item:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .cart-item:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .cart-item:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .cart-item:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+    .product-image-container {
+        width: 100px;
+        height: 100px;
+        margin-right: 20px;
+        overflow: hidden;
+        border-radius: 6px;
+        transition: transform 0.3s ease;
+    }
+
+        .product-image-container:hover {
+            transform: scale(1.05);
+        }
+
+    .product-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .product-info {
+        flex: 1;
+    }
+
+    .product-name {
+        color: var(--dark-color);
+        margin: 0 0 8px 0;
+        font-size: 18px;
+    }
+
+    .product-details {
+        display: flex;
+        gap: 15px;
+        color: #666;
+        font-size: 14px;
+    }
+
+        .product-details i {
+            margin-right: 5px;
+            color: var(--secondary-color);
+        }
+
+    .price {
+        width: 120px;
+        text-align: center;
+        font-weight: bold;
+        color: var(--dark-color);
+    }
+
+    .original-price {
+        display: block;
+        text-decoration: line-through;
+        color: #999;
+        font-size: 12px;
+        font-weight: normal;
+    }
+
+    .discount-badge {
+        display: inline-block;
+        background-color: var(--accent-color);
+        color: white;
+        padding: 2px 8px;
+        border-radius: 10px;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+    .quantity-control {
+        width: 80px;
+        text-align: center;
+    }
+
+    .quantity-input {
+        width: 50px;
+        text-align: center;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 5px;
+    }
+
+    .item-total {
+        width: 100px;
+        text-align: right;
+        font-weight: bold;
+        color: var(--primary-color);
+    }
+
+    /* Shipping Form */
+    .shipping-form {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        padding: 30px;
+        animation: fadeInUp 0.6s ease-out 0.3s both;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+        opacity: 0;
+        animation: fadeInUp 0.5s ease-out forwards;
+    }
+
+        .form-group:nth-child(1) {
+            animation-delay: 0.4s;
+        }
+
+        .form-group:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .form-group:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        .form-group:nth-child(4) {
+            animation-delay: 0.7s;
+        }
+
+        .form-group:nth-child(5) {
+            animation-delay: 0.8s;
+        }
+
+        .form-group:nth-child(6) {
+            animation-delay: 0.9s;
+        }
+
+    .control-label {
+        font-weight: 600;
+        color: var(--dark-color);
+    }
+
+    .form-control {
+        border-radius: 4px;
+        border: 1px solid #ddd;
+        padding: 10px 15px;
+        transition: all 0.3s ease;
+    }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(109, 76, 65, 0.25);
+        }
+
+    .form-control-static {
+        padding-top: 10px;
+        font-size: 18px;
+        color: var(--accent-color);
+    }
+
+    .btn-primary {
+        background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+        border: none;
+        padding: 12px 30px;
+        font-size: 16px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0,0,0,0.15);
+            animation: pulse 1.5s infinite;
+        }
+
+    /* Responsive Adjustments */
+    @@media (max-width: 768px) {
+        .cart-item {
+            flex-wrap: wrap;
+        }
+
+        .product-image-container {
+            width: 80px;
+            height: 80px;
+        }
+
+        .price, .quantity-control, .item-total {
+            width: auto;
+            margin-top: 10px;
+        }
+
+        .product-details {
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+    }
+</style>
+
+<div class="checkout-container">
+    <h2>Checkout</h2>
+
+    @if (Model.CartItems != null && Model.CartItems.Any())
+    {
+        <div class="cart-items">
+            @foreach (var item in Model.CartItems)
+            {
+                <div class="cart-item" data-item-id="@item.ProductId">
+                    <div class="product-image-container">
+                        <a href="@Url.Action("BackToProduct", "Shop", new { id = item.ProductId })">
+                            <img src="@Url.Content("~/Content/images/" + item.ImageUrl)" alt="@item.ProductName" class="product-image" />
+                        </a>
+                    </div>
+
+                    <div class="product-info">
+                        <h3 class="product-name">@item.ProductName</h3>
+                        <div class="product-details">
+                            <span><i class="fas fa-wine-bottle"></i> @item.PackOf</span>
+                            <span><i class="fas fa-tag"></i> @item.Flavor</span>
+                            <span><i class="fas fa-weight"></i> @item.NetQuantity</span>
+                        </div>
+                    </div>
+
+                    <div class="price">
+                        ₹@item.Price.ToString("F2")
+                        @if (item.DiscountPercent > 0)
+                        {
+                            <span class="original-price">₹@item.OriginalPrice.ToString("F2")</span>
+                            <span class="discount-badge">@item.DiscountPercent% OFF</span>
+                        }
+                    </div>
+
+                    <div class="quantity-control">
+                        <input type="text" class="quantity-input" value="@item.OrderQuantity" readonly>
+                    </div>
+
+                    <div class="item-total">₹@((item.Price * item.OrderQuantity).ToString("F2"))</div>
+                </div>
+            }
+        </div>
+    }
+
+    <div class="shipping-form">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-horizontal">
+                <h4>Shipping Details</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Your full name" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Email, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "example@email.com" } })
+                        @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Mobile, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control", placeholder = "+91 9876543210" } })
+                        @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ShippingAddress, new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ShippingAddress, new { htmlAttributes = new { @class = "form-control", placeholder = "House no., Street, City, State, Pincode" } })
+                        @Html.ValidationMessageFor(model => model.ShippingAddress, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Total Amount", new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <p class="form-control-static"><strong>₹@Model.TotalAmount.ToString("F2")</strong></p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Place Order" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Add focus effects
+            $('.form-control').focus(function () {
+                $(this).css('border-color', '#8d6e63');
+                $(this).parent().css('transform', 'translateY(-2px)');
+            }).blur(function () {
+                $(this).css('border-color', '#ddd');
+                $(this).parent().css('transform', 'translateY(0)');
+            });
+
+            // Form submission animation
+            $('form').submit(function (e) {
+                if ($(this).valid()) {
+                    $('.btn-primary').html('<i class="fas fa-spinner fa-spin"></i> Processing...');
+                    $('.btn-primary').prop('disabled', true);
+                }
+            });
+
+            // Hover effects for cart items
+            $('.cart-item').hover(
+                function () {
+                    $(this).css('background-color', '#f9f9f9');
+                },
+                function () {
+                    $(this).css('background-color', 'transparent');
+                }
+            );
+        });
+    </script>
+}

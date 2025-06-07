@@ -1,0 +1,470 @@
+﻿@model IEnumerable<RosierBars.Models.EmployeeForm>
+
+@{
+    ViewBag.Title = "Employee Directory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #3498db;
+        --accent-color: #e74c3c;
+        --light-color: #ecf0f1;
+        --dark-color: #2c3e50;
+        --success-color: #27ae60;
+        --warning-color: #f39c12;
+        --card-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .employee-directory {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid var(--secondary-color);
+    }
+
+    .page-title {
+        color: var(--dark-color);
+        font-weight: 700;
+        position: relative;
+        font-size: 1.8rem;
+    }
+
+        .page-title:after {
+            content: "";
+            position: absolute;
+            bottom: -17px;
+            left: 0;
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+            border-radius: 2px;
+        }
+
+    .btn-create {
+        background-color: var(--secondary-color);
+        border-color: var(--secondary-color);
+        color: white;
+        font-weight: 600;
+        border-radius: 50px;
+        padding: 10px 20px;
+        transition: all 0.3s;
+        text-decoration: none;
+    }
+
+        .btn-create:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            color: white;
+        }
+
+    /* Employee Cards Grid */
+    .employees-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 25px;
+        padding: 20px 0;
+    }
+
+    .employee-card {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: var(--card-shadow);
+        transition: all 0.3s ease;
+        border-top: 4px solid var(--secondary-color);
+        display: flex;
+        flex-direction: column;
+    }
+
+        .employee-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+
+    .employee-header {
+        display: flex;
+        padding: 20px;
+        border-bottom: 1px solid #eee;
+        align-items: center;
+    }
+
+    .employee-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--light-color);
+        margin-right: 15px;
+    }
+
+    .employee-name {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--dark-color);
+        margin-bottom: 5px;
+    }
+
+    .employee-position {
+        font-size: 0.9rem;
+        color: var(--secondary-color);
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .employee-department {
+        display: inline-block;
+        padding: 3px 8px;
+        background-color: var(--light-color);
+        color: var(--dark-color);
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .employee-details {
+        padding: 20px;
+        flex-grow: 1;
+    }
+
+    .detail-row {
+        display: flex;
+        margin-bottom: 12px;
+    }
+
+    .detail-label {
+        font-weight: 600;
+        color: var(--dark-color);
+        min-width: 120px;
+        font-size: 0.9rem;
+    }
+
+    .detail-value {
+        color: #555;
+        font-size: 0.9rem;
+        word-break: break-word;
+    }
+
+    .employee-status {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .status-active {
+        background-color: var(--success-color);
+        color: white;
+    }
+
+    .status-inactive {
+        background-color: var(--accent-color);
+        color: white;
+    }
+
+    .employee-footer {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px 20px;
+        background-color: #f9f9f9;
+        border-top: 1px solid #eee;
+    }
+
+    .action-link {
+        color: var(--secondary-color);
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s;
+        padding: 5px 10px;
+        border-radius: 4px;
+    }
+
+        .action-link:hover {
+            background-color: var(--secondary-color);
+            color: white;
+            text-decoration: none;
+        }
+
+    .action-link-warning {
+        color: var(--warning-color);
+    }
+
+        .action-link-warning:hover {
+            background-color: var(--warning-color);
+            color: white;
+        }
+
+    .action-link-danger {
+        color: var(--accent-color);
+    }
+
+        .action-link-danger:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+    /* Filter controls */
+    .filter-controls {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .search-box {
+        flex: 1;
+        min-width: 250px;
+        position: relative;
+    }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 15px 10px 40px;
+            border: 1px solid #ddd;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            background-color: white;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-color);
+        }
+
+    .filter-select {
+        min-width: 180px;
+        padding: 10px 15px;
+        border: 1px solid #ddd;
+        border-radius: 50px;
+        font-size: 0.9rem;
+        background-color: white;
+        color: var(--dark-color);
+    }
+
+    /* No employees message */
+    .no-employees {
+        text-align: center;
+        padding: 50px;
+        color: var(--secondary-color);
+        font-size: 1.2rem;
+        grid-column: 1 / -1;
+    }
+
+    /* Responsive adjustments */
+    @@media (max-width: 768px) {
+        .employees-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .filter-controls {
+            flex-direction: column;
+        }
+
+        .search-box, .filter-select {
+            width: 100%;
+        }
+
+        .page-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+        }
+    }
+</style>
+
+<div class="container employee-directory">
+    <div class="page-header">
+        <h2 class="page-title">Employee Directory</h2>
+        <div>
+            @Html.ActionLink("Add New Employee", "Employee", null, new { @class = "btn btn-create" })
+        </div>
+    </div>
+
+    <!-- Filter Controls -->
+    <div class="filter-controls">
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="Search employees..." />
+        </div>
+        <select class="filter-select" id="departmentFilter">
+            <option value="">All Departments</option>
+            @foreach (var dept in Model.Select(e => e.Department).Distinct())
+            {
+                <option value="@dept">@dept</option>
+            }
+        </select>
+        <select class="filter-select" id="statusFilter">
+            <option value="">All Statuses</option>
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+        </select>
+        <select class="filter-select" id="sortFilter">
+            <option value="name-asc">Sort by: Name (A-Z)</option>
+            <option value="name-desc">Sort by: Name (Z-A)</option>
+            <option value="hire-asc">Sort by: Hire Date (Oldest)</option>
+            <option value="hire-desc">Sort by: Hire Date (Newest)</option>
+        </select>
+    </div>
+
+    <!-- Employees Grid -->
+    <div class="employees-grid" id="employeesContainer">
+        @if (Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <div class="employee-card" data-department="@item.Department" data-status="@item.Status" data-name="@($"{item.FirstName} {item.LastName}").ToLower()" data-hiredate="@item.HireDate?.ToString(" yyyyMMdd")">
+                    <div class="employee-header">
+                        <img src="https://ui-avatars.com/api/?name=@($"{item.FirstName}+{item.LastName}")&background=3498db&color=fff" class="employee-avatar" alt="@($"{item.FirstName} {item.LastName}")" />
+                        <div>
+                            <div class="employee-name">@item.FirstName @item.LastName</div>
+                            <div class="employee-position">@item.Position</div>
+                            <span class="employee-department">@item.Department</span>
+                        </div>
+                    </div>
+
+                    <div class="employee-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Employee ID:</span>
+                            <span class="detail-value">@item.EmployeeID</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Email:</span>
+                            <span class="detail-value">@item.Email</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Phone:</span>
+                            <span class="detail-value">@item.PhoneNo</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Location:</span>
+                            <span class="detail-value">@item.City, @item.State</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Hire Date:</span>
+                            <span class="detail-value">@item.HireDate?.ToString("MMM dd, yyyy")</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Status:</span>
+                            <span class="detail-value">
+                                <span class="employee-status @(item.Status == "Active" ? "status-active" : "status-inactive")">@item.Status</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="employee-footer">
+                        @Html.ActionLink("Edit", "Edit", new { id = item.EmployeeID }, new { @class = "action-link" })
+                        @Html.ActionLink("Details", "EmpDetail", new { id = item.EmployeeID }, new { @class = "action-link" })
+                        @Html.ActionLink("Delete", "Delete", new { id = item.EmployeeID }, new { @class = "action-link action-link-danger" })
+                        @if (item.Status == "Active")
+                        {
+                            @Html.ActionLink("Deactivate", "Inactive", new { id = item.EmployeeID }, new { @class = "action-link action-link-warning" })
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Activate", "active", new { id = item.EmployeeID }, new { @class = "action-link action-link-warning" })
+                        }
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="no-employees">
+                <i class="fas fa-users fa-3x mb-3"></i>
+                <h3>No Employees Found</h3>
+                <p>Add your first employee to get started!</p>
+                @Html.ActionLink("Add New Employee", "Employee", null, new { @class = "btn btn-create mt-3" })
+            </div>
+        }
+    </div>
+</div>
+
+<!-- JavaScript Libraries -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+
+<script>
+    $(document).ready(function () {
+        // Filter and search functionality
+        $('#searchInput, #departmentFilter, #statusFilter, #sortFilter').on('input change', function () {
+            filterEmployees();
+        });
+
+        function filterEmployees() {
+            const searchTerm = $('#searchInput').val().toLowerCase();
+            const department = $('#departmentFilter').val();
+            const status = $('#statusFilter').val();
+            const sortOption = $('#sortFilter').val();
+
+            let visibleCount = 0;
+
+            $('.employee-card').each(function () {
+                const name = $(this).data('name');
+                const employeeDept = $(this).data('department');
+                const employeeStatus = $(this).data('status');
+                const hireDate = $(this).data('hiredate');
+
+                const matchesSearch = name.includes(searchTerm);
+                const matchesDepartment = !department || employeeDept === department;
+                const matchesStatus = !status || employeeStatus === status;
+
+                if (matchesSearch && matchesDepartment && matchesStatus) {
+                    $(this).show();
+                    visibleCount++;
+                } else {
+                    $(this).hide();
+                }
+            });
+
+            // Sort employees
+            const container = $('#employeesContainer');
+            const cards = container.children('.employee-card:visible').get();
+
+            cards.sort(function (a, b) {
+                const aName = $(a).find('.employee-name').text().toLowerCase();
+                const bName = $(b).find('.employee-name').text().toLowerCase();
+                const aHireDate = $(a).data('hiredate');
+                const bHireDate = $(b).data('hiredate');
+
+                switch (sortOption) {
+                    case 'name-asc': return aName.localeCompare(bName);
+                    case 'name-desc': return bName.localeCompare(aName);
+                    case 'hire-asc': return aHireDate - bHireDate;
+                    case 'hire-desc': return bHireDate - aHireDate;
+                    default: return 0;
+                }
+            });
+
+            $.each(cards, function (idx, card) {
+                container.append(card);
+            });
+
+            // Show no employees message if none visible
+            if (visibleCount === 0) {
+                $('#employeesContainer').append(`
+                    <div class="no-employees">
+                        <i class="fas fa-users fa-3x mb-3"></i>
+                        <h3>No Employees Match Your Search</h3>
+                        <p>Try adjusting your filters or search term</p>
+                    </div>
+                `);
+            } else {
+                $('.no-employees').remove();
+            }
+        }
+    });
+</script>

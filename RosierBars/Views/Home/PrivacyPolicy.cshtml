@@ -1,0 +1,498 @@
+﻿@{
+    ViewBag.Title = "Privacy Policy";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    /* Chocolate-themed color palette */
+    :root {
+        --dark-chocolate: #3E2723; /* Deep, rich brown */
+        --milk-chocolate: #795548; /* Classic milk chocolate */
+        --caramel: #A1887F; /* Softer caramel/taupe */
+        --gold-accent: #FFAB00; /* Warm, inviting gold */
+        --cream-bg: #FFF8E1; /* Lighter, warmer cream */
+        --white-container: #FFFFFF;
+        --text-primary: #4E342E; /* Dark brown for text */
+        --text-secondary: #6D4C41;
+    }
+
+    /* Base styling for the page - this can remain global if desired */
+    body {
+        background-color: var(--cream-bg);
+        color: var(--text-primary);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.7;
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden; /* Prevent horizontal scrollbars */
+    }
+
+    /* Styles scoped to the privacy policy container */
+    .privacy-container {
+        max-width: 900px;
+        margin: 50px auto;
+        padding: 40px;
+        background: var(--white-container);
+        border-radius: 20px; /* Softer rounding */
+        box-shadow: 0 15px 40px rgba(var(--dark-chocolate), 0.15);
+        position: relative;
+        overflow: hidden; /* Important for ::before and animations */
+    }
+
+        .privacy-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px; /* Slightly thicker */
+            background: linear-gradient(90deg, var(--dark-chocolate), var(--milk-chocolate), var(--caramel), var(--gold-accent));
+            background-size: 200% 100%; /* For animation */
+            animation: animateGradient 8s ease infinite; /* Gradient animation */
+        }
+
+        /* Headings within .privacy-container */
+        .privacy-container h1 {
+            color: var(--dark-chocolate);
+            text-align: center;
+            margin-bottom: 35px;
+            font-size: 2.8rem; /* Slightly larger */
+            font-family: 'Georgia', serif; /* More elegant font */
+            position: relative;
+            animation: fadeInDown 1s ease-out;
+            text-shadow: 1px 1px 2px rgba(var(--milk-chocolate), 0.1);
+        }
+
+            .privacy-container h1::after {
+                content: "";
+                display: block;
+                width: 120px; /* Wider underline */
+                height: 4px;
+                background: var(--gold-accent);
+                margin: 20px auto 0;
+                border-radius: 2px;
+                animation: scaleXIn 1.5s ease-out 0.5s backwards;
+            }
+
+        .privacy-container h2 {
+            color: var(--milk-chocolate);
+            margin-top: 40px; /* More spacing */
+            margin-bottom: 20px;
+            font-size: 2rem; /* Adjusted size */
+            font-family: 'Georgia', serif;
+            border-bottom: 2px solid var(--caramel);
+            padding-bottom: 12px; /* More padding */
+            opacity: 0; /* For scroll animation */
+            transform: translateX(-30px); /* For scroll animation */
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+            .privacy-container h2.is-visible {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+        .privacy-container h3 {
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            opacity: 0; /* For scroll animation */
+            transform: translateY(20px); /* For scroll animation */
+            transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+        }
+
+            .privacy-container h3.is-visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        /* Paragraphs and Lists within .privacy-container */
+        .privacy-container p,
+        .privacy-container ul {
+            margin-bottom: 25px; /* Increased spacing */
+            font-size: 1.05rem; /* Slightly larger text */
+            opacity: 0; /* For scroll animation */
+            transform: translateY(20px); /* For scroll animation */
+            transition: opacity 0.7s ease-out 0.2s, transform 0.7s ease-out 0.2s; /* Added delay */
+        }
+
+            .privacy-container p.is-visible,
+            .privacy-container ul.is-visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        .privacy-container ul { /* Specific styling for ULs within the container */
+            padding-left: 30px; /* More indent */
+            list-style: none; /* Remove default bullets */
+        }
+
+        .privacy-container li {
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 30px; /* Space for custom bullet */
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+            .privacy-container li::before {
+                content: "🍫"; /* Chocolate bar emoji */
+                position: absolute;
+                left: 0px;
+                top: 1px; /* Adjust vertical alignment */
+                font-size: 1.2rem;
+                color: var(--milk-chocolate);
+                transition: transform 0.3s ease;
+            }
+
+            .privacy-container li:hover {
+                color: var(--dark-chocolate);
+                transform: translateX(5px);
+            }
+
+                .privacy-container li:hover::before {
+                    transform: rotate(15deg) scale(1.1);
+                }
+
+        /* Links within .privacy-container */
+        .privacy-container a {
+            color: var(--gold-accent);
+            text-decoration: none;
+            transition: color 0.3s ease, text-decoration 0.3s ease;
+        }
+
+            .privacy-container a:hover {
+                color: var(--dark-chocolate);
+                text-decoration: underline;
+            }
+
+        .privacy-container .highlight {
+            background-color: rgba(var(--caramel), 0.15);
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-weight: 600;
+            color: var(--milk-chocolate);
+        }
+
+        .privacy-container .contact-info {
+            background-color: var(--cream-bg);
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 6px solid var(--gold-accent);
+            margin-top: 40px;
+            opacity: 0; /* For scroll animation */
+            transform: translateY(30px); /* For scroll animation */
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+            .privacy-container .contact-info.is-visible { /* .is-visible is added to .contact-info itself */
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        .privacy-container .chocolate-decoration {
+            text-align: center;
+            margin: 40px 0;
+            opacity: 0; /* Initial state for animation */
+            animation: fadeIn 2s ease forwards;
+            animation-delay: 0.8s;
+        }
+
+            .privacy-container .chocolate-decoration svg {
+                animation: pulseAndShine 3s infinite ease-in-out;
+            }
+
+    /* Animations (keyframes are global, no need to scope) */
+    @@keyframes animateGradient {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    @@keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-25px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@keyframes scaleXIn {
+        from {
+            transform: scaleX(0);
+        }
+
+        to {
+            transform: scaleX(1);
+        }
+    }
+
+    @@keyframes pulseAndShine {
+        0% {
+            transform: scale(1);
+            filter: brightness(100%);
+        }
+
+        50% {
+            transform: scale(1.07);
+            filter: brightness(120%);
+        }
+
+        100% {
+            transform: scale(1);
+            filter: brightness(100%);
+        }
+    }
+
+    /* Responsive design adjustments for .privacy-container elements */
+    @@media (max-width: 768px) {
+        .privacy-container { /* Adjust container itself if needed */
+            margin: 20px;
+            padding: 25px;
+        }
+
+            .privacy-container h1 {
+                font-size: 2.2rem;
+            }
+
+                .privacy-container h1::after {
+                    width: 80px;
+                }
+
+            .privacy-container h2 {
+                font-size: 1.7rem;
+            }
+
+            .privacy-container h3 {
+                font-size: 1.3rem;
+            }
+
+            .privacy-container p,
+            .privacy-container ul {
+                font-size: 0.95rem;
+            }
+
+            .privacy-container li {
+                padding-left: 25px;
+            }
+
+                .privacy-container li::before {
+                    font-size: 1rem;
+                }
+    }
+
+    @@media (max-width: 480px) {
+        .privacy-container h1 {
+            font-size: 1.8rem;
+        }
+
+        .privacy-container h2 {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+
+<div class="privacy-container">
+    <h1>Privacy Policy</h1>
+
+    <div class="chocolate-decoration">
+        <svg width="100" height="60" viewBox="0 0 100 60">
+            <path d="M20,10 Q50,0 80,10 Q95,25 85,45 Q75,60 50,58 Q25,60 15,45 Q5,25 20,10" fill="var(--milk-chocolate)" />
+            <circle cx="35" cy="22" r="6" fill="var(--gold-accent)" />
+            <circle cx="65" cy="22" r="6" fill="var(--gold-accent)" />
+            <path d="M30,35 Q50,45 70,35" stroke="var(--gold-accent)" stroke-width="3" fill="none" stroke-linecap="round" />
+            <path d="M40,45 Q50,52 60,45" stroke="var(--cream-bg)" stroke-width="2.5" fill="none" stroke-linecap="round" />
+        </svg>
+    </div>
+
+    <section class="animate-on-scroll">
+        <h2 class="animate-on-scroll">1. Introduction</h2>
+        <p class="animate-on-scroll"><em>Last Updated: @DateTime.Now.ToString("MMMM dd, yyyy")</em></p>
+        <p class="animate-on-scroll">Welcome to <span class="highlight">[Your Chocolate Brand Name]</span>. We are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy outlines how we collect, use, disclose, and safeguard your data when you visit our website, make a purchase, or interact with us.</p>
+        <p class="animate-on-scroll">By using our website, you agree to the terms of this Privacy Policy. If you do not agree, please refrain from using our site.</p>
+    </section>
+
+    <section>
+        <h2 class="animate-on-scroll">2. Information We Collect</h2>
+        <h3 class="animate-on-scroll">Personal Information</h3>
+        <ul class="animate-on-scroll">
+            <li>Name</li>
+            <li>Email address</li>
+            <li>Phone number</li>
+            <li>Shipping & billing address</li>
+            <li>Payment details (processed securely via third-party payment processors)</li>
+        </ul>
+
+        <h3 class="animate-on-scroll">Non-Personal Information</h3>
+        <ul class="animate-on-scroll">
+            <li>Browser type & device information</li>
+            <li>IP address</li>
+            <li>Cookies & tracking data (to improve user experience)</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2 class="animate-on-scroll">3. How We Use Your Information</h2>
+        <p class="animate-on-scroll">We use your data for the following purposes:</p>
+        <ul class="animate-on-scroll">
+            <li>Processing & fulfilling orders</li>
+            <li>Communicating with you (order updates, promotions, customer support)</li>
+            <li>Improving our website & services</li>
+            <li>Personalizing your experience on our site</li>
+            <li>Preventing fraud & enhancing security</li>
+            <li>Complying with legal obligations</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2 class="animate-on-scroll">4. Sharing Your Information</h2>
+        <p class="animate-on-scroll">We do not sell or rent your personal information. However, we may share it with:</p>
+        <ul class="animate-on-scroll">
+            <li><strong>Service Providers:</strong> Trusted third parties who assist us in operating our website, conducting our business, or servicing you (e.g., payment processors, shipping carriers), so long as those parties agree to keep this information confidential.</li>
+            <li><strong>Legal Authorities:</strong> If required by law or in response to valid requests by public authorities (e.g., a court or a government agency).</li>
+            <li><strong>Business Transfers:</strong> In connection with, or during negotiations of, any merger, sale of company assets, financing, or acquisition of all or a portion of our business to another company.</li>
+            <li><strong>With Your Consent:</strong> We may disclose your personal information for any other purpose with your explicit consent (e.g., for joint promotions with business partners).</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2 class="animate-on-scroll">5. Cookies & Tracking Technologies</h2>
+        <p class="animate-on-scroll">We use cookies and similar tracking technologies to:</p>
+        <ul class="animate-on-scroll">
+            <li>Enhance website functionality and remember your preferences (e.g., items in your cart).</li>
+            <li>Analyze user behavior and website traffic to improve our services.</li>
+            <li>Personalize your experience and provide targeted advertisements if applicable.</li>
+        </ul>
+        <p class="animate-on-scroll">You can manage your cookie preferences through your browser settings. Disabling cookies may affect the functionality of some parts of our website.</p>
+    </section>
+
+    <section>
+        <h2 class="animate-on-scroll">6. Data Security</h2>
+        <p class="animate-on-scroll">We implement a variety of industry-standard security measures, including encryption and secure server infrastructure, to maintain the safety of your personal information. However, please remember that no method of transmission over the Internet or method of electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your Personal Information, we cannot guarantee its absolute security.</p>
+    </section>
+
+    <section>
+        <h2 class="animate-on-scroll">7. Data Retention</h2>
+        <p class="animate-on-scroll">We will retain your personal information only for as long as is necessary for the purposes set out in this Privacy Policy. We will retain and use your information to the extent necessary to comply with our legal obligations (for example, if we are required to retain your data to comply with applicable laws), resolve disputes, and enforce our legal agreements and policies.</p>
+    </section>
+
+    <section>
+        <h2 class="animate-on-scroll">8. Your Rights</h2>
+        <p class="animate-on-scroll">Depending on your location and applicable data protection laws, you may have the following rights regarding your personal data:</p>
+        <ul class="animate-on-scroll">
+            <li>The right to access – You can request copies of your personal data.</li>
+            <li>The right to rectification – You can request that we correct any information you believe is inaccurate or complete information you believe is incomplete.</li>
+            <li>The right to erasure – You can request that we erase your personal data, under certain conditions.</li>
+            <li>The right to restrict processing – You can request that we restrict the processing of your personal data, under certain conditions.</li>
+            <li>The right to object to processing – You can object to our processing of your personal data, under certain conditions.</li>
+            <li>The right to data portability – You can request that we transfer the data that we have collected to another organization, or directly to you, under certain conditions.</li>
+            <li>The right to opt-out of marketing communications.</li>
+            <li>The right to lodge a complaint with a supervisory authority.</li>
+        </ul>
+        <p class="animate-on-scroll">To exercise these rights, please contact us using the details provided in the "Contact Us" section below. We will respond to your request within a reasonable timeframe.</p>
+    </section>
+
+    <section>
+        <h2 class="animate-on-scroll">9. International Data Transfers</h2>
+        <p class="animate-on-scroll">Your information, including Personal Data, may be transferred to — and maintained on — computers located outside of your state, province, country, or other governmental jurisdiction where the data protection laws may differ from those in your jurisdiction. If you are located outside <span class="highlight">[Your Country/Region, e.g., the United States]</span> and choose to provide information to us, please note that we transfer the data, including Personal Data, to <span class="highlight">[Your Server Location, e.g., the United States]</span> and process it there.</p>
+        <p class="animate-on-scroll">Your consent to this Privacy Policy followed by your submission of such information represents your agreement to that transfer.</p>
+    </section>
+
+    <section>
+        <h2 class="animate-on-scroll">10. Third-Party Links</h2>
+        <p class="animate-on-scroll">Our website may contain links to other websites that are not operated by us. If you click on a third-party link, you will be directed to that third party's site. We strongly advise you to review the Privacy Policy of every site you visit. We have no control over and assume no responsibility for the content, privacy policies, or practices of any third-party sites or services.</p>
+    </section>
+
+    <section>
+        <h2 class="animate-on-scroll">11. Children's Privacy</h2>
+        <p class="animate-on-scroll">Our Service does not address anyone under the age of <strong>13</strong> (or <strong>16</strong> in some jurisdictions). We do not knowingly collect personally identifiable information from children. If you are a parent or guardian and you are aware that your child has provided us with Personal Data, please contact us. If we become aware that we have collected Personal Data from children without verification of parental consent, we take steps to remove that information from our servers.</p>
+    </section>
+
+    <section>
+        <h2 class="animate-on-scroll">12. Changes to This Policy</h2>
+        <p class="animate-on-scroll">We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the "Last Updated" date at the top. You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.</p>
+    </section>
+
+    <div class="contact-info animate-on-scroll">
+        <h2 class="animate-on-scroll">13. Contact Us</h2> <p class="animate-on-scroll">If you have any questions or concerns about this Privacy Policy or our data practices, please do not hesitate to contact us:</p>
+        <p class="animate-on-scroll">
+            <strong>[Your Chocolate Brand Name]</strong><br>
+            Email: <strong><a href="mailto:[Your Contact Email]">[Your Contact Email]</a></strong><br>
+            Address: <strong>[Your Business Address]</strong>
+        </p>
+    </div>
+
+    <div class="chocolate-decoration" style="margin-top: 50px;">
+        <p style="font-size: 1.3rem; color: var(--milk-chocolate); font-family: 'Georgia', serif;">Thank you for trusting <span class="highlight">[Your Chocolate Brand Name]</span> with your sweet moments! 🍫</p>
+    </div>
+</div>
+
+<script>
+    // Smooth scrolling for anchor links (if any are added later)
+    document.querySelectorAll('.privacy-container a[href^="#"]').forEach(anchor => { // Scoped selector
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetElement = document.querySelector(this.getAttribute('href'));
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // Intersection Observer for scroll animations
+    // Select elements within .privacy-container that have the .animate-on-scroll class
+    const animatedElements = document.querySelectorAll(
+        '.privacy-container h2.animate-on-scroll, ' +
+        '.privacy-container h3.animate-on-scroll, ' +
+        '.privacy-container p.animate-on-scroll, ' +
+        '.privacy-container ul.animate-on-scroll, ' +
+        '.privacy-container div.contact-info.animate-on-scroll' // Target the .contact-info div itself
+    );
+
+    const observer = new IntersectionObserver((entries, obs) => { // Renamed observer to obs to avoid conflict
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                // If the contact-info div is visible, also ensure its children h2/p are animated if they also have animate-on-scroll
+                if (entry.target.classList.contains('contact-info')) {
+                    entry.target.querySelectorAll('.animate-on-scroll').forEach(child => {
+                        child.classList.add('is-visible');
+                    });
+                }
+                obs.unobserve(entry.target); // Optional: stop observing after animation
+            }
+        });
+    }, {
+        rootMargin: '0px',
+        threshold: 0.1 // Trigger when 10% of the element is visible
+    });
+
+    animatedElements.forEach(el => {
+        observer.observe(el);
+    });
+
+</script>

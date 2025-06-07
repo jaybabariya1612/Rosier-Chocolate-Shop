@@ -1,0 +1,888 @@
+﻿@model List<RosierBars.Models.OrderDetailModel>
+
+<style>
+    /* Chocolate Luxury Theme */
+    :root {
+        --chocolate-dark: #2A2118;
+        --chocolate-medium: #4A3728;
+        --chocolate-light: #6D4C35;
+        --chocolate-accent: #8B5A2B;
+        --cream-light: #F8F1E5;
+        --cream-dark: #E8D9C5;
+        --gold-light: #D4AF37;
+        --gold-dark: #B8860B;
+        --success: #A5C882;
+        --warning: #E8C07D;
+        --error: #E8A87C;
+        --info: #6C8EBF;
+    }
+
+    body {
+        font-family: 'Montserrat', sans-serif;
+        background-color: #f9f5f0;
+        color: var(--chocolate-dark);
+        line-height: 1.6;
+        margin: 0;
+        padding: 20px;
+    }
+
+    .invoice-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 18px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        position: relative;
+    }
+
+    .watermark {
+        position: absolute;
+        opacity: 0.03;
+        font-size: 30rem;
+        font-weight: 700;
+        color: var(--chocolate-accent);
+        z-index: 0;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        user-select: none;
+        font-family: 'Playfair Display', serif;
+    }
+
+    .invoice-header {
+        background: linear-gradient(135deg, var(--chocolate-dark) 0%, var(--chocolate-medium) 100%);
+        color: white;
+        padding: 2.5rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .header-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+        z-index: 2;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .logo-icon {
+        font-size: 2.5rem;
+        color: var(--gold-light);
+    }
+
+    .logo-text h1 {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.8rem;
+        margin: 0;
+        font-weight: 700;
+        letter-spacing: 1px;
+    }
+
+    .logo-text p {
+        margin: 0;
+        font-size: 0.9rem;
+        opacity: 0.8;
+        letter-spacing: 1px;
+    }
+
+    .invoice-meta {
+        text-align: right;
+    }
+
+    .invoice-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 2.2rem;
+        margin: 0 0 5px 0;
+        font-weight: 600;
+    }
+
+    .invoice-number {
+        font-size: 1rem;
+        margin-bottom: 10px;
+    }
+
+    .invoice-date {
+        font-size: 0.9rem;
+        opacity: 0.9;
+    }
+
+    .invoice-body {
+        padding: 2.5rem;
+        position: relative;
+        z-index: 1;
+    }
+
+    .client-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .info-box {
+        background: var(--cream-light);
+        padding: 1.5rem;
+        border-radius: 12px;
+        border-left: 4px solid var(--chocolate-accent);
+    }
+
+        .info-box h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--chocolate-accent);
+            margin-top: 0;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+    .info-row {
+        display: flex;
+        margin-bottom: 0.7rem;
+    }
+
+    .info-label {
+        flex: 0 0 120px;
+        font-weight: 500;
+        color: var(--chocolate-medium);
+    }
+
+    .info-value {
+        flex: 1;
+    }
+
+    .products-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 2rem;
+    }
+
+        .products-table thead {
+            background: var(--chocolate-accent);
+            color: white;
+        }
+
+        .products-table th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .products-table td {
+            padding: 1.2rem 1rem;
+            border-bottom: 1px solid var(--cream-dark);
+        }
+
+    .product-row:hover {
+        background: rgba(248, 241, 229, 0.5);
+    }
+
+    .product-image-cell {
+        width: 80px;
+    }
+
+    .product-image {
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 1px solid var(--cream-dark);
+    }
+
+    .product-name {
+        font-weight: 500;
+        margin-bottom: 0.3rem;
+    }
+
+    .product-sku {
+        font-size: 0.8rem;
+        color: var(--chocolate-light);
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .totals-section {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+
+    .payment-method {
+        background: var(--cream-light);
+        padding: 1.5rem;
+        border-radius: 12px;
+    }
+
+        .payment-method h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--chocolate-accent);
+            margin-top: 0;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+    .payment-icon {
+        font-size: 2rem;
+        color: var(--chocolate-accent);
+        margin-right: 1rem;
+    }
+
+    .payment-details {
+        display: flex;
+        align-items: center;
+    }
+
+    .totals-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+        .totals-table tr:not(:last-child) {
+            border-bottom: 1px dashed var(--cream-dark);
+        }
+
+        .totals-table td {
+            padding: 0.8rem 0;
+        }
+
+        .totals-table .label {
+            font-weight: 500;
+            color: var(--chocolate-medium);
+        }
+
+        .totals-table .value {
+            text-align: right;
+            font-weight: 600;
+        }
+
+    .grand-total {
+        font-size: 1.3rem;
+        color: var(--chocolate-accent);
+        font-weight: 700;
+    }
+
+    .invoice-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 2rem 2.5rem;
+        background: var(--cream-light);
+        border-top: 1px solid var(--cream-dark);
+    }
+
+    .qr-code {
+        width: 120px;
+        height: 120px;
+        background: white;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid var(--cream-dark);
+    }
+
+    .thank-you {
+        text-align: center;
+        flex: 1;
+    }
+
+        .thank-you h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--chocolate-accent);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .thank-you p {
+            margin: 0;
+            color: var(--chocolate-medium);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+    .actions {
+        display: flex;
+        gap: 15px;
+    }
+
+    .btn {
+        padding: 0.8rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        text-decoration: none;
+        border: none;
+        font-size: 0.95rem;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--chocolate-accent) 0%, var(--chocolate-light) 100%);
+        color: white;
+    }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--chocolate-light) 0%, var(--chocolate-accent) 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(139, 90, 43, 0.2);
+        }
+
+    .btn-secondary {
+        background: white;
+        color: var(--chocolate-accent);
+        border: 1px solid var(--chocolate-accent);
+    }
+
+        .btn-secondary:hover {
+            background: rgba(139, 90, 43, 0.05);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .status-processing {
+        background: rgba(108, 142, 191, 0.1);
+        color: var(--info);
+    }
+
+    .status-shipped {
+        background: rgba(165, 200, 130, 0.1);
+        color: var(--success);
+    }
+
+    .status-completed {
+        background: rgba(165, 200, 130, 0.1);
+        color: var(--success);
+    }
+
+    .status-cancelled {
+        background: rgba(232, 168, 124, 0.1);
+        color: var(--error);
+    }
+
+    .payment-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    .payment-paid {
+        background: rgba(165, 200, 130, 0.1);
+        color: var(--success);
+    }
+
+    .payment-pending {
+        background: rgba(232, 192, 125, 0.1);
+        color: var(--warning);
+    }
+
+    .payment-failed {
+        background: rgba(232, 168, 124, 0.1);
+        color: var(--error);
+    }
+
+    .tracking-section {
+        margin-top: 2.5rem;
+        padding: 1.5rem;
+        background: rgba(248, 241, 229, 0.5);
+        border-radius: 12px;
+        border-left: 4px solid var(--chocolate-accent);
+    }
+
+    .tracking-title {
+        font-family: 'Playfair Display', serif;
+        color: var(--chocolate-accent);
+        margin-top: 0;
+        margin-bottom: 1.5rem;
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+
+    .tracking-steps {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        margin-top: 1.5rem;
+    }
+
+        .tracking-steps::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: rgba(139, 90, 43, 0.2);
+            z-index: 1;
+        }
+
+    .tracking-step {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        z-index: 2;
+        flex: 1;
+        max-width: 25%;
+    }
+
+    .step-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: var(--cream-dark);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 0.8rem;
+        color: var(--chocolate-light);
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+    }
+
+    .step-active .step-icon {
+        background: var(--chocolate-accent);
+        color: white;
+        transform: scale(1.1);
+        box-shadow: 0 4px 8px rgba(139, 90, 43, 0.2);
+    }
+
+    .step-complete .step-icon {
+        background: var(--success);
+        color: white;
+    }
+
+    .step-label {
+        font-size: 0.9rem;
+        color: var(--chocolate-light);
+        text-align: center;
+        font-weight: 500;
+    }
+
+    .step-active .step-label,
+    .step-complete .step-label {
+        color: var(--chocolate-dark);
+        font-weight: 600;
+    }
+
+    .step-date {
+        font-size: 0.75rem;
+        color: var(--chocolate-light);
+        margin-top: 0.3rem;
+        text-align: center;
+    }
+
+    .notes-section {
+        margin-top: 2rem;
+        padding: 1.5rem;
+        background: rgba(248, 241, 229, 0.5);
+        border-radius: 12px;
+    }
+
+    .notes-title {
+        font-family: 'Playfair Display', serif;
+        color: var(--chocolate-accent);
+        margin-top: 0;
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+
+    .notes-content {
+        color: var(--chocolate-medium);
+    }
+
+    /* Print styles */
+    @@media print {
+        body {
+            background: none;
+            padding: 0;
+        }
+
+        .invoice-container {
+            box-shadow: none;
+            border-radius: 0;
+        }
+
+        .actions {
+            display: none;
+        }
+
+        .btn {
+            display: none;
+        }
+    }
+
+    /* Responsive styles */
+    @@media (max-width: 768px) {
+        .invoice-header {
+            padding: 1.5rem;
+        }
+
+        .header-content {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1.5rem;
+        }
+
+        .invoice-meta {
+            text-align: left;
+        }
+
+        .client-info {
+            grid-template-columns: 1fr;
+        }
+
+        .products-table thead {
+            display: none;
+        }
+
+        .products-table tr {
+            display: block;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--cream-dark);
+        }
+
+        .products-table td {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem;
+            border-bottom: none;
+        }
+
+            .products-table td::before {
+                content: attr(data-label);
+                font-weight: 500;
+                color: var(--chocolate-medium);
+                margin-right: 1rem;
+            }
+
+        .totals-section {
+            grid-template-columns: 1fr;
+        }
+
+        .invoice-footer {
+            flex-direction: column;
+            gap: 1.5rem;
+            text-align: center;
+        }
+
+        .tracking-steps {
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+            .tracking-steps::before {
+                display: none;
+            }
+
+        .tracking-step {
+            max-width: calc(50% - 0.75rem);
+            margin-bottom: 1rem;
+        }
+    }
+</style>
+<div class="invoice-container" id="invoice">
+    <div class="watermark">CHOCOLATE</div>
+
+    <div class="invoice-header">
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-cookie-bite"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>Rosier's Chocolate</h1>
+                    <p>Artisanal Chocolate Creations</p>
+                </div>
+            </div>
+            <div class="invoice-meta">
+                <h2 class="invoice-title">INVOICE</h2>
+                <div class="invoice-number">Order #@Model.First().OrderId</div>
+                <div class="invoice-date">Issued: @Model.First().OrderDate.ToString("MMMM dd, yyyy")</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="invoice-body">
+        <div class="client-info">
+            <div class="info-box">
+                <h3>BILLING INFORMATION</h3>
+                <div class="info-row">
+                    <div class="info-label">Customer Name:</div>
+                    <div class="info-value">@Model.First().CustomerName</div>
+                </div>
+                @*<div class="info-row">
+                    <div class="info-label">Email:</div>
+                    <div class="info-value">@Model.</div>
+                </div>*@
+                <div class="info-row">
+                    <div class="info-label">Phone:</div>
+                    <div class="info-value">@Model.First().Mobile</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Billing Address:</div>
+                    <div class="info-value">@Model.First().ShippingAddress</div>
+                </div>
+            </div>
+
+            <div class="info-box">
+                <h3>ORDER DETAILS</h3>
+                <div class="info-row">
+                    <div class="info-label">Order Status:</div>
+                    <div class="info-value">
+                        <span class="status-badge status-@Model.First().OrderStatus.ToLower()">
+                            <i class="fas @(Model.First().OrderStatus == "Processing" ? "fa-clock" : Model.First().OrderStatus == "Shipped" ? "fa-truck" : Model.First().OrderStatus == "Completed" ? "fa-check-circle" : "fa-times-circle")"></i>
+                            @Model.First().OrderStatus
+                        </span>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Payment Status:</div>
+                    <div class="info-value">
+                        <span class="payment-status payment-@Model.First().PaymentStatus.ToLower()">
+                            <i class="fas @(Model.First().PaymentStatus == "Paid" ? "fa-check-circle" : Model.First().PaymentStatus == "Pending" ? "fa-clock" : "fa-times-circle")"></i>
+                            @Model.First().PaymentStatus
+                        </span>
+                    </div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Payment Method:</div>
+                    <div class="info-value">Credit Card</div>
+                </div>
+                <div class="info-row">
+                    <div class="info-label">Shipping Method:</div>
+                    <div class="info-value">Standard Shipping</div>
+                </div>
+            </div>
+        </div>
+
+        <table class="products-table">
+            <thead>
+                <tr>
+                    <th>PRODUCT</th>
+                    <th>PRICE</th>
+                    <th>QTY</th>
+                    <th class="text-right">SUBTOTAL</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="product-row">
+                        <td class="product-image-cell">
+                            <img src="~/Content/images/@item.imageurl" alt="@item.ProductName" class="product-image" onerror="this.src='https://via.placeholder.com/70?text=Chocolate'">
+                        </td>
+                        <td>
+                            <div class="product-name">@item.ProductName</div>
+                            <div class="product-sku">SKU: @item.OrderId</div>
+                        </td>
+                        <td class="text-center">₹@item.Price</td>
+                        <td class="text-center">@item.Quantity</td>
+                        <td class="text-right">₹@(item.Price * item.Quantity)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <div class="totals-section">
+            <div class="payment-method">
+                <h3>PAYMENT METHOD</h3>
+                <div class="payment-details">
+                    <div class="payment-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <div>
+                        <div>Credit Card Payment</div>
+                        <div style="font-size: 0.9rem; color: var(--chocolate-light);">Status: @Model.First().PaymentStatus</div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <table class="totals-table">
+                    <tr>
+                        <td class="label">Subtotal:</td>
+                        <td class="value">₹@Model.First().TotalAmount</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Shipping:</td>
+                        <td class="value">₹0.00</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Tax:</td>
+                        <td class="value">₹0.00</td>
+                    </tr>
+                    <tr>
+                        <td class="label">Discount:</td>
+                        <td class="value">₹0.00</td>
+                    </tr>
+                    <tr>
+                        <td class="label grand-total">Grand Total:</td>
+                        <td class="value grand-total">₹@Model.First().TotalAmount</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        @if (Model.First().OrderStatus == "Shipped" || Model.First().OrderStatus == "Processing")
+        {
+            <div class="tracking-section">
+                <h3 class="tracking-title">ORDER TRACKING</h3>
+                <div class="tracking-steps">
+                    <div class="tracking-step @(Model.First().OrderStatus == "Processing" ? "step-active" : "step-complete")">
+                        <div class="step-icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div class="step-label">Order Placed</div>
+                        <div class="step-date">@Model.First().OrderDate.ToString("MMM dd, hh:mm tt")</div>
+                    </div>
+                    <div class="tracking-step @(Model.First().OrderStatus == "Processing" ? "" : "step-complete")">
+                        <div class="step-icon">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <div class="step-label">Processed</div>
+                        <div class="step-date">@Model.First().OrderDate.AddHours(2).ToString("MMM dd, hh:mm tt")</div>
+                    </div>
+                    <div class="tracking-step @(Model.First().OrderStatus == "Shipped" ? "step-active" : "")">
+                        <div class="step-icon">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <div class="step-label">Shipped</div>
+                        <div class="step-date">@Model.First().OrderDate.AddDays(1).ToString("MMM dd, hh:mm tt")</div>
+                    </div>
+                    <div class="tracking-step">
+                        <div class="step-icon">
+                            <i class="fas fa-home"></i>
+                        </div>
+                        <div class="step-label">Delivered</div>
+                        <div class="step-date">Est. @Model.First().OrderDate.AddDays(3).ToString("MMM dd")</div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="notes-section">
+            <h3 class="notes-title">ORDER NOTES</h3>
+            <div class="notes-content">
+                <p>Thank you for your order! Your chocolates are carefully packed to ensure they arrive in perfect condition.</p>
+                <p>If you have any questions about your order, please contact us at support@rosierschocolate.com or call (555) 987-6543.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="invoice-footer">
+        <div class="qr-code" id="qr-code"></div>
+
+        <div class="thank-you">
+            <h3>Thank You for Your Order!</h3>
+            <p>We appreciate your business and hope you enjoy our artisanal chocolates. We look forward to serving you again soon!</p>
+        </div>
+
+        <div class="actions">
+            <button class="btn btn-primary" onclick="window.print()">
+                <i class="fas fa-print"></i> Print Invoice
+            </button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+<script>
+        // Generate QR code
+        document.addEventListener('DOMContentLoaded', function() {
+            const qrCodeElement = document.getElementById('qr-code');
+            const orderDetails = {
+                orderId: '@Model.First().OrderId',
+                customer: '@Model.First().CustomerName',
+                total: '₹@Model.First().TotalAmount',
+                date: '@Model.First().OrderDate.ToString("MMMM dd, yyyy")',
+                status: '@Model.First().OrderStatus'
+            };
+
+            const qrText = JSON.stringify(orderDetails);
+
+            QRCode.toCanvas(qrText, {
+                width: 120,
+                margin: 1,
+                color: {
+                    dark: '#8B5A2B', // chocolate accent color
+                    light: '#F8F1E5'  // cream light color
+                }
+            }, function (error, canvas) {
+                if (error) console.error(error);
+                qrCodeElement.appendChild(canvas);
+            });
+
+            // Add animation to tracking steps
+            const steps = document.querySelectorAll('.tracking-step');
+            steps.forEach((step, index) => {
+                setTimeout(() => {
+                    step.style.opacity = '1';
+                    step.style.transform = 'translateY(0)';
+                }, index * 200);
+
+                // Initial state for animation
+                step.style.opacity = '0';
+                step.style.transform = 'translateY(20px)';
+                step.style.transition = 'all 0.5s ease ' + (index * 0.1) + 's';
+            });
+        });
+
+        // Add hover effect to product rows
+        const productRows = document.querySelectorAll('.product-row');
+        productRows.forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.style.transform = 'translateX(5px)';
+                row.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+            });
+
+            row.addEventListener('mouseleave', () => {
+                row.style.transform = 'translateX(0)';
+                row.style.boxShadow = 'none';
+            });
+        });
+
+        // Add animation to invoice container on load
+        const invoiceContainer = document.querySelector('.invoice-container');
+        invoiceContainer.style.opacity = '0';
+        invoiceContainer.style.transform = 'translateY(20px)';
+        invoiceContainer.style.transition = 'all 0.6s ease-out';
+
+        setTimeout(() => {
+            invoiceContainer.style.opacity = '1';
+            invoiceContainer.style.transform = 'translateY(0)';
+        }, 100);
+</script>

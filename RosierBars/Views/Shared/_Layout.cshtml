@@ -1,0 +1,594 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="~/Content/bootstrap.media.css" rel="stylesheet" />
+    <link href="~/Content/bootstrap.navfooter.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="~/Content/images/chocolate-logo.png" />
+    <title>@ViewBag.Title | Rosier Chocolates</title>
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <!-- Font Awesome (latest version preferred) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
+
+    <!-- Google Fonts (combined unique families and weights) -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+
+    <!-- Toastify CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+
+    <style>
+        /* Chocolate Color Palette */
+        :root {
+            --chocolate-dark: #2a1505;
+            --chocolate-medium: #4a2a10;
+            --chocolate-light: #6b4423;
+            --chocolate-lighter: #8b5a2b;
+            --chocolate-cream: #f8ede5;
+            --chocolate-gold: #d4af37;
+            --chocolate-milk: #e6d5c3;
+            --chocolate-white: #fff9f5;
+        }
+
+        /* Navigation Styles */
+        .navbar {
+            background-color: var(--chocolate-white);
+            box-shadow: 0 2px 10px rgba(42, 21, 5, 0.1);
+            transition: all 0.3s ease;
+            padding: 15px 0;
+        }
+
+            .navbar.scrolled {
+                padding: 10px 0;
+                background-color: rgba(255, 249, 245, 0.95);
+                backdrop-filter: blur(5px);
+            }
+
+        .navbar-brand {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+            color: var(--chocolate-dark) !important;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+            .navbar-brand:after {
+                content: '';
+                position: absolute;
+                bottom: -5px;
+                left: 0;
+                width: 40px;
+                height: 3px;
+                background: var(--chocolate-gold);
+                transition: all 0.3s ease;
+            }
+
+            .navbar-brand:hover:after {
+                width: 100%;
+            }
+
+        .nav-link {
+            font-weight: 500;
+            color: var(--chocolate-medium) !important;
+            position: relative;
+            padding: 8px 15px !important;
+            margin: 0 10px !important;
+            transition: all 0.3s ease;
+        }
+
+            .nav-link:before {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 0;
+                height: 2px;
+                background: var(--chocolate-gold);
+                transition: all 0.3s ease;
+            }
+
+            .nav-link:hover:before {
+                width: 100%;
+            }
+
+            .nav-link.active {
+                color: var(--chocolate-dark) !important;
+                font-weight: 600;
+            }
+
+                .nav-link.active:before {
+                    width: 100%;
+                }
+
+        .navbar-toggler {
+            border: none;
+            padding: 0.5rem;
+        }
+
+            .navbar-toggler:focus {
+                box-shadow: none;
+            }
+
+        .navbar-toggler-icon {
+            color: var(--chocolate-dark);
+        }
+
+        /* Admin Dropdown */
+        .form-select.nav-link {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%234a2a10' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.5rem center;
+            background-size: 16px 12px;
+            padding-right: 2rem !important;
+        }
+
+        /* Promo Banner */
+        .promo-banner {
+            background: linear-gradient(135deg, var(--chocolate-dark), var(--chocolate-light));
+            color: var(--chocolate-cream);
+            padding: 10px 0;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+        }
+
+            .promo-banner:before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Q50,80 0,100 Z" fill="rgba(214,175,96,0.1)" /></svg>');
+                background-size: 100% auto;
+                background-repeat: no-repeat;
+                background-position: bottom;
+            }
+
+        /* Footer Styles */
+        footer {
+            background: var(--chocolate-dark);
+            color: var(--chocolate-cream);
+            padding: 60px 0 30px !important;
+            position: relative;
+            overflow: hidden;
+        }
+
+            footer:before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 10px;
+            }
+
+            footer h6 {
+                color: var(--chocolate-gold);
+                font-weight: 600;
+                margin-bottom: 20px;
+                font-size: 1.1rem;
+                position: relative;
+                display: inline-block;
+            }
+
+                footer h6:after {
+                    content: '';
+                    position: absolute;
+                    bottom: -5px;
+                    left: 0;
+                    width: 40px;
+                    height: 2px;
+                    background: var(--chocolate-gold);
+                }
+
+            footer a {
+                color: var(--chocolate-cream) !important;
+                text-decoration: none;
+                transition: all 0.3s ease;
+                display: inline-block;
+                margin-bottom: 8px;
+            }
+
+                footer a:hover {
+                    color: var(--chocolate-gold) !important;
+                    transform: translateX(5px);
+                }
+
+        .social-links li {
+            display: inline-block;
+            margin-right: 15px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--chocolate-gold) !important;
+            transition: all 0.3s ease;
+        }
+
+            .social-links a:hover {
+                background: var(--chocolate-gold);
+                color: var(--chocolate-dark) !important;
+                transform: translateY(-3px);
+            }
+
+        .newsletter-form input {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            color: white;
+        }
+
+            .newsletter-form input:focus {
+                background: rgba(255, 255, 255, 0.15);
+                border-color: var(--chocolate-gold);
+                box-shadow: 0 0 0 0.25rem rgba(212, 175, 55, 0.25);
+                color: white;
+            }
+
+        .newsletter-form .btn {
+            background: var(--chocolate-gold);
+            color: var(--chocolate-dark);
+            font-weight: 600;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+            .newsletter-form .btn:hover {
+                background: var(--chocolate-light);
+                color: white;
+            }
+
+        .form-check-input:checked {
+            background-color: var(--chocolate-gold);
+            border-color: var(--chocolate-gold);
+        }
+
+        .copyright {
+            background: var(--chocolate-medium);
+            color: var(--chocolate-milk);
+            padding: 15px 0;
+            font-size: 0.9rem;
+        }
+
+        /* Smooth dropdown animation */
+        .navbar .dropdown-menu {
+            display: block;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+            .navbar .dropdown-menu.show {
+                opacity: 1;
+                visibility: visible;
+                margin-top: 0;
+            }
+
+        /* Adjust dropdown positioning */
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 5px 15px rgba(42, 21, 5, 0.15);
+            border-radius: 8px;
+            padding: 10px 0;
+            background-color: var(--chocolate-white);
+        }
+
+        .dropdown-item {
+            padding: 8px 20px;
+            color: var(--chocolate-medium) !important;
+            transition: all 0.2s ease;
+        }
+
+            .dropdown-item:hover, .dropdown-item:focus {
+                background-color: var(--chocolate-cream);
+                color: var(--chocolate-dark) !important;
+            }
+
+        .dropdown-divider {
+            border-color: rgba(74, 42, 16, 0.1);
+        }
+
+        .dropdown-header {
+            color: var(--chocolate-light);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 5px 20px;
+        }
+
+        /* Responsive Adjustments */
+        @@media (max-width: 991.98px) {
+            .navbar-collapse {
+                background: var(--chocolate-white);
+                padding: 20px;
+                margin-top: 15px;
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(42, 21, 5, 0.1);
+            }
+
+            .nav-link {
+                margin: 5px 0 !important;
+                padding: 10px 15px !important;
+            }
+
+                .nav-link:before {
+                    display: none;
+                }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            @Html.ActionLink("Rosier Chocolates", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">@Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("About", "About", "Home", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Shop", "Shop", "Shop", null, new { @class = "nav-link" })</li>
+                    <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", null, new { @class = "nav-link" })</li>
+
+                    <li class="nav-item">
+                        <a href="@Url.Action("Login", "Register")" class="nav-link">
+                            @{
+                                if (Session["UserName"] != null)
+                                {
+                                    <text><i class="fas fa-user-check me-1"></i> @Session["UserName"]</text>
+                                }
+                                else
+                                {
+                                    <text><i class="fas fa-user me-1"></i> Login</text>
+                                }
+                            }
+                        </a>
+                    </li>
+
+                    @if (Session["UserName"] != null)
+                    {
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fas fa-user-cog me-1"></i> Admin
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="adminDropdown">
+                                <li><h6 class="dropdown-header">Employee</h6></li>
+                                <li>@Html.ActionLink("Add Employee", "Employee", "Employee", null, new { @class = "dropdown-item" })</li>
+                                <li>@Html.ActionLink("Employee List", "List", "Employee", null, new { @class = "dropdown-item" })</li>
+
+                                <li><hr class="dropdown-divider"></li>
+
+                                <li><h6 class="dropdown-header">Register</h6></li>
+                                <li>@Html.ActionLink("Register", "Register", "Register", null, new { @class = "dropdown-item" })</li>
+                                <li>@Html.ActionLink("Register List", "List", "Register", null, new { @class = "dropdown-item" })</li>
+
+                                <li><hr class="dropdown-divider"></li>
+
+                                <li><h6 class="dropdown-header">Product</h6></li>
+                                <li>@Html.ActionLink("Add Product", "Product", "Product", null, new { @class = "dropdown-item" })</li>
+                                <li>@Html.ActionLink("Product List", "ProductList", "Product", null, new { @class = "dropdown-item" })</li>
+                            </ul>
+                        </li>
+                    }
+
+                    <li class="nav-item">
+                        <a href="@Url.Action("Cart", "Shop")" class="nav-link position-relative">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cartCount">
+                                @(TempData["cartCount"] ?? 0)
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Promo Banner -->
+    @if (Session["UserName"] == null)
+    {
+        <div class="promo-banner">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <span class="me-4"><i class="fas fa-truck me-2"></i> Free shipping on orders over ₹1000</span>
+                        <span class="me-4 d-none d-md-inline"><i class="fas fa-tag me-2"></i> Order 2 boxes and save 20%</span>
+                        <span class="d-none d-lg-inline"><i class="fas fa-star me-2"></i> Try our newest flavor</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="body-content">
+        @RenderBody()
+
+        <!-- Footer -->
+        <footer class="pt-5 pb-4">
+            <div class="container">
+                <div class="row g-4">
+                    <!-- About Column -->
+                    <div class="col-lg-4 col-md-6">
+                        <h5 class="text-uppercase mb-4">Rosier Chocolates</h5>
+                        <p>Indulge in the finest artisanal chocolates crafted with passion and the highest quality ingredients since 1985.</p>
+                        <div class="mt-4">
+                            <h6>Payment Methods</h6>
+                            <div class="d-flex flex-wrap gap-2">
+                                <i class="fab fa-cc-visa fa-2x" style="color: var(--chocolate-gold);"></i>
+                                <i class="fab fa-cc-mastercard fa-2x" style="color: var(--chocolate-gold);"></i>
+                                <i class="fab fa-cc-paypal fa-2x" style="color: var(--chocolate-gold);"></i>
+                                <i class="fab fa-cc-apple-pay fa-2x" style="color: var(--chocolate-gold);"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Links Column -->
+                    <div class="col-lg-2 col-md-6">
+                        <h6>Quick Links</h6>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">@Html.ActionLink("Home", "Index", "Home")</li>
+                            <li class="mb-2">@Html.ActionLink("About Us", "About", "Home")</li>
+                            <li class="mb-2">@Html.ActionLink("Shop", "Shop", "Shop")</li>
+                            <li class="mb-2">@Html.ActionLink("Contact", "Contact", "Home")</li>
+                            <li class="mb-2">@Html.ActionLink("FAQ", "FAQ", "Home")</li>
+                        </ul>
+                    </div>
+
+                    <!-- Contact Column -->
+                    <div class="col-lg-3 col-md-6">
+                        <h6>Contact Us</h6>
+                        <ul class="list-unstyled">
+                            <li class="mb-3">
+                                <i class="fas fa-map-marker-alt me-2" style="color: var(--chocolate-gold);"></i>
+                                123 Chocolate Avenue, Cocoa City
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-phone me-2" style="color: var(--chocolate-gold);"></i>
+                                +91 94082 71133
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-envelope me-2" style="color: var(--chocolate-gold);"></i>
+                                info@rosierchocolates.com
+                            </li>
+                            <li class="mb-3">
+                                <i class="fas fa-clock me-2" style="color: var(--chocolate-gold);"></i>
+                                Mon-Fri: 9AM - 6PM
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Newsletter Column -->
+                    <div class="col-lg-3 col-md-6">
+                        <h6>Newsletter</h6>
+                        <p>
+                            Stay informed with the latest updates, product launches, and exclusive offers.
+                            Our newsletter keeps you in the loop with everything happening at our store.
+                        </p>
+                        <p>
+                            We value your privacy and ensure your information is safe with us.
+                            Check back often for fresh deals and news.
+                        </p>
+                    </div>
+                </div>
+
+                <hr class="my-4" style="border-color: rgba(212, 175, 55, 0.2);">
+
+                <div class="row align-items-center">
+                    <!-- Social Links -->
+                    <div class="col-md-6 mb-3 mb-md-0">
+                        <h6 class="d-inline-block me-3">Follow Us:</h6>
+                        <ul class="social-links list-inline d-inline-block">
+                            <li class="list-inline-item">
+                                <a href="https://www.facebook.com/rosierchocolates" target="_blank">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="https://www.instagram.com/rosierchocolates" target="_blank">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="https://www.twitter.com/rosierchocolates" target="_blank">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="https://www.pinterest.com/rosierchocolates" target="_blank">
+                                    <i class="fab fa-pinterest-p"></i>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Copyright -->
+                    <div class="col-md-6 text-md-end">
+                        <p class="mb-0">
+                            &copy; @DateTime.Now.Year Rosier Chocolates. All rights reserved.
+                            <span class="d-block d-md-inline">
+                                @Html.ActionLink("PrivacyPolicy", "PrivacyPolicy", "Home") |
+                                @Html.ActionLink("TermsofService", "TermsofService", "Home")
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    @RenderSection("scripts", required: false)
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        // Navbar scroll effect
+        $(window).scroll(function () {
+            if ($(this).scrollTop() > 50) {
+                $('.navbar').addClass('scrolled');
+            } else {
+                $('.navbar').removeClass('scrolled');
+            }
+        });
+
+        // Initialize Bootstrap components
+        $(function () {
+            // Initialize tooltips
+            $('[data-bs-toggle="tooltip"]').tooltip();
+        });
+
+        // Promo banner carousel for mobile
+        if ($(window).width() < 768) {
+            $('.promo-banner span').hide();
+            let currentIndex = 0;
+            const promoMessages = [
+                '<i class="fas fa-truck me-2"></i> Free shipping on orders over ₹1000',
+                '<i class="fas fa-tag me-2"></i> Order 2 boxes and save 20%',
+                '<i class="fas fa-star me-2"></i> Try our newest flavor'
+            ];
+
+            function rotatePromoMessage() {
+                $('.promo-banner .col-12').html(promoMessages[currentIndex]);
+                currentIndex = (currentIndex + 1) % promoMessages.length;
+            }
+
+            rotatePromoMessage();
+            setInterval(rotatePromoMessage, 3000);
+        }
+
+        // Function to update cart count
+        function updateCartCount() {
+            $.get('@Url.Action("CartCount", "Shop")', function(count) {
+                $('#cartCount, #cartCountDisplay').text(count);
+            });
+        }
+
+        // Update count when page loads
+        $(document).ready(function() {
+            updateCartCount();
+        });
+    </script>
+</body>
+</html>

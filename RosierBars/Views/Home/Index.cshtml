@@ -1,0 +1,953 @@
+﻿@{
+    ViewBag.Title = "Home";
+}
+
+<style>
+    /* Base Styles */
+    :root {
+        --primary: #5D4037; /* Rich brown */
+        --secondary: #D84315; /* Deep orange */
+        --accent: #FFAB00; /* Golden yellow */
+        --light: #EFEBE9; /* Light warm gray */
+        --dark: #3E2723; /* Dark chocolate */
+        --text: #5D4037; /* Brown text */
+        --white: #FFF8F0; /* Creamy white */
+    }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+        color: var(--text);
+        background-color: var(--white);
+        overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 700;
+    }
+
+    /* Hero Section */
+    .hero-container {
+        position: relative;
+        height: 90vh;
+        overflow: hidden;
+        background: linear-gradient(135deg, var(--dark) 0%, var(--primary) 100%);
+    }
+
+    .hero-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        opacity: 0.7;
+        transition: transform 0.8s ease, opacity 0.8s ease;
+    }
+
+    .hero-container:hover .hero-image {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+
+    .hero-content {
+        position: absolute;
+        top: 50%;
+        left: 10%;
+        transform: translateY(-50%);
+        max-width: 600px;
+        color: var(--white);
+        z-index: 2;
+    }
+
+        .hero-content h1 {
+            font-size: 4.5rem;
+            line-height: 1;
+            margin-bottom: 1.5rem;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.3);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            animation: fadeInUp 1s ease-out 0.2s forwards;
+            opacity: 0;
+        }
+
+    .hero-btn {
+        display: inline-block;
+        background-color: var(--accent);
+        color: var(--dark);
+        padding: 12px 30px;
+        border-radius: 30px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        animation: fadeInUp 1s ease-out 0.4s forwards;
+        opacity: 0;
+    }
+
+        .hero-btn:hover {
+            background-color: var(--white);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+    /* Chocolate Drip Animation */
+    .chocolate-drip {
+        position: absolute;
+        width: 100px;
+        height: 150px;
+        background: linear-gradient(to bottom, var(--dark) 0%, var(--primary) 100%);
+        clip-path: polygon(0 0, 100% 0, 100% 70%, 50% 100%, 0 70%);
+        opacity: 0.6;
+        z-index: 1;
+        animation: drip 4s infinite ease-in-out;
+    }
+
+    @@keyframes drip {
+        0%, 100% {
+            transform: translateY(0) scaleY(1);
+        }
+
+        50% {
+            transform: translateY(20px) scaleY(1.1);
+        }
+    }
+
+    /* Floating Elements */
+    .floating-element {
+        position: absolute;
+        z-index: 1;
+        opacity: 0.8;
+        animation: float 6s infinite ease-in-out;
+        filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
+    }
+
+    @@keyframes float {
+        0%, 100% {
+            transform: translateY(0) rotate(0deg);
+        }
+
+        50% {
+            transform: translateY(-20px) rotate(5deg);
+        }
+    }
+
+    /* Chocolate Chip Animation */
+    .chocolate-chip {
+        position: absolute;
+        width: 15px;
+        height: 15px;
+        background-color: var(--dark);
+        border-radius: 50%;
+        opacity: 0.8;
+        animation: chipFloat 8s infinite ease-in-out;
+    }
+
+    @@keyframes chipFloat {
+        0%, 100% {
+            transform: translate(0, 0);
+        }
+
+        25% {
+            transform: translate(10px, 15px);
+        }
+
+        50% {
+            transform: translate(5px, -10px);
+        }
+
+        75% {
+            transform: translate(-5px, 5px);
+        }
+    }
+
+    /* Products Section */
+    .products-section {
+        padding: 5rem 0;
+        background-color: var(--white);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: 1rem;
+        color: var(--primary);
+        position: relative;
+        display: inline-block;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(to right, var(--accent), var(--secondary));
+            bottom: -10px;
+            left: 25%;
+        }
+
+    .section-subtitle {
+        text-align: center;
+        max-width: 700px;
+        margin: 0 auto 3rem;
+        color: var(--text);
+    }
+
+    .carousel-container {
+        position: relative;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 50px;
+    }
+
+    .product-carousel {
+        display: flex;
+        gap: 2rem;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        padding: 20px 0;
+    }
+
+        .product-carousel::-webkit-scrollbar {
+            display: none;
+        }
+
+    .product-card {
+        min-width: 280px;
+        background-color: var(--white);
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        text-align: center;
+        border: 1px solid rgba(0,0,0,0.05);
+        position: relative;
+        overflow: hidden;
+    }
+
+        .product-card:before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+            .product-card:hover:before {
+                opacity: 1;
+                animation: shine 1.5s ease;
+            }
+
+    @@keyframes shine {
+        0% {
+            transform: rotate(45deg) translate(-50%, -50%);
+        }
+
+        100% {
+            transform: rotate(45deg) translate(50%, 50%);
+        }
+    }
+
+    .product-image {
+        height: 200px;
+        object-fit: contain;
+        margin-bottom: 1.5rem;
+        transition: transform 0.5s ease;
+        filter: drop-shadow(5px 5px 10px rgba(0,0,0,0.2));
+    }
+
+    .product-card:hover .product-image {
+        transform: scale(1.1) rotate(-5deg);
+    }
+
+    .product-name {
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 0.5rem;
+        font-size: 1.3rem;
+    }
+
+    .product-price {
+        color: var(--secondary);
+        font-weight: 700;
+        font-size: 1.4rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .quantity-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .quantity-btn {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background-color: var(--light);
+        border: none;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .quantity-btn:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+
+    .quantity-input {
+        width: 50px;
+        text-align: center;
+        border: none;
+        font-weight: 600;
+        margin: 0 10px;
+        background-color: transparent;
+        color: var(--dark);
+    }
+
+    .add-to-cart {
+        width: 100%;
+        padding: 12px;
+        border-radius: 30px;
+        background: linear-gradient(to right, var(--primary), var(--dark));
+        color: white;
+        border: none;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .add-to-cart:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .add-to-cart:hover {
+            background: linear-gradient(to right, var(--dark), var(--primary));
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+            .add-to-cart:hover:after {
+                left: 100%;
+            }
+
+    .scroll-btn {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: var(--white);
+        border: none;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        font-size: 1.2rem;
+        cursor: pointer;
+        z-index: 2;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .scroll-btn:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+    .scroll-left {
+        left: 0;
+    }
+
+    .scroll-right {
+        right: 0;
+    }
+
+    /* Promo Sections */
+    .promo-section {
+        display: flex;
+        align-items: center;
+        padding: 4rem 5%;
+        background-color: var(--light);
+        position: relative;
+        overflow: hidden;
+    }
+
+        .promo-section:nth-child(even) {
+            background-color: var(--white);
+        }
+
+    .promo-image {
+        flex: 1;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        transition: all 0.5s ease;
+        position: relative;
+        z-index: 1;
+    }
+
+        .promo-image:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(93,64,55,0.1) 0%, rgba(255,171,0,0.1) 100%);
+            z-index: 2;
+        }
+
+        .promo-image:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .promo-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+
+        .promo-image:hover img {
+            transform: scale(1.1);
+        }
+
+    .promo-content {
+        flex: 1;
+        padding: 0 5%;
+        position: relative;
+        z-index: 1;
+    }
+
+    .promo-tag {
+        color: var(--secondary);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.9rem;
+    }
+
+    .promo-title {
+        font-size: 2.5rem;
+        color: var(--primary);
+        margin-bottom: 1rem;
+        line-height: 1.2;
+    }
+
+    .promo-divider {
+        width: 50px;
+        height: 3px;
+        background: linear-gradient(to right, var(--accent), var(--secondary));
+        margin-bottom: 1.5rem;
+    }
+
+    .promo-text {
+        margin-bottom: 2rem;
+        line-height: 1.7;
+        color: var(--text);
+    }
+
+    .promo-btn {
+        display: inline-block;
+        background: linear-gradient(to right, var(--primary), var(--dark));
+        color: white;
+        padding: 12px 30px;
+        border-radius: 30px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .promo-btn:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .promo-btn:hover {
+            background: linear-gradient(to right, var(--dark), var(--primary));
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+            .promo-btn:hover:after {
+                left: 100%;
+            }
+
+    /* Chocolate Swirl Decoration */
+    .chocolate-swirl {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+        opacity: 0.1;
+        border-radius: 50%;
+        z-index: 0;
+    }
+
+    /* Newsletter Section */
+    .newsletter-section {
+        position: relative;
+        height: 400px;
+        margin: 5rem 0;
+        overflow: hidden;
+        background: linear-gradient(135deg, var(--dark) 0%, var(--primary) 100%);
+    }
+
+    .newsletter-bg {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0.3;
+        transition: transform 0.8s ease;
+    }
+
+    .newsletter-section:hover .newsletter-bg {
+        transform: scale(1.05);
+    }
+
+    .newsletter-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        color: white;
+        width: 100%;
+        padding: 0 20px;
+        z-index: 2;
+    }
+
+    .newsletter-title {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .newsletter-subtitle {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        font-weight: 300;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+    }
+
+    .newsletter-btn {
+        display: inline-block;
+        background-color: var(--accent);
+        color: var(--dark);
+        padding: 12px 30px;
+        border-radius: 30px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+        .newsletter-btn:hover {
+            background-color: var(--white);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+    /* Melting Chocolate Animation */
+    .melting-chocolate {
+        position: absolute;
+        bottom: 0;
+        width: 200px;
+        height: 100px;
+        background: linear-gradient(to bottom, var(--dark) 0%, var(--primary) 100%);
+        border-radius: 50% 50% 0 0 / 60% 60% 0 0;
+        animation: melt 8s infinite ease-in-out;
+        z-index: 1;
+    }
+
+    @@keyframes melt {
+        0%, 100% {
+            transform: scaleY(1);
+            height: 100px;
+        }
+
+        50% {
+            transform: scaleY(1.2);
+            height: 120px;
+        }
+    }
+
+    /* Gallery Section */
+    .gallery-section {
+        padding: 5rem 0;
+        background-color: var(--light);
+        position: relative;
+    }
+
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        padding: 0 5%;
+    }
+
+    .gallery-item {
+        position: relative;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        aspect-ratio: 1/1;
+    }
+
+        .gallery-item:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, rgba(93,64,55,0.1) 0%, rgba(255,171,0,0.1) 100%);
+            z-index: 1;
+            transition: all 0.5s ease;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+            .gallery-item:hover:before {
+                background: linear-gradient(to bottom, rgba(93,64,55,0.3) 0%, rgba(255,171,0,0.3) 100%);
+            }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s ease;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+    /* Chocolate Bar Decoration */
+    .chocolate-bar {
+        position: absolute;
+        width: 100px;
+        height: 20px;
+        background-color: var(--dark);
+        border-radius: 5px;
+        opacity: 0.8;
+        animation: chocolateBar 6s infinite ease-in-out;
+        z-index: 0;
+    }
+
+    @@keyframes chocolateBar {
+        0%, 100% {
+            transform: rotate(0deg);
+        }
+
+        25% {
+            transform: rotate(5deg);
+        }
+
+        50% {
+            transform: rotate(-5deg);
+        }
+
+        75% {
+            transform: rotate(2deg);
+        }
+    }
+
+    /* Keyframe Animations */
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive Adjustments */
+    @@media (max-width: 1200px) {
+        .hero-content h1 {
+            font-size: 3.5rem;
+        }
+
+        .promo-section {
+            flex-direction: column;
+        }
+
+        .promo-image {
+            margin-bottom: 2rem;
+            width: 100%;
+        }
+
+        .promo-content {
+            text-align: center;
+        }
+
+        .promo-divider {
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .hero-content {
+            left: 5%;
+            max-width: 90%;
+        }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+        .gallery-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .promo-title {
+            font-size: 2rem;
+        }
+    }
+
+    @@media (max-width: 576px) {
+        .hero-content h1 {
+            font-size: 2rem;
+        }
+
+        .gallery-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .product-card {
+            min-width: 240px;
+        }
+    }
+</style>
+
+<main>
+    <!-- Hero Section -->
+    <section class="hero-container">
+        <img src="~/Content/images/GoBar_Large_image_home.png" class="hero-image" alt="Rosier Bar Chocolate Protein Bars">
+
+        <!-- Chocolate Drips -->
+        <div class="chocolate-drip" style="left: 5%; top: -50px; animation-delay: 0.5s;"></div>
+        <div class="chocolate-drip" style="right: 10%; top: -30px; width: 70px; height: 120px; animation-delay: 1s;"></div>
+
+        <!-- Floating Chocolate Elements -->
+        <img src="~/Content/images/chocolate_chunk.png" class="floating-element" style="width: 80px; top: 20%; left: 15%; animation-delay: 0s;">
+        <img src="~/Content/images/cocoa_powder.png" class="floating-element" style="width: 60px; top: 70%; left: 80%; animation-delay: 1s;">
+        <img src="~/Content/images/chocolate_bar.png" class="floating-element" style="width: 70px; top: 40%; left: 85%; animation-delay: 2s;">
+
+        <!-- Chocolate Chips -->
+        <div class="chocolate-chip" style="top: 30%; left: 20%; animation-delay: 0.5s;"></div>
+        <div class="chocolate-chip" style="top: 60%; left: 75%; animation-delay: 1.5s;"></div>
+        <div class="chocolate-chip" style="top: 45%; left: 10%; animation-delay: 2s;"></div>
+
+        <div class="hero-content">
+            <h1>INDULGE<br>WITH PURPOSE</h1>
+            <p>
+                Premium chocolate protein bars crafted for those who want the rich taste of chocolate
+                with the benefits of clean nutrition. Rosier Chocolates combines decadent flavors with high-quality
+                protein to satisfy cravings and fuel your day.
+            </p>
+            <a href="@Url.Action("Shop", "Shop")" class="hero-btn">Shop Chocolate Bars</a>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products-section">
+        <!-- Chocolate Swirl Decorations -->
+        <div class="chocolate-swirl" style="top: -150px; right: -150px;"></div>
+        <div class="chocolate-swirl" style="bottom: -100px; left: -100px;"></div>
+
+        <!-- Chocolate Bar Decorations -->
+        <div class="chocolate-bar" style="top: 20%; left: 5%; animation-delay: 0.5s;"></div>
+        <div class="chocolate-bar" style="bottom: 15%; right: 5%; animation-delay: 1s;"></div>
+
+        <h2 class="section-title">Chocolate Collection</h2>
+        <p class="section-subtitle">
+            Rich, velvety chocolate combined with premium protein for irresistible flavor and nutrition
+        </p>
+
+        @{ Html.RenderAction("ProductList", "Home"); }
+
+
+    </section>
+
+    <!-- Promo Section 1 -->
+    <section class="promo-section">
+        <div class="melting-chocolate" style="left: 10%;"></div>
+        <div class="chocolate-swirl" style="top: -100px; left: -100px;"></div>
+
+        <div class="promo-image">
+            <img src="~/Content/images/GO_Bar_Chocolate_Box.png" alt="GO Bar Chocolate Box">
+        </div>
+        <div class="promo-content">
+            <p class="promo-tag">Limited Time</p>
+            <h3 class="promo-title">Chocolate Lover's<br>Special Edition Box</h3>
+            <div class="promo-divider"></div>
+            <p class="promo-text">
+                Our premium chocolate collection features six decadent flavors crafted with
+                single-origin cocoa and 20g of clean protein per bar. Perfect for gifting or
+                treating yourself to a daily chocolate indulgence.
+            </p>
+            <a href="#" class="promo-btn">Shop the Collection</a>
+        </div>
+    </section>
+
+    <!-- Promo Section 2 -->
+    <section class="promo-section">
+        <div class="melting-chocolate" style="right: 10%; animation-delay: 1s;"></div>
+        <div class="chocolate-swirl" style="bottom: -100px; right: -100px;"></div>
+
+        <div class="promo-content">
+            <p class="promo-tag">New Release</p>
+            <h3 class="promo-title">Salted Caramel<br>Dark Chocolate</h3>
+            <div class="promo-divider"></div>
+            <p class="promo-text">
+                Experience the perfect balance of rich dark chocolate and velvety salted caramel
+                in our newest protein bar. Made with 70% cocoa and a touch of sea salt for
+                an unforgettable taste experience.
+            </p>
+            <a href="#" class="promo-btn">Try It Now</a>
+        </div>
+        <div class="promo-image">
+            <img src="~/Content/images/GO_Bar_New_Flavor.png" alt="GO Bar New Flavor">
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter-section">
+        <img src="~/Content/images/chocolate-background.jpg" class="newsletter-bg" alt="Chocolate Newsletter Signup">
+
+        <!-- Melting Chocolate Animation -->
+        <div class="melting-chocolate" style="left: 20%; bottom: -20px;"></div>
+        <div class="melting-chocolate" style="right: 15%; bottom: -30px; width: 150px; animation-delay: 1s;"></div>
+
+        <div class="newsletter-content">
+            <h3 class="newsletter-title">Join Our Chocolate Club</h3>
+            <p class="newsletter-subtitle">Get exclusive flavors, recipes, and 15% off your first order</p>
+            <a href="@Url.Action("Register", "Register")" class="newsletter-btn">Sign Up</a>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="gallery-section">
+        <!-- Chocolate Bar Decorations -->
+        <div class="chocolate-bar" style="top: 10%; left: 10%;"></div>
+        <div class="chocolate-bar" style="top: 15%; right: 10%; animation-delay: 1s;"></div>
+
+        <h2 class="section-title">The Rosier Chocolate Experience</h2>
+        <p class="section-subtitle">
+            From bean to bar, we craft each protein bar with care using premium ingredients and
+            rich chocolate flavors that satisfy your cravings and fuel your life.
+        </p>
+
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="~/Content/images/Rosier_Chocolate_Making_Process.png" alt="Rosier Chocolate Making Process">
+            </div>
+            <div class="gallery-item">
+                <img src="~/Content/images/Rosier_Chocolate_Closeup.png" alt="Rosier Chocolate Closeup">
+            </div>
+            <div class="gallery-item">
+                <img src="~/Content/images/Rosier_Premium_Ingredients.png" alt="Rosier Chocolate Premium Ingredients">
+            </div>
+            <div class="gallery-item">
+                <img src="~/Content/images/Rosier_Eco_Friendly_Packaging.png" alt="Rosier Chocolate Eco-Friendly Packaging">
+            </div>
+            <div class="gallery-item">
+                <img src="~/Content/images/Rosier_Perfect_Anytime_Snack.png" alt="Rosier Chocolate Perfect Anytime Snack">
+            </div>
+            <div class="gallery-item">
+                <img src="~/Content/images/Rosier_Great_Gift_Idea.png" alt="Rosier Chocolate Great Gift Idea">
+            </div>
+            <div class="gallery-item">
+                <img src="~/Content/images/Rosier_Recipe_Ideas.png" alt="Rosier Chocolate Recipe Ideas">
+            </div>
+            <div class="gallery-item">
+                <img src="~/Content/images/Rosier_Active_Lifestyle.png" alt="Rosier Chocolate Active Lifestyle">
+            </div>
+        </div>
+    </section>
+</main>
+<script>
+    const carousel = document.getElementById('productCarousel');
+    const scrollSpeed = 1; // pixels per step
+    const intervalDelay = 20; // ms between steps
+
+    // Clone the carousel items for infinite loop effect
+    const cloneCarouselItems = () => {
+        const items = [...carousel.children];
+        items.forEach(item => {
+            const clone = item.cloneNode(true);
+            carousel.appendChild(clone);
+        });
+    };
+
+    // Auto-scroll loop
+    const autoScroll = () => {
+        carousel.scrollLeft += scrollSpeed;
+        const maxScrollLeft = carousel.scrollWidth / 2;
+
+        if (carousel.scrollLeft >= maxScrollLeft) {
+            carousel.scrollLeft = 0;
+        }
+    };
+
+    // Initialize
+    window.addEventListener('DOMContentLoaded', () => {
+        cloneCarouselItems();
+        setInterval(autoScroll, intervalDelay);
+    });
+</script>
+

@@ -1,0 +1,582 @@
+﻿    <!-- Login Page (Original Code) -->
+@model RosierBars.Models.LoginModel
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Session["UserName"] != null)
+{
+    <!-- Logout Page (User Dashboard) -->
+    <style>
+        /* Chocolate Color Palette */
+        :root {
+            --chocolate-dark: #2a1505;
+            --chocolate-medium: #4a2a10;
+            --chocolate-light: #6b4423;
+            --chocolate-lighter: #8b5a2b;
+            --chocolate-cream: #f8ede5;
+            --chocolate-gold: #d4af37;
+            --chocolate-milk: #e6d5c3;
+            --chocolate-white: #fff9f5;
+        }
+
+        /* Dashboard Styles */
+        .dashboard-container {
+            min-height: 80vh;
+            background-color: var(--chocolate-white);
+            padding: 2rem 0;
+        }
+
+        .dashboard-header {
+            background: linear-gradient(135deg, var(--chocolate-medium), var(--chocolate-dark));
+            color: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .welcome-message {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .account-email {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .dashboard-content {
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .account-sidebar {
+            width: 250px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            padding: 1.5rem;
+            margin-right: 2rem;
+        }
+
+        .account-menu-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--chocolate-dark);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--chocolate-cream);
+        }
+
+        .account-menu-item {
+            display: block;
+            padding: 0.75rem 0;
+            color: var(--chocolate-medium);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid var(--chocolate-cream);
+        }
+
+            .account-menu-item:hover {
+                color: var(--chocolate-dark);
+                padding-left: 10px;
+            }
+
+            .account-menu-item i {
+                margin-right: 10px;
+                width: 20px;
+                text-align: center;
+            }
+
+        .account-main {
+            flex: 1;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            padding: 2rem;
+        }
+
+        .account-section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--chocolate-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .account-card {
+            background: var(--chocolate-white);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--chocolate-cream);
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--chocolate-medium);
+            margin-bottom: 1rem;
+        }
+
+        .card-content {
+            color: var(--chocolate-light);
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, var(--chocolate-medium), var(--chocolate-dark));
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+            .logout-btn:hover {
+                background: linear-gradient(135deg, var(--chocolate-dark), var(--chocolate-light));
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(74, 42, 16, 0.2);
+            }
+
+            .logout-btn i {
+                margin-right: 8px;
+            }
+
+        .account-menu-item.active {
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .loading {
+            padding: 20px;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .error {
+            color: red;
+            padding: 20px;
+            text-align: center;
+        }
+
+
+
+        /* Responsive */
+        @@media (max-width: 768px) {
+            .dashboard-content {
+                flex-direction: column;
+            }
+
+            .account-sidebar {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 2rem;
+            }
+        }
+    </style>
+
+    <div class="dashboard-container">
+        <div class="dashboard-header mt-4">
+            <div class="welcome-message">Hello, @Session["UserName"]</div>
+            <div class="account-email">@Session["Email"]</div>
+        </div>
+        <div class="dashboard-content">
+            <div class="account-sidebar">
+                <div class="account-menu-title">Your Account</div>
+
+                <a href="#" class="account-menu-item" data-target="Account"><i class="fas fa-user"></i> Account</a>
+                <a href="#" class="account-menu-item" data-target="Orders"><i class="fas fa-box"></i> Orders</a>
+                @*<a href="#" class="account-menu-item" data-target="Addresses"><i class="fas fa-map-marker-alt"></i> Addresses</a>
+                <a href="#" class="account-menu-item" data-target="Payments"><i class="fas fa-credit-card"></i> Payment Methods</a>
+                <a href="#" class="account-menu-item" data-target="Notifications"><i class="fas fa-bell"></i> Notifications</a>*@
+                @*<a href="#" class="account-menu-item" data-target="Settings"><i class="fas fa-cog"></i> Settings</a>*@
+            @using (Html.BeginForm("LogOut", "Register", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                <button type="submit" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
+            }
+            </div>
+
+            <div class="account-main" id="account-section">
+                @Html.Partial("~/Views/Dashboard/_Account.cshtml")
+
+            </div>
+        </div>
+
+        @section Scripts {
+            <script>
+                $(document).ready(function () {
+                    $(".account-menu-item").click(function (e) {
+                        e.preventDefault();
+
+                        var $this = $(this);
+                        var section = $this.data("target");
+
+                        // Highlight active item
+                        $(".account-menu-item").removeClass("active");
+                        $this.addClass("active");
+
+                        // Optional: show loading
+                        $("#account-section").html('<div class="loading">Loading...</div>');
+
+                        $.ajax({
+                            url: '/Dashboard/' + section,
+                            type: 'GET',
+                            success: function (result) {
+                                $("#account-section").html(result);
+                            },
+                            error: function () {
+                                $("#account-section").html('<div class="error">Error loading section. Please try again.</div>');
+                            }
+                        });
+                    });
+                });
+            </script>
+        }
+
+    </div>
+}
+else
+{
+
+
+    <style>
+        /* Chocolate Color Palette */
+        :root {
+            --chocolate-dark: #2a1505;
+            --chocolate-medium: #4a2a10;
+            --chocolate-light: #6b4423;
+            --chocolate-lighter: #8b5a2b;
+            --chocolate-cream: #f8ede5;
+            --chocolate-gold: #d4af37;
+            --chocolate-milk: #e6d5c3;
+            --chocolate-white: #fff9f5;
+        }
+
+        /* Base Styles */
+        .login-container {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--chocolate-white);
+            position: relative;
+            overflow: hidden;
+            padding-top: 100px;
+            padding-bottom: 200px;
+        }
+
+        /* Decorative Elements */
+        .chocolate-drip {
+            position: absolute;
+            width: 100%;
+            height: 150px;
+            bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="%234a2a10"/><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" fill="%234a2a10"/><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="%234a2a10"/></svg>');
+            background-size: cover;
+            background-repeat: no-repeat;
+            z-index: 1;
+        }
+
+        .chocolate-swirl {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, var(--chocolate-gold) 0%, transparent 70%);
+            opacity: 0.08;
+            z-index: 0;
+        }
+
+        .swirl-1 {
+            top: -100px;
+            right: -100px;
+        }
+
+        .swirl-2 {
+            bottom: -50px;
+            left: -50px;
+            transform: rotate(180deg);
+        }
+
+        /* Login Form */
+        .login-form-container {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(42, 21, 5, 0.1);
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+            z-index: 2;
+            border: 1px solid var(--chocolate-cream);
+        }
+
+            .login-form-container h1 {
+                font-family: 'Playfair Display', serif;
+                color: var(--chocolate-medium);
+                font-size: 2.5rem;
+                font-weight: 700;
+                text-align: center;
+                margin-bottom: 1.5rem;
+                position: relative;
+            }
+
+                .login-form-container h1:after {
+                    content: '';
+                    position: absolute;
+                    bottom: -10px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    width: 60px;
+                    height: 3px;
+                    background: var(--chocolate-gold);
+                }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 1.1rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+        }
+
+        /* Form Elements */
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--chocolate-medium);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--chocolate-milk);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: var(--chocolate-white);
+            margin-bottom: 0.5rem;
+        }
+
+            .form-control:focus {
+                border-color: var(--chocolate-light);
+                box-shadow: 0 0 0 3px rgba(139, 90, 43, 0.2);
+                outline: none;
+            }
+
+        /* Button Styles */
+        .login-btn {
+            background: linear-gradient(135deg, var(--chocolate-medium), var(--chocolate-dark));
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(74, 42, 16, 0.2);
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+            .login-btn:hover {
+                background: linear-gradient(135deg, var(--chocolate-dark), var(--chocolate-light));
+                transform: translateY(-2px);
+                box-shadow: 0 6px 20px rgba(74, 42, 16, 0.3);
+            }
+
+            .login-btn:active {
+                transform: translateY(0);
+            }
+
+        /* Link Styles */
+        .register-link {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: var(--chocolate-light);
+        }
+
+            .register-link a {
+                color: var(--chocolate-medium);
+                font-weight: 600;
+                text-decoration: none;
+                transition: all 0.3s ease;
+                border-bottom: 1px solid transparent;
+            }
+
+                .register-link a:hover {
+                    color: var(--chocolate-dark);
+                    border-bottom-color: var(--chocolate-gold);
+                }
+
+        /*password*/
+        .password-input-container {
+            position: relative;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--chocolate-light);
+            outline: none;
+        }
+
+            .password-toggle:hover {
+                color: var(--chocolate-medium);
+            }
+
+            .password-toggle:focus {
+                outline: none;
+                box-shadow: 0 0 0 2px rgba(139, 90, 43, 0.3);
+            }
+        /* Animations */
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade {
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        /* Responsive Adjustments */
+        @@media (max-width: 576px) {
+            .login-form-container {
+                padding: 2rem;
+                margin: 0 1rem;
+            }
+
+                .login-form-container h1 {
+                    font-size: 2rem;
+                }
+        }
+    </style>
+
+    using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="login-container">
+            <div class="chocolate-swirl swirl-1"></div>
+            <div class="chocolate-swirl swirl-2"></div>
+
+            <div class="login-form-container animate-fade">
+                <h1 class="animate-fade delay-1">Sweet Indulgence</h1>
+                <div id="loginMessage" class="text-center mb-3">
+                    @if (ViewBag.Message != null)
+                    {
+                        <span class="text-danger">@ViewBag.Message</span>
+                    }
+                    else
+                    {
+                        <h1 class="animate-fade delay-1">Welcome Back</h1>
+                    }
+                </div>
+
+
+                @Html.ValidationSummary(true, "", new { @class = "text-danger animate-fade delay-2" })
+
+                <div class="form-group animate-fade delay-2">
+                    @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "form-label" })
+                    @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control", placeholder = "your.email@example.com" } })
+                    @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                </div>
+
+                <div class="form-group animate-fade delay-3">
+                    @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "form-label" })
+                    <div class="password-input-container" style="position: relative;">
+                        @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control", placeholder = "Enter your password", id = "password-field" } })
+                        <button type="button" id="password-toggle" class="password-toggle" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--chocolate-light);">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                </div>
+
+                <button type="submit" class="login-btn animate-fade delay-4">
+                    <i class="fas fa-sign-in-alt me-2"></i> Sign In
+                </button>
+
+                <div class="register-link animate-fade delay-4">
+                    New here? @Html.ActionLink("Create an account", "Register", null, new { @class = "text-decoration-none" })
+                </div>
+            </div>
+
+            <div class="chocolate-drip"></div>
+        </div>
+    }
+
+    @section Scripts {
+        <script>
+            // Add focus effects to form inputs
+            document.querySelectorAll('.form-control').forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.style.transform = 'translateY(-2px)';
+                    this.parentElement.style.transition = 'all 0.3s ease';
+                });
+
+                input.addEventListener('blur', function() {
+                    this.parentElement.style.transform = 'translateY(0)';
+                });
+            });
+            $(document).ready(function() {
+                // Check if we should delay redirect
+                var shouldDelay = '@(TempData["ShouldDelayRedirect"] != null && TempData["ShouldDelayRedirect"].ToString() == "True")';
+                var loginMessage = '@TempData["LoginMessage"]';
+
+                if (shouldDelay === 'True' && loginMessage) {
+                    // Show success message
+                    $('#loginMessage').text(loginMessage).addClass('text-success').removeClass('text-danger');
+
+                    // Redirect after 3 seconds
+                    setTimeout(function() {
+                        window.location.href = '@Url.Action("Index", "Home")';
+                    }, 3000);
+                }
+            });
+            document.getElementById('password-toggle').addEventListener('click', function () {
+                const passwordField = document.getElementById('password-field');
+                const icon = this.querySelector('i');
+
+                if (passwordField.type === 'password') {
+                    passwordField.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    passwordField.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+        </script>
+    }
+}

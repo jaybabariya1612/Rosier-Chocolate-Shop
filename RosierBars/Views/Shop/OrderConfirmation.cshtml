@@ -1,0 +1,380 @@
+﻿@{
+    ViewBag.Title = "Sweet Success!";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    /* Chocolate-themed colors */
+    :root {
+        --chocolate-dark: #4B2A10;
+        --chocolate-medium: #6B4423;
+        --chocolate-light: #8B5A2B;
+        --caramel: #D27D46;
+        --milk-chocolate: #B78B56;
+        --gold: #FFD700;
+        --cream: #FFF8E7;
+    }
+
+    /* Animation Styles */
+    @@keyframes meltIn {
+        0% {
+            opacity: 0;
+            transform: translateY(20px) scale(0.95);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    @@keyframes chocolateDrip {
+        0% {
+            transform: translateY(-100%) scaleY(0);
+            opacity: 0;
+        }
+
+        50% {
+            opacity: 1;
+        }
+
+        100% {
+            transform: translateY(0) scaleY(1);
+        }
+    }
+
+    @@keyframes float {
+        0% {
+            transform: translateY(0px);
+        }
+
+        50% {
+            transform: translateY(-10px);
+        }
+
+        100% {
+            transform: translateY(0px);
+        }
+    }
+
+    @@keyframes pulse {
+        0% {
+            transform: scale(1);
+            box-shadow: 0 0 0 0 rgba(139, 90, 43, 0.4);
+        }
+
+        50% {
+            transform: scale(1.05);
+        }
+
+        100% {
+            transform: scale(1);
+            box-shadow: 0 0 0 15px rgba(139, 90, 43, 0);
+        }
+    }
+
+    /* Page Styles */
+    body {
+        background-color: var(--cream);
+        font-family: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+    }
+
+    .order-confirmation {
+        max-width: 650px;
+        margin: 100px auto;
+        padding: 50px;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 15px 40px rgba(75, 42, 16, 0.1);
+        position: relative;
+        overflow: hidden;
+        animation: meltIn 1s ease-out;
+        border: 2px solid var(--chocolate-medium);
+    }
+
+        .order-confirmation:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, var(--chocolate-dark), var(--caramel), var(--chocolate-dark));
+        }
+
+    .text-success {
+        color: var(--chocolate-dark);
+        margin-bottom: 25px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .confirmation-icon {
+        width: 120px;
+        height: 120px;
+        background: linear-gradient(135deg, var(--chocolate-dark), var(--chocolate-medium));
+        color: var(--gold);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 30px;
+        font-size: 60px;
+        box-shadow: 0 10px 25px rgba(75, 42, 16, 0.2);
+        animation: pulse 2s infinite, float 3s ease-in-out infinite;
+        position: relative;
+        z-index: 1;
+    }
+
+        .confirmation-icon:after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border: 2px dashed var(--gold);
+            border-radius: 50%;
+            animation: rotate 20s linear infinite;
+            opacity: 0.7;
+        }
+
+    @@keyframes rotate {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    .lead {
+        font-size: 1.3rem;
+        margin-bottom: 30px;
+        color: var(--chocolate-medium);
+        line-height: 1.6;
+    }
+
+    h4 {
+        margin: 30px 0 15px;
+        color: var(--chocolate-dark);
+        font-weight: 600;
+    }
+
+    strong {
+        color: var(--chocolate-dark);
+        font-weight: 700;
+        background: linear-gradient(to right, var(--caramel), var(--gold));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        padding: 0 5px;
+    }
+
+    .btn {
+        padding: 14px 28px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 50px;
+        margin: 0 12px;
+        transition: all 0.3s ease;
+        letter-spacing: 0.5px;
+        min-width: 200px;
+    }
+
+    .btn-primary {
+        background: linear-gradient(45deg, var(--chocolate-dark), var(--chocolate-medium));
+        border: none;
+        box-shadow: 0 5px 20px rgba(107, 68, 35, 0.3);
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(107, 68, 35, 0.4);
+        }
+
+        .btn-primary:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn-primary:hover:before {
+            left: 100%;
+        }
+
+    .btn-outline-secondary {
+        border: 2px solid var(--chocolate-medium);
+        color: var(--chocolate-medium);
+        background: transparent;
+    }
+
+        .btn-outline-secondary:hover {
+            background: var(--chocolate-medium);
+            color: white;
+        }
+
+    .chocolate-drip {
+        position: absolute;
+        width: 60px;
+        height: 80px;
+        background: var(--chocolate-dark);
+        border-radius: 0 0 30px 30px;
+        animation: chocolateDrip 1.5s ease-out forwards;
+        opacity: 0;
+    }
+
+    .drip-1 {
+        top: -10px;
+        left: 20%;
+        animation-delay: 0.5s;
+    }
+
+    .drip-2 {
+        top: -10px;
+        left: 45%;
+        animation-delay: 0.8s;
+    }
+
+    .drip-3 {
+        top: -10px;
+        right: 20%;
+        animation-delay: 1.1s;
+    }
+
+    /* Chocolate pieces animation */
+    .chocolate-piece {
+        position: fixed;
+        width: 20px;
+        height: 20px;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><rect width="18" height="18" x="1" y="1" fill="%234B2A10" rx="2" ry="2"/><rect width="4" height="4" x="3" y="3" fill="%23D27D46" rx="1" ry="1"/><rect width="4" height="4" x="10" y="3" fill="%23D27D46" rx="1" ry="1"/><rect width="4" height="4" x="3" y="10" fill="%23D27D46" rx="1" ry="1"/><rect width="4" height="4" x="10" y="10" fill="%23D27D46" rx="1" ry="1"/></svg>');
+        opacity: 0;
+        z-index: 100;
+    }
+
+    /* Responsive adjustments */
+    @@media (max-width: 768px) {
+        .order-confirmation {
+            padding: 30px 20px;
+            margin: 20px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .action-buttons {
+            margin-top: 30px !important;
+        }
+    }
+</style>
+
+<div class="order-confirmation text-center">
+    <!-- Chocolate drips -->
+    <div class="chocolate-drip drip-1"></div>
+    <div class="chocolate-drip drip-2"></div>
+    <div class="chocolate-drip drip-3"></div>
+
+    <div class="confirmation-icon">
+        <i class="fas fa-check"></i>
+    </div>
+
+    <h2 class="text-success">
+        <i class="fas fa-check-circle"></i> Sweet Success!
+    </h2>
+
+    <p class="lead">Your chocolate order has been placed successfully and is being prepared with love!</p>
+
+    @if (ViewBag.OrderId != null)
+    {
+        <h4>Your Order ID: <strong>#@ViewBag.OrderId</strong></h4>
+        <p class="text-muted">We've sent a delicious confirmation to your email.</p>
+    }
+
+    <div class="action-buttons" style="margin-top: 50px;">
+        <a href="@Url.Action("Shop", "Shop")" class="btn btn-primary">
+            <i class="fas fa-utensils"></i> More Treats
+        </a>
+        <a href="@Url.Action("Orders", "Account")" class="btn btn-outline-secondary">
+            <i class="fas fa-clipboard-list"></i> Track My Order
+        </a>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Button hover effects
+            $('.btn').hover(
+                function () {
+                    $(this).css('transform', 'translateY(-3px)');
+                },
+                function () {
+                    $(this).css('transform', 'translateY(0)');
+                }
+            );
+
+            // Create falling chocolate pieces
+            function createChocolatePieces() {
+                const shapes = [
+                    'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)', // diamond
+                    'polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)', // star
+                    'ellipse(25% 25% at 50% 50%)', // circle
+                    'polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%)' // trapezoid
+                ];
+
+                const colors = ['#4B2A10', '#6B4423', '#8B5A2B', '#D27D46'];
+
+                for (let i = 0; i < 30; i++) {
+                    const piece = document.createElement('div');
+                    piece.className = 'chocolate-piece';
+
+                    // Random properties
+                    const size = Math.random() * 20 + 10;
+                    const shape = shapes[Math.floor(Math.random() * shapes.length)];
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+
+                    piece.style.width = size + 'px';
+                    piece.style.height = size + 'px';
+                    piece.style.left = Math.random() * 100 + 'vw';
+                    piece.style.top = -size + 'px';
+                    piece.style.clipPath = shape;
+                    piece.style.backgroundColor = color;
+                    piece.style.transform = 'rotate(' + Math.random() * 360 + 'deg)';
+
+                    document.body.appendChild(piece);
+
+                    const animationDuration = Math.random() * 3 + 2;
+
+                    // Animate falling
+                    piece.animate([
+                        { top: -size + 'px', opacity: 0, transform: 'rotate(0deg)' },
+                        { top: '100vh', opacity: 1, transform: 'rotate(' + Math.random() * 360 + 'deg)' }
+                    ], {
+                        duration: animationDuration * 1000,
+                        easing: 'cubic-bezier(0.1, 0.8, 0.3, 1)',
+                        delay: Math.random() * 2000
+                    });
+
+                    setTimeout(() => {
+                        piece.remove();
+                    }, animationDuration * 1000);
+                }
+            }
+
+            // Trigger animations
+            setTimeout(createChocolatePieces, 500);
+        });
+    </script>
+}

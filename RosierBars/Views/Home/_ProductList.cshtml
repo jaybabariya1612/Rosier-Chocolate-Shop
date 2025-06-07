@@ -1,0 +1,150 @@
+﻿@model IEnumerable<RosierBars.Models.ProductModel>
+
+<div class="carousel-container">
+    <div class="product-carousel" id="productCarousel">
+        @foreach (var item in Model)
+        {
+            <div class="product-card">
+                <a href="@Url.Action("BackToProduct", "Shop", new { id = item.ProductId })">
+                    <img src="@Url.Content("~/Content/images/" + item.ImageUrl)"
+                         class="product-image"
+                         alt="@item.ProductName"
+                         loading="lazy">
+                </a>
+                <h4 class="product-name">@item.ProductName</h4> 
+                <p class="product-price">@item.Price.ToString("C")</p>
+            </div>
+        }
+    </div>
+</div>
+
+<style>
+    .carousel-container {
+        position: relative;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 50px;
+        overflow: hidden;
+    }
+
+    .product-carousel {
+        display: flex;
+        gap: 2rem;
+        padding: 20px 0;
+        scroll-behavior: smooth;
+    }
+
+    .product-card {
+        min-width: 280px;
+        background-color: var(--white);
+        border-radius: 15px;
+        padding: 2rem;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        text-align: center;
+        border: 1px solid rgba(0,0,0,0.05);
+        position: relative;
+        overflow: hidden;
+        flex-shrink: 0;
+    }
+
+        .product-card:before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(45deg);
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+            .product-card:hover:before {
+                opacity: 1;
+                animation: shine 1.5s ease;
+            }
+
+    @@keyframes shine {
+        0% {
+            transform: rotate(45deg) translate(-50%, -50%);
+        }
+
+        100% {
+            transform: rotate(45deg) translate(50%, 50%);
+        }
+    }
+
+    .product-image {
+        height: 200px;
+        object-fit: contain;
+        margin-bottom: 1.5rem;
+        transition: transform 0.5s ease;
+        filter: drop-shadow(5px 5px 10px rgba(0,0,0,0.2));
+    }
+
+    .product-card:hover .product-image {
+        transform: scale(1.1) rotate(-5deg);
+    }
+
+    .product-name {
+        font-weight: 600;
+        color: var(--dark);
+        margin-bottom: 0.5rem;
+        font-size: 1.3rem;
+    }
+
+    .product-price {
+        color: var(--secondary);
+        font-weight: 700;
+        font-size: 1.4rem;
+        margin-bottom: 1.5rem;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const carousel = document.getElementById('productCarousel');
+        const items = Array.from(carousel.children);
+        const scrollSpeed = 1; // pixels per step
+        const intervalDelay = 20; // ms between steps
+        let isPaused = false;
+
+        // Clone items for infinite loop effect
+        items.forEach(item => {
+            const clone = item.cloneNode(true);
+            carousel.appendChild(clone);
+        });
+
+        // Auto-scroll function
+        function autoScroll() {
+            if (isPaused) return;
+
+            carousel.scrollLeft += scrollSpeed;
+
+            // Reset to beginning when halfway through cloned items
+            if (carousel.scrollLeft >= carousel.scrollWidth / 2) {
+                carousel.scrollLeft = 0;
+            }
+        }
+
+        // Pause on hover
+        carousel.addEventListener('mouseenter', () => isPaused = true);
+        carousel.addEventListener('mouseleave', () => isPaused = false);
+
+        // Start auto-scroll
+        let scrollInterval = setInterval(autoScroll, intervalDelay);
+
+        // Handle window resize
+        window.addEventListener('resize', function () {
+            clearInterval(scrollInterval);
+            scrollInterval = setInterval(autoScroll, intervalDelay);
+        });
+    });
+</script>

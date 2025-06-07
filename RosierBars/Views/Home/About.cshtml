@@ -1,0 +1,455 @@
+﻿@{
+    ViewBag.Title = "About";
+}
+
+<style>
+    /* Base Styles */
+    :root {
+        --chocolate-dark: #3a1f0a;
+        --chocolate-medium: #5d3a1a;
+        --chocolate-light: #8b5a2b;
+        --chocolate-cream: #d4a76a;
+        --chocolate-milk: #f0d9b5;
+    }
+
+    body {
+        font-family: 'Montserrat', sans-serif;
+        background-color: #f9f5f0;
+        overflow-x: hidden;
+    }
+
+    /* Header Image */
+    .header-image {
+        width: 100%;
+        height: 60vh;
+        object-fit: cover;
+        object-position: center;
+        filter: brightness(0.9) contrast(1.1);
+        transition: all 0.5s ease;
+    }
+
+    .header-image:hover {
+        filter: brightness(1) contrast(1.2);
+    }
+
+    /* Main Content Container */
+    .about-container {
+        position: relative;
+        padding: 5rem 0;
+        background: linear-gradient(135deg, #f9f5f0 0%, #f0e6d6 100%);
+        overflow: hidden;
+    }
+
+    /* Chocolate Title */
+    .about-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 5rem;
+        font-weight: 700;
+        color: var(--chocolate-dark);
+        text-align: center;
+        margin-bottom: 3rem;
+        position: relative;
+        z-index: 10;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .about-title span {
+        display: block;
+        font-size: 1.5rem;
+        color: var(--chocolate-light);
+        margin-top: 1rem;
+    }
+
+    /* Content Box */
+    .about-content {
+        background-color: white;
+        padding: 3rem;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        position: relative;
+        z-index: 5;
+        max-width: 800px;
+        margin: 0 auto;
+        border: 1px solid var(--chocolate-milk);
+        transform: translateY(0);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .about-content:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    }
+
+    .about-content h3 {
+        color: var(--chocolate-dark);
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+        position: relative;
+        padding-bottom: 0.5rem;
+    }
+
+    .about-content h3::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 50px;
+        height: 3px;
+        background: var(--chocolate-light);
+    }
+
+    .about-content p {
+        color: var(--chocolate-medium);
+        line-height: 1.8;
+        margin-bottom: 1.5rem;
+        font-size: 1.1rem;
+    }
+
+    /* Chocolate SVG Elements */
+    .chocolate-piece {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        z-index: 1;
+        opacity: 0.8;
+        animation: float 6s infinite ease-in-out;
+        transition: all 0.5s ease;
+    }
+
+    .chocolate-piece:hover {
+        transform: scale(1.2) rotate(15deg);
+        opacity: 1;
+        animation-play-state: paused;
+    }
+
+    @@keyframes float {
+        0%, 100% {
+            transform: translateY(0) rotate(0deg);
+        }
+        50% {
+            transform: translateY(-20px) rotate(5deg);
+        }
+    }
+
+    /* Responsive Adjustments */
+    @@media (max-width: 768px) {
+        .about-title {
+            font-size: 3.5rem;
+        }
+
+        .about-content {
+            padding: 2rem;
+        }
+
+        .chocolate-piece {
+            width: 30px;
+            height: 30px;
+        }
+    }
+
+    /* Chocolate Drip Effect */
+    .chocolate-drip {
+        position: absolute;
+        width: 100%;
+        height: 100px;
+        top: -50px;
+        left: 0;
+        background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="%235d3a1a"></path><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" fill="%235d3a1a"></path><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="%235d3a1a"></path></svg>');
+        background-size: cover;
+        background-repeat: no-repeat;
+        z-index: 2;
+    }
+
+    /* Team Section */
+    .team-section {
+        padding: 4rem 0;
+        background-color: var(--chocolate-dark);
+        color: white;
+        position: relative;
+    }
+
+    .team-title {
+        font-family: 'Playfair Display', serif;
+        text-align: center;
+        margin-bottom: 3rem;
+        font-size: 2.5rem;
+        color: var(--chocolate-cream);
+    }
+
+    .team-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .team-member {
+        background: rgba(255,255,255,0.1);
+        padding: 2rem;
+        border-radius: 10px;
+        text-align: center;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+    }
+
+    .team-member:hover {
+        transform: translateY(-10px);
+        background: rgba(255,255,255,0.2);
+    }
+
+    .team-member img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--chocolate-cream);
+        margin-bottom: 1rem;
+    }
+
+    .team-member h4 {
+        color: var(--chocolate-cream);
+        margin-bottom: 0.5rem;
+    }
+
+    .team-member p {
+        color: var(--chocolate-milk);
+        font-size: 0.9rem;
+    }
+
+    /* Values Section */
+    .values-section {
+        padding: 4rem 0;
+        background-color: white;
+    }
+
+    .values-title {
+        font-family: 'Playfair Display', serif;
+        text-align: center;
+        margin-bottom: 3rem;
+        font-size: 2.5rem;
+        color: var(--chocolate-dark);
+    }
+
+    .values-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    .value-card {
+        background: #f9f5f0;
+        padding: 2rem;
+        border-radius: 10px;
+        text-align: center;
+        transition: all 0.3s ease;
+        border-bottom: 4px solid var(--chocolate-light);
+    }
+
+    .value-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+
+    .value-icon {
+        font-size: 2.5rem;
+        color: var(--chocolate-light);
+        margin-bottom: 1rem;
+    }
+
+    .value-card h4 {
+        color: var(--chocolate-dark);
+        margin-bottom: 1rem;
+    }
+
+    .value-card p {
+        color: var(--chocolate-medium);
+        line-height: 1.6;
+    }
+
+    /* Chocolate Wave */
+    .chocolate-wave {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100px;
+        background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none"><path d="M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z" opacity=".25" fill="%23f9f5f0"></path><path d="M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z" opacity=".5" fill="%23f9f5f0"></path><path d="M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z" fill="%23f9f5f0"></path></svg>');
+        background-size: cover;
+        background-repeat: no-repeat;
+        transform: rotate(180deg);
+        z-index: 1;
+    }
+</style>
+
+<!-- Header Image -->
+<div class="header-container">
+    <img src="~/Content/images/Chcocolate_Bar_Banner.png" class="header-image" />
+    <div class="chocolate-drip"></div>
+</div>
+
+<!-- Main Content -->
+<div class="about-container">
+    <!-- Random Chocolate SVG Elements -->
+    <!-- These would be dynamically placed in a real implementation -->
+    <svg class="chocolate-piece" style="top: 15%; left: 10%; animation-delay: 0s;" viewBox="0 0 100 100">
+        <path d="M10,10 Q25,5 40,10 Q55,15 50,30 Q45,45 30,50 Q15,55 10,40 Q5,25 10,10" fill="#5D3A1A" />
+    </svg>
+
+    <svg class="chocolate-piece" style="top: 30%; right: 15%; animation-delay: 1s;" viewBox="0 0 100 100">
+        <rect x="10" y="10" width="80" height="80" rx="15" ry="15" fill="#8B5A2B" />
+        <rect x="25" y="25" width="10" height="10" rx="2" ry="2" fill="#D4A76A" />
+        <rect x="65" y="25" width="10" height="10" rx="2" ry="2" fill="#D4A76A" />
+        <rect x="25" y="65" width="10" height="10" rx="2" ry="2" fill="#D4A76A" />
+        <rect x="65" y="65" width="10" height="10" rx="2" ry="2" fill="#D4A76A" />
+    </svg>
+
+    <svg class="chocolate-piece" style="bottom: 20%; left: 20%; animation-delay: 2s;" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="40" fill="#3A1F0A" />
+        <circle cx="50" cy="50" r="30" fill="#5D3A1A" />
+        <circle cx="50" cy="50" r="20" fill="#8B5A2B" />
+    </svg>
+
+    <svg class="chocolate-piece" style="top: 25%; right: 25%; animation-delay: 3s;" viewBox="0 0 100 100">
+        <polygon points="50,5 95,35 95,75 50,95 5,75 5,35" fill="#5D3A1A" />
+    </svg>
+
+    <svg class="chocolate-piece" style="bottom: 15%; right: 10%; animation-delay: 4s;" viewBox="0 0 100 100">
+        <path d="M20,20 L80,20 L90,50 L80,80 L20,80 L10,50 Z" fill="#8B5A2B" />
+    </svg>
+
+    <svg class="chocolate-piece" style="top: 60%; left: 5%; animation-delay: 5s;" viewBox="0 0 100 100">
+        <rect x="20" y="20" width="60" height="60" rx="10" ry="10" fill="#3A1F0A" />
+        <rect x="30" y="30" width="40" height="40" rx="5" ry="5" fill="#5D3A1A" />
+    </svg>
+
+    <h1 class="about-title">WHO WE ARE <span>Deliciously Crafted Since 2010</span></h1>
+
+    <div class="about-content">
+        <h3>Our Story: From Passion to Chocolate Perfection</h3>
+
+        <p>
+            Chocolate Delight was born out of a simple need—pure, delicious chocolate creations for people who appreciate
+            the finer things in life. We started with a mission to craft chocolates that didn't just satisfy cravings,
+            but created moments of joy and indulgence. Tired of mass-produced chocolates filled with artificial ingredients
+            and preservatives, we went back to the basics: premium cocoa, real ingredients, and artisanal techniques.
+        </p>
+
+        <p>
+            From humble beginnings in a small kitchen to becoming a beloved chocolatier for dessert lovers, gift givers,
+            and chocolate connoisseurs, Chocolate Delight has always stayed true to one belief: chocolate should be an
+            experience—rich, authentic, and memorable. Today, we're proud to offer a growing selection of handcrafted
+            chocolates made with care, passion, and a commitment to excellence.
+        </p>
+
+        <p>
+            Each piece tells a story—of carefully sourced beans, traditional European methods perfected over generations,
+            and innovative flavor combinations that surprise and delight. We invite you to taste the difference that
+            passion and craftsmanship make in every bite.
+        </p>
+    </div>
+</div>
+
+<!-- Team Section -->
+<div class="team-section">
+    <div class="chocolate-wave"></div>
+    <h2 class="team-title">Meet Our Chocolatiers</h2>
+
+    <div class="team-grid">
+        <div class="team-member">
+            <img src="https://images.unsplash.com/photo-1554151228-14d9def656e4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Chocolatier">
+            <h4>Marie Dubois</h4>
+            <p>Head Chocolatier</p>
+            <p>15 years of chocolate mastery from Belgium</p>
+        </div>
+
+        <div class="team-member">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Chocolatier">
+            <h4>Carlos Mendez</h4>
+            <p>Cocoa Sourcing Expert</p>
+            <p>Direct relationships with growers worldwide</p>
+        </div>
+
+        <div class="team-member">
+            <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Chocolatier">
+            <h4>Sophie Laurent</h4>
+            <p>Flavor Innovator</p>
+            <p>Creating unexpected, delightful combinations</p>
+        </div>
+    </div>
+</div>
+
+<!-- Values Section -->
+<div class="values-section">
+    <h2 class="values-title">Our Chocolate Values</h2>
+
+    <div class="values-grid">
+        <div class="value-card">
+            <div class="value-icon">🌱</div>
+            <h4>Sustainable Sourcing</h4>
+            <p>We partner directly with ethical cocoa farms that practice sustainable agriculture and fair labor standards.</p>
+        </div>
+
+        <div class="value-card">
+            <div class="value-icon">👩‍🍳</div>
+            <h4>Artisanal Craft</h4>
+            <p>Every batch is small-crafted by hand using traditional techniques perfected over generations.</p>
+        </div>
+
+        <div class="value-card">
+            <div class="value-icon">❤️</div>
+            <h4>Pure Ingredients</h4>
+            <p>Only the finest cocoa beans and natural ingredients—no artificial flavors, colors, or preservatives.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // This would be more dynamic in a real implementation
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add more chocolate pieces dynamically
+        const container = document.querySelector('.about-container');
+        const chocolateShapes = [
+            `<path d="M10,10 Q25,5 40,10 Q55,15 50,30 Q45,45 30,50 Q15,55 10,40 Q5,25 10,10" fill="#5D3A1A"/>`,
+            `<rect x="10" y="10" width="80" height="80" rx="15" ry="15" fill="#8B5A2B"/>`,
+            `<circle cx="50" cy="50" r="40" fill="#3A1F0A"/>`,
+            `<polygon points="50,5 95,35 95,75 50,95 5,75 5,35" fill="#5D3A1A"/>`,
+            `<path d="M20,20 L80,20 L90,50 L80,80 L20,80 L10,50 Z" fill="#8B5A2B"/>`
+        ];
+
+        // Add 10 more random chocolate pieces
+        for (let i = 0; i < 10; i++) {
+            const top = Math.random() * 80 + 10;
+            const left = Math.random() * 80 + 10;
+            const delay = Math.random() * 5;
+            const size = Math.random() * 30 + 30;
+            const shape = chocolateShapes[Math.floor(Math.random() * chocolateShapes.length)];
+
+            const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svg.setAttribute('class', 'chocolate-piece');
+            svg.setAttribute('viewBox', '0 0 100 100');
+            svg.setAttribute('style', `top: ${top}%; left: ${left}%; width: ${size}px; height: ${size}px; animation-delay: ${delay}s;`);
+            svg.innerHTML = shape;
+
+            container.appendChild(svg);
+        }
+
+        // Add hover effects to all chocolate pieces
+        const chocolates = document.querySelectorAll('.chocolate-piece');
+        chocolates.forEach(choc => {
+            choc.addEventListener('mouseenter', function() {
+                this.style.transform = 'scale(1.2) rotate(15deg)';
+                this.style.opacity = '1';
+            });
+
+            choc.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+                this.style.opacity = '0.8';
+            });
+        });
+    });
+</script>

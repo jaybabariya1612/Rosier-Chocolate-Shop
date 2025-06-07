@@ -1,0 +1,339 @@
+﻿@model IEnumerable<RosierBars.Models.RegisterModel>
+
+@{
+    ViewBag.Title = "User Registrations";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    :root {
+        --primary-dark: #2c3e50;
+        --primary-medium: #34495e;
+        --primary-light: #7f8c8d;
+        --accent-color: #3498db;
+        --accent-hover: #2980b9;
+        --success-color: #2ecc71;
+        --danger-color: #e74c3c;
+        --light-bg: #ecf0f1;
+        --white: #ffffff;
+    }
+
+    .register-container {
+        background-color: var(--light-bg);
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding-top:100px;
+    }
+
+    .register-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid var(--primary-medium);
+    }
+
+    .register-title {
+        color: var(--primary-dark);
+        font-weight: 700;
+        font-size: 1.8rem;
+        position: relative;
+    }
+
+        .register-title:after {
+            content: "";
+            position: absolute;
+            bottom: -0.5rem;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), var(--primary-medium));
+            border-radius: 2px;
+        }
+
+    .btn-create {
+        background-color: var(--accent-color);
+        border: none;
+        color: white;
+        font-weight: 600;
+        padding: 0.5rem 1.5rem;
+        border-radius: 5px;
+        transition: all 0.3s;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+        .btn-create:hover {
+            background-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+            color: white;
+        }
+
+    .register-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        background-color: var(--white);
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+        .register-table thead th {
+            background-color: var(--primary-dark);
+            color: white;
+            font-weight: 600;
+            padding: 1rem;
+            text-align: left;
+            position: sticky;
+            top: 0;
+        }
+
+        .register-table tbody tr {
+            transition: background-color 0.2s;
+        }
+
+            .register-table tbody tr:hover {
+                background-color: rgba(52, 152, 219, 0.05);
+            }
+
+            .register-table tbody tr:nth-child(even) {
+                background-color: var(--light-bg);
+            }
+
+                .register-table tbody tr:nth-child(even):hover {
+                    background-color: rgba(52, 152, 219, 0.08);
+                }
+
+        .register-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #dfe6e9;
+            vertical-align: middle;
+        }
+
+    .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: center;
+    }
+
+    .btn-action {
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.85rem;
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+
+    .btn-edit {
+        background-color: var(--accent-color);
+        color: white;
+    }
+
+        .btn-edit:hover {
+            background-color: var(--accent-hover);
+            color: white;
+        }
+
+    .btn-details {
+        background-color: var(--primary-medium);
+        color: white;
+    }
+
+        .btn-details:hover {
+            background-color: var(--primary-dark);
+            color: white;
+        }
+
+    .btn-delete {
+        background-color: var(--danger-color);
+        color: white;
+    }
+
+        .btn-delete:hover {
+            background-color: #c0392b;
+            color: white;
+        }
+
+    .gender-badge {
+        display: inline-block;
+        padding: 0.25rem 0.5rem;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: capitalize;
+    }
+
+    .gender-male {
+        background-color: #3498db;
+        color: white;
+    }
+
+    .gender-female {
+        background-color: #e84393;
+        color: white;
+    }
+
+    .gender-other {
+        background-color: #9b59b6;
+        color: white;
+    }
+
+    .terms-badge {
+        display: inline-block;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .terms-agreed {
+        background-color: var(--success-color);
+        color: white;
+    }
+
+    .terms-not-agreed {
+        background-color: var(--danger-color);
+        color: white;
+    }
+
+    .date-cell {
+        white-space: nowrap;
+    }
+
+    .password-cell {
+        font-family: 'Courier New', monospace;
+        color: var(--primary-medium);
+    }
+
+    /* Responsive adjustments */
+    @@media (max-width: 1200px) {
+        .register-table {
+            display: block;
+            overflow-x: auto;
+        }
+    }
+
+    @@media (max-width: 768px) {
+        .register-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .action-buttons {
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .btn-action {
+            width: 100%;
+            text-align: center;
+        }
+    }
+</style>
+
+<div class="register-container">
+    <div class="register-header">
+        <h1 class="register-title">User Registrations</h1>
+        @Html.ActionLink("Create New", "Register", null, new { @class = "btn-create" })
+    </div>
+
+    <div class="table-responsive">
+        <table class="register-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    <th>DOB</th>
+                    <th>Contact</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>Terms Agreed</th>
+                    <th>Registered On</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.RegisterID</td>
+                        <td>
+                            <strong>@item.FirstName @item.LastName</strong>
+                        </td>
+                        <td>
+                            @{
+                                var genderClass = "";
+                                switch (item.Gender?.ToLower())
+                                {
+                                    case "male":
+                                        genderClass = "gender-male";
+                                        break;
+                                    case "female":
+                                        genderClass = "gender-female";
+                                        break;
+                                    default:
+                                        genderClass = "gender-other";
+                                        break;
+                                }
+                            }
+                            <span class="gender-badge @genderClass">@item.Gender</span>
+                        </td>
+                        <td class="date-cell">
+                            @item.DOB
+                        </td>
+                        <td>@item.MobileNo</td>
+                        <td>@item.Email</td>
+                        <td>@(item.Address?.Length > 20 ? item.Address.Substring(0, 20) + "..." : item.Address)</td>
+                        <td>
+                            <span class="terms-badge @(item.IsTermAgree ? "terms-agreed" : "terms-not-agreed")">
+                                @(item.IsTermAgree ? "Agreed" : "Not Agreed")
+                            </span>
+                        </td>
+                        <td class="date-cell">
+                            @item.EntryDate
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+                                @Html.ActionLink("Edit", "Edit", new { id = item.RegisterID }, new { @class = "btn-action btn-edit" })
+                                @Html.ActionLink("Details", "RegDetail", new { id = item.RegisterID }, new { @class = "btn-action btn-details" })
+                                @Html.ActionLink("Delete", "Delete", new { id = item.RegisterID }, new { @class = "btn-action btn-delete" })
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        // Initialize DataTables if needed
+        $('.register-table').DataTable({
+            responsive: true,
+            dom: '<"top"f>rt<"bottom"lip><"clear">',
+            language: {
+                search: "_INPUT_",
+                searchPlaceholder: "Search registrations...",
+            },
+            columnDefs: [
+                { responsivePriority: 1, targets: 1 }, // Name
+                { responsivePriority: 2, targets: 4 }, // Contact
+                { responsivePriority: 3, targets: 5 }, // Email
+                { responsivePriority: 4, targets: -1 } // Actions
+            ]
+        });
+
+        // Add confirmation for delete actions
+        $('.btn-delete').click(function (e) {
+            if (!confirm('Are you sure you want to delete this registration?')) {
+                e.preventDefault();
+            }
+        });
+    });
+</script>

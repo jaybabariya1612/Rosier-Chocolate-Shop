@@ -1,0 +1,517 @@
+﻿@model RosierBars.Models.RegisterModel
+
+@{
+    ViewBag.Title = "Registration Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="registration-container">
+    <div class="registration-card animate__animated animate__fadeInUp">
+        <div class="registration-card-header">
+            <div class="registration-header-content">
+                <h1 class="registration-title">
+                    <svg class="registration-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                    </svg>
+                    Registration Details
+                </h1>
+                <div class="registration-actions">
+                    <button class="btn-print" title="Print">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path d="M19 8h-1V3H6v5H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zM8 5h8v3H8V5zm8 14H8v-4h8v4zm2-4v-2H6v2H4v-4c0-.55.45-1 1-1h14c.55 0 1 .45 1 1v4h-2z" />
+                        </svg>
+                    </button>
+                    <button class="btn-pdf" title="Download PDF">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="registration-id-badge">
+                ID: #@Model.RegisterID
+            </div>
+        </div>
+
+        <div class="registration-card-body">
+            <div class="registration-detail-grid">
+                <!-- Personal Info Section -->
+                <div class="registration-section personal-info">
+                    <h2 class="section-title">
+                        <svg class="section-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
+                        </svg>
+                        Personal Information
+                    </h2>
+                    <div class="detail-item">
+                        <div class="detail-label">First Name</div>
+                        <div class="detail-value">@Model.FirstName</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Last Name</div>
+                        <div class="detail-value">@Model.LastName</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Gender</div>
+                        <div class="detail-value">@Model.Gender</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Date of Birth</div>
+                        <div class="detail-value">@Model.DOB</div>
+                    </div>
+                </div>
+
+                <!-- Contact Info Section -->
+                <div class="registration-section contact-info">
+                    <h2 class="section-title">
+                        <svg class="section-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                        </svg>
+                        Contact Information
+                    </h2>
+                    <div class="detail-item">
+                        <div class="detail-label">Mobile</div>
+                        <div class="detail-value">@Model.MobileNo</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Email</div>
+                        <div class="detail-value">@Model.Email</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Address</div>
+                        <div class="detail-value">@Model.Address</div>
+                    </div>
+                </div>
+
+                <!-- Account Info Section -->
+                <div class="registration-section account-info">
+                    <h2 class="section-title">
+                        <svg class="section-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11V11.99z" />
+                        </svg>
+                        Account Information
+                    </h2>
+                    <div class="detail-item">
+                        <div class="detail-label">Password</div>
+                        <div class="detail-value">••••••••</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Confirm Password</div>
+                        <div class="detail-value">••••••••</div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Terms Agreed</div>
+                        <div class="detail-value">
+                            <span class="term-agree-badge @(Model.IsTermAgree ? "active" : "")">
+                                @(Model.IsTermAgree ? "Agreed" : "Not Agreed")
+                                <svg class="term-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                    @if (Model.IsTermAgree)
+                                    {
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
+                                    }
+                                    else
+                                    {
+                                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z" />
+                                    }
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="detail-label">Registration Date</div>
+                        <div class="detail-value">@Model.EntryDate</div>
+                    </div>
+                    @if (Model.UpdateDate != null)
+                    {
+                        <div class="detail-item">
+                            <div class="detail-label">Last Updated</div>
+                            <div class="detail-value">@Model.UpdateDate</div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="registration-card-footer">
+            <a href="@Url.Action("List")" class="btn-back">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+                </svg>
+                Back to List
+            </a>
+            <a href="@Url.Action("Edit", new { id = Model.RegisterID })" class="btn-edit">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+                </svg>
+                Edit Profile
+            </a>
+        </div>
+    </div>
+</div>
+
+@*@section Styles {*@
+
+    <style>
+        /* Base Styles */
+        :root {
+            --primary-color: #4e54c8;
+            --secondary-color: #8f94fb;
+            --success-color: #4CAF50;
+            --danger-color: #F44336;
+            --text-color: #2d3748;
+            --light-text: #718096;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            position: relative;
+            overflow-x: hidden;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Main Container */
+        .registration-container {
+            max-width: 1200px;
+            padding: 2rem 1rem;
+            margin: 0 auto;
+        }
+
+        /* Card Styles */
+        .registration-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+            .registration-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            }
+
+        /* Header Styles */
+        .registration-card-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 2rem;
+            color: white;
+            position: relative;
+        }
+
+        .registration-header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .registration-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .registration-icon {
+            width: 32px;
+            height: 32px;
+            fill: white;
+            margin-right: 12px;
+        }
+
+        .registration-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+            .registration-actions button {
+                background: rgba(255, 255, 255, 0.2);
+                border: none;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+                .registration-actions button:hover {
+                    background: rgba(255, 255, 255, 0.3);
+                    transform: scale(1.1);
+                }
+
+                .registration-actions button svg {
+                    fill: white;
+                    width: 20px;
+                    height: 20px;
+                }
+
+        .registration-id-badge {
+            position: absolute;
+            bottom: -20px;
+            right: 30px;
+            background: white;
+            color: var(--primary-color);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Body Styles */
+        .registration-card-body {
+            padding: 2rem;
+        }
+
+        .registration-detail-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .registration-section {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+            .registration-section:hover {
+                transform: translateY(-3px);
+            }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(79, 84, 200, 0.1);
+        }
+
+        .section-icon {
+            width: 24px;
+            height: 24px;
+            fill: var(--primary-color);
+            margin-right: 10px;
+        }
+
+        /* Detail Items */
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+            .detail-item:last-child {
+                border-bottom: none;
+            }
+
+        .detail-label {
+            font-weight: 500;
+            color: var(--light-text);
+            flex: 1;
+        }
+
+        .detail-value {
+            font-weight: 400;
+            color: var(--text-color);
+            flex: 1;
+            text-align: right;
+        }
+
+        /* Terms Agree Badge */
+        .term-agree-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            background: rgba(244, 67, 54, 0.1);
+            color: var(--danger-color);
+        }
+
+            .term-agree-badge.active {
+                background: rgba(76, 175, 80, 0.1);
+                color: var(--success-color);
+            }
+
+        .term-icon {
+            width: 16px;
+            height: 16px;
+            margin-left: 5px;
+        }
+
+        /* Footer Styles */
+        .registration-card-footer {
+            display: flex;
+            justify-content: space-between;
+            padding: 1.5rem 2rem;
+            background: rgba(0, 0, 0, 0.02);
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-back, .btn-edit {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.7rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-back {
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--light-text);
+        }
+
+            .btn-back:hover {
+                background: rgba(0, 0, 0, 0.1);
+                color: var(--text-color);
+            }
+
+        .btn-edit {
+            background: var(--primary-color);
+            color: white;
+        }
+
+            .btn-edit:hover {
+                background: #3a40b5;
+                transform: translateY(-2px);
+                box-shadow: 0 4px 10px rgba(78, 84, 200, 0.3);
+            }
+
+            .btn-back svg, .btn-edit svg {
+                width: 18px;
+                height: 18px;
+                margin-right: 8px;
+            }
+
+        /* Animations */
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .registration-section {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .personal-info {
+            animation-delay: 0.1s;
+        }
+
+        .contact-info {
+            animation-delay: 0.2s;
+        }
+
+        .account-info {
+            animation-delay: 0.3s;
+        }
+
+        /* Responsive Adjustments */
+        @@media (max-width: 768px) {
+            .registration-header-content {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .registration-actions {
+                align-self: flex-end;
+            }
+
+            .registration-detail-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .registration-card-footer {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .btn-back, .btn-edit {
+                justify-content: center;
+                width: 100%;
+            }
+        }
+    </style>
+
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Print functionality
+            document.querySelector('.btn-print')?.addEventListener('click', function() {
+                window.print();
+            });
+
+            // PDF Download functionality
+            document.querySelector('.btn-pdf')?.addEventListener('click', generatePDF);
+
+            document.querySelector('.btn-edit')?.addEventListener('click', function(e) {
+                // Add animation before navigation
+                e.preventDefault();
+                document.querySelector('.registration-card').classList.add('animate__animated', 'animate__fadeOut');
+                setTimeout(() => {
+                    window.location.href = e.target.closest('a').href;
+                }, 500);
+            });
+
+            function generatePDF() {
+                const element = document.querySelector('.registration-card');
+                const opt = {
+                    margin: 10,
+                    filename: 'Registration_Details_' + @Model.RegisterID + '.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2, logging: true, useCORS: true },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+
+                // Add loading state
+                const btn = document.querySelector('.btn-pdf');
+                if (btn) {
+                    const originalHTML = btn.innerHTML;
+                    btn.innerHTML = '<svg class="spinner" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12,4V2A10,10 0 0,0 2,12H4A8,8 0 0,1 12,4Z"/></svg> Generating...';
+
+                    // Generate PDF
+                    html2pdf().from(element).set(opt).save().then(() => {
+                        btn.innerHTML = originalHTML;
+                    });
+                }
+            }
+
+            // Add hover animations to sections
+            document.querySelectorAll('.detail-item').forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.style.backgroundColor = 'rgba(79, 84, 200, 0.03)';
+                });
+                item.addEventListener('mouseleave', function() {
+                    this.style.backgroundColor = 'transparent';
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,279 @@
+﻿@model RosierBars.Models.EmployeeForm
+
+@{
+    ViewBag.Title = "Employee Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    :root {
+        --primary-color: #3498db;
+        --primary-dark: #2980b9;
+        --secondary-color: #2c3e50;
+        --light-color: #ecf0f1;
+        --success-color: #27ae60;
+        --warning-color: #f39c12;
+        --danger-color: #e74c3c;
+        --border-radius: 8px;
+        --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .employee-card {
+        border: none;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        overflow: hidden;
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        padding: 1.5rem;
+        border-bottom: none;
+    }
+
+        .card-header h3 {
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin: 0;
+        }
+
+    .detail-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+        .detail-table th {
+            width: 30%;
+            background-color: #f8f9fa;
+            font-weight: 600;
+            padding: 1rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .detail-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #dee2e6;
+            vertical-align: middle;
+        }
+
+        .detail-table tr:last-child th,
+        .detail-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .detail-table tr:hover td {
+            background-color: rgba(52, 152, 219, 0.05);
+        }
+
+    .status-active {
+        color: var(--success-color);
+        font-weight: 600;
+    }
+
+    .status-inactive {
+        color: var(--danger-color);
+        font-weight: 600;
+    }
+
+    .gender-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: capitalize;
+    }
+
+    .gender-male {
+        background-color: #3498db;
+        color: white;
+    }
+
+    .gender-female {
+        background-color: #e84393;
+        color: white;
+    }
+
+    .gender-other {
+        background-color: #9b59b6;
+        color: white;
+    }
+
+    .card-footer {
+        background-color: #f8f9fa;
+        border-top: none;
+        padding: 1.5rem;
+    }
+
+    .btn-edit {
+        background-color: var(--warning-color);
+        border-color: var(--warning-color);
+        color: white;
+        font-weight: 600;
+        padding: 0.5rem 1.5rem;
+    }
+
+        .btn-edit:hover {
+            background-color: #e67e22;
+            border-color: #e67e22;
+            color: white;
+        }
+
+    .btn-back {
+        font-weight: 600;
+        padding: 0.5rem 1.5rem;
+    }
+
+    /* Responsive adjustments */
+    @@media (max-width: 768px) {
+        .detail-table th,
+        .detail-table td {
+            display: block;
+            width: 100%;
+        }
+
+        .detail-table th {
+            background-color: transparent;
+            padding-bottom: 0.25rem;
+            border-bottom: none;
+        }
+
+        .detail-table td {
+            padding-top: 0.25rem;
+            padding-bottom: 1rem;
+        }
+
+        .detail-table tr {
+            border-bottom: 1px solid #dee2e6;
+        }
+    }
+</style>
+
+<div class="container mt-4 mb-5">
+    <div class="card employee-card">
+        <div class="card-header text-white">
+            <h3>Employee Details</h3>
+        </div>
+        <div class="card-body p-0">
+            <table class="detail-table">
+                <tbody>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.EmployeeID)</th>
+                        <td>@Html.DisplayFor(model => model.EmployeeID)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.FirstName)</th>
+                        <td>@Html.DisplayFor(model => model.FirstName)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.LastName)</th>
+                        <td>@Html.DisplayFor(model => model.LastName)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Email)</th>
+                        <td>@Html.DisplayFor(model => model.Email)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.PhoneNo)</th>
+                        <td>@Html.DisplayFor(model => model.PhoneNo)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Address)</th>
+                        <td>@Html.DisplayFor(model => model.Address)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.City)</th>
+                        <td>@Html.DisplayFor(model => model.City)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.State)</th>
+                        <td>@Html.DisplayFor(model => model.State)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.PostalCode)</th>
+                        <td>@Html.DisplayFor(model => model.PostalCode)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Country)</th>
+                        <td>@Html.DisplayFor(model => model.Country)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.DateOfBirth)</th>
+                        <td>@Html.DisplayFor(model => model.DateOfBirth)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Gender)</th>
+                        <td>
+                            @{
+                                var genderClass = "";
+                                switch (Model.Gender?.ToLower())
+                                {
+                                    case "male":
+                                        genderClass = "gender-male";
+                                        break;
+                                    case "female":
+                                        genderClass = "gender-female";
+                                        break;
+                                    default:
+                                        genderClass = "gender-other";
+                                        break;
+                                }
+                            }
+                            <span class="gender-badge @genderClass">@Model.Gender</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.HireDate)</th>
+                        <td>@Html.DisplayFor(model => model.HireDate)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Position)</th>
+                        <td>@Html.DisplayFor(model => model.Position)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Department)</th>
+                        <td>@Html.DisplayFor(model => model.Department)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Salary)</th>
+                        <td>@Html.DisplayFor(model => model.Salary)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Status)</th>
+                        <td>
+                            @if (Model.Status?.ToLower() == "active")
+                            {
+                                <span class="status-active">@Model.Status</span>
+                            }
+                            else
+                            {
+                                <span class="status-inactive">@Model.Status</span>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.EmergencyContact)</th>
+                        <td>@Html.DisplayFor(model => model.EmergencyContact)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.BankAccount)</th>
+                        <td>@Html.DisplayFor(model => model.BankAccount)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.CreatedAt)</th>
+                        <td>@Html.DisplayFor(model => model.CreatedAt)</td>
+                    </tr>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.UpdatedAt)</th>
+                        <td>@Html.DisplayFor(model => model.UpdatedAt)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="card-footer text-end">
+            @Html.ActionLink("Edit", "Edit", new { id = Model.EmployeeID }, new { @class = "btn btn-edit me-2" })
+            @Html.ActionLink("Back to List", "List", null, new { @class = "btn btn-secondary btn-back" })
+        </div>
+    </div>
+</div>

@@ -1,0 +1,544 @@
+﻿@model IEnumerable<RosierBars.Models.OrderModel>
+<style>
+    /* Enhanced Chocolate Luxury Theme */
+    :root {
+        --chocolate-dark: #2A2118;
+        --chocolate-medium: #4A3728;
+        --chocolate-light: #6D4C35;
+        --chocolate-accent: #8B5A2B;
+        --cream-light: #F8F1E5;
+        --cream-dark: #E8D9C5;
+        --gold-light: #D4AF37;
+        --gold-dark: #B8860B;
+        --success: #A5C882;
+        --warning: #E8C07D;
+        --error: #E8A87C;
+        --info: #6C8EBF;
+    }
+
+    .chocolate-orders-container {
+        font-family: 'Playfair Display', serif;
+        background: linear-gradient(135deg, var(--chocolate-medium) 0%, var(--chocolate-dark) 100%);
+        padding: 2.5rem;
+        border-radius: 18px;
+        box-shadow: 0 16px 32px rgba(0, 0, 0, 0.25);
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .orders-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+    }
+
+    .orders-grid-title {
+        color: var(--gold-light);
+        font-size: 1.8rem;
+        margin: 0;
+        letter-spacing: 1px;
+        position: relative;
+        flex: 1;
+        min-width: 300px;
+    }
+
+    .order-filters {
+        display: flex;
+        gap: 0.8rem;
+        flex-wrap: wrap;
+    }
+
+    .filter-btn {
+        padding: 0.6rem 1.2rem;
+        border-radius: 30px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: none;
+        background: rgba(248, 241, 229, 0.1);
+        color: var(--cream-light);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+        .filter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .filter-btn.active {
+            background: var(--gold-light);
+            color: var(--chocolate-dark);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .filter-btn i {
+            font-size: 0.9rem;
+        }
+
+    .filter-count {
+        background: rgba(42, 33, 24, 0.4);
+        padding: 0.2rem 0.5rem;
+        border-radius: 10px;
+        font-size: 0.7rem;
+        margin-left: 0.3rem;
+    }
+
+    .orders-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .order-card {
+        background: rgba(248, 241, 229, 0.08);
+        backdrop-filter: blur(10px);
+        border-radius: 14px;
+        padding: 1.8rem;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        border: 1px solid rgba(139, 90, 43, 0.2);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        position: relative;
+        overflow: hidden;
+    }
+
+        .order-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--gold-light), var(--chocolate-accent));
+            transition: all 0.3s ease;
+        }
+
+        .order-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.25);
+            background: rgba(74, 55, 40, 0.4);
+        }
+
+            .order-card:hover::before {
+                width: 6px;
+            }
+
+    .order-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.2rem;
+        padding-bottom: 0.8rem;
+        border-bottom: 1px dashed rgba(216, 184, 124, 0.3);
+    }
+
+    .order-id {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: var(--gold-light);
+        letter-spacing: 0.5px;
+    }
+
+    .order-date {
+        font-size: 0.85rem;
+        color: var(--cream-dark);
+        font-style: italic;
+    }
+
+    .order-content {
+        display: grid;
+        grid-template-columns: 100px 1fr;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .order-image-container {
+        width: 100px;
+        height: 100px;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        position: relative;
+    }
+
+    .order-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+    }
+
+    .order-image-container:hover .order-image {
+        transform: scale(1.05);
+    }
+
+    .order-details {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .order-product {
+        font-size: 1.1rem;
+        color: var(--cream-light);
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+    }
+
+    .order-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 0.5rem;
+    }
+
+    .order-meta-item {
+        font-size: 0.85rem;
+    }
+
+    .order-meta-label {
+        color: var(--gold-light);
+        display: block;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.2rem;
+        opacity: 0.8;
+    }
+
+    .order-meta-value {
+        color: var(--cream-light);
+        font-weight: 500;
+    }
+
+    .order-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 1.5rem;
+        padding-top: 1rem;
+        border-top: 1px dashed rgba(216, 184, 124, 0.3);
+    }
+
+    .order-status {
+        padding: 0.4rem 1rem;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .status-pending {
+        background: rgba(232, 192, 125, 0.2);
+        color: var(--warning);
+    }
+
+    .status-processing {
+        background: rgba(108, 142, 191, 0.2);
+        color: var(--info);
+    }
+
+    .status-completed {
+        background: rgba(165, 200, 130, 0.2);
+        color: var(--success);
+    }
+
+    .status-shipped {
+        background: rgba(165, 200, 130, 0.2);
+        color: var(--success);
+    }
+
+    .status-cancelled {
+        background: rgba(232, 168, 124, 0.2);
+        color: var(--error);
+    }
+
+    .order-actions {
+        display: flex;
+        gap: 0.8rem;
+    }
+
+    .order-action {
+        background: linear-gradient(135deg, var(--chocolate-accent) 0%, var(--chocolate-light) 100%);
+        color: var(--cream-light);
+        border: none;
+        padding: 0.5rem 1.2rem;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+        .order-action:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+            background: linear-gradient(135deg, var(--chocolate-light) 0%, var(--chocolate-accent) 100%);
+        }
+
+        .order-action:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .order-action i {
+            font-size: 0.9rem;
+        }
+
+    .order-amount {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--gold-light);
+        margin-left: auto;
+    }
+
+    .no-orders {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 3rem;
+        color: var(--cream-dark);
+        font-size: 1.2rem;
+    }
+
+    .order-badge {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: var(--gold-light);
+        color: var(--chocolate-dark);
+        border-radius: 50%;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem;
+        font-weight: bold;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    @@media (max-width: 768px) {
+        .chocolate-orders-container {
+            padding: 1.5rem;
+        }
+
+        .orders-header {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .orders-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .order-content {
+            grid-template-columns: 1fr;
+        }
+
+        .order-image-container {
+            width: 100%;
+            height: 180px;
+            margin-bottom: 1rem;
+        }
+
+        .order-footer {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .order-amount {
+            margin-left: 0;
+            margin-right: auto;
+        }
+    }
+</style>
+
+<div class="chocolate-orders-container">
+    <div class="orders-header">
+        <h2 class="orders-grid-title">Your Chocolate Orders</h2>
+        <div class="order-filters">
+            <button class="filter-btn active" data-filter="all">
+                <i class="fas fa-list"></i> All
+                <span class="filter-count">@Model.Count()</span>
+            </button>
+            <button class="filter-btn" data-filter="processing">
+                <i class="fas fa-sync-alt"></i> Processing
+                <span class="filter-count">@Model.Count(o => o.OrderStatus == "Processing")</span>
+            </button>
+            <button class="filter-btn" data-filter="shipped">
+                <i class="fas fa-truck"></i> Shipped
+                <span class="filter-count">@Model.Count(o => o.OrderStatus == "Shipped")</span>
+            </button>
+            <button class="filter-btn" data-filter="completed">
+                <i class="fas fa-check-circle"></i> Completed
+                <span class="filter-count">@Model.Count(o => o.OrderStatus == "Completed")</span>
+            </button>
+            <button class="filter-btn" data-filter="cancelled">
+                <i class="fas fa-times-circle"></i> Cancelled
+                <span class="filter-count">@Model.Count(o => o.OrderStatus == "Cancelled")</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="orders-grid">
+        @if (!Model.Any())
+        {
+            <div class="no-orders">
+                <i class="fas fa-box-open" style="font-size: 2.5rem; margin-bottom: 1rem; color: var(--gold-light);"></i>
+                <h3>No orders found</h3>
+                <p>You haven't placed any orders yet. Start your chocolate journey today!</p>
+            </div>
+        }
+        else
+        {
+            foreach (var item in Model)
+            {
+                <div class="order-card" data-status="@item.OrderStatus.ToLower()">
+                    <div class="order-header">
+                        <div class="order-id">Order #@item.OrderId</div>
+                        <div class="order-date">@item.OrderDate.ToString("MMM dd, yyyy")</div>
+                    </div>
+
+                    <div class="order-content">
+                        <div class="order-image-container">
+                            @if (!string.IsNullOrEmpty(item.ImageUrl))
+                            {
+                                <img src="~/Content/images/@item.ImageUrl" alt="@item.ProductName" class="order-image" />
+                            }
+                            else
+                            {
+                                <div style="background: var(--chocolate-medium); width:100%; height:100%; display:flex; align-items:center; justify-content:center; color:var(--cream-dark)">
+                                    <i class="fas fa-image"></i>
+                                </div>
+                            }
+                            @if (item.Quantity > 1)
+                            {
+                                <div class="order-badge">@item.Quantity</div>
+                            }
+                        </div>
+
+                        <div class="order-details">
+                            <h3 class="order-product">@item.ProductName</h3>
+
+                            <div class="order-meta">
+                                <div class="order-meta-item">
+                                    <span class="order-meta-label">Quantity</span>
+                                    <span class="order-meta-value">@item.Quantity</span>
+                                </div>
+                                <div class="order-meta-item">
+                                    <span class="order-meta-label">Price</span>
+                                    <span class="order-meta-value">₹@item.Price</span>
+                                </div>
+                                <div class="order-meta-item">
+                                    <span class="order-meta-label">Contact</span>
+                                    <span class="order-meta-value">@item.Mobile</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="order-footer">
+                        <div class="order-status status-@item.OrderStatus.ToLower()">
+                            @item.OrderStatus
+                        </div>
+
+                        <div style="display: flex; align-items: center; gap: 1rem;">
+                            <div class="order-amount">₹@item.TotalAmount</div>
+                            <div class="order-actions">
+                                @if (item.OrderStatus == "Processing")
+                                {
+                                    using (Html.BeginForm("CancelOrder", "Shop", FormMethod.Post))
+                                    {
+                                        @Html.Hidden("id", item.OrderId)
+                                        <button type="submit" class="order-action">
+                                            <i class="fas fa-times-circle"></i> Cancel
+                                        </button>
+                                    }
+                                }
+                                else if (item.OrderStatus == "Shipped")
+                                {
+                                    <button class="order-action" onclick="trackOrder('@item.OrderId')">
+                                        <i class="fas fa-map-marker-alt"></i> Track
+                                    </button>
+                                }
+                                <a href="@Url.Action("_OrderDetails", "Dashboard", new { id = item.OrderId })" class="order-action text-decoration-none">
+                                    <i class="fas fa-eye"></i> Details
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            // Filter functionality
+            $('.filter-btn').on('click', function () {
+                const filter = $(this).data('filter');
+
+                // Update active button
+                $('.filter-btn').removeClass('active');
+                $(this).addClass('active');
+
+                // Show/hide orders
+                if (filter === 'all') {
+                    $('.order-card').show();
+                } else {
+                    $('.order-card').hide();
+                    $(`.order-card[data-status="${filter}"]`).show();
+                }
+
+                // Handle empty state
+                if ($('.order-card:visible').length === 0) {
+                    if ($('.no-orders').length === 0) {
+                        $('.orders-grid').append(`
+                            <div class="no-orders">
+                                <i class="fas fa-box-open" style="font-size: 2.5rem; margin-bottom: 1rem; color: var(--gold-light);"></i>
+                                <h3>No ${filter} orders</h3>
+                                <p>You don't have any ${filter} orders at this time.</p>
+                            </div>
+                        `);
+                    } else {
+                        $('.no-orders h3').text(`No ${filter} orders`);
+                        $('.no-orders p').text(`You don't have any ${filter} orders at this time.`);
+                        $('.no-orders').show();
+                    }
+                } else {
+                    $('.no-orders').remove();
+                }
+            });
+        });
+
+        function trackOrder(orderId) {
+            // Implement order tracking functionality
+            alert(`Tracking order #${orderId}`);
+        }
+
+        function viewOrderDetails(orderId) {
+            // Implement order details view
+            window.location.href = `/Shop/OrderDetails/${orderId}`;
+        }
+    </script>
+}

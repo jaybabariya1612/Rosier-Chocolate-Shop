@@ -1,0 +1,273 @@
+﻿@{
+    ViewBag.Title = "Terms of Service";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    /* Chocolate-themed color palette */
+    :root {
+        --dark-chocolate: #3a1f04;
+        --milk-chocolate: #7b3f00;
+        --caramel: #d27d46;
+        --cream: #f8f1e5;
+        --gold: #d4af37;
+    }
+
+    /* Main styling */
+    body {
+        background-color: var(--cream);
+        color: var(--dark-chocolate);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+    }
+
+    .terms-container {
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 30px;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(58, 31, 4, 0.1);
+        position: relative;
+        overflow: hidden;
+    }
+
+        .terms-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, var(--dark-chocolate), var(--caramel), var(--gold));
+        }
+
+    h1 {
+        color: var(--milk-chocolate);
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 2.5rem;
+        position: relative;
+        animation: fadeInDown 1s ease;
+    }
+
+        h1::after {
+            content: "";
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: var(--caramel);
+            margin: 15px auto;
+            border-radius: 2px;
+        }
+
+    h2 {
+        color: var(--milk-chocolate);
+        margin-top: 30px;
+        font-size: 1.8rem;
+        border-bottom: 2px dashed var(--caramel);
+        padding-bottom: 8px;
+        animation: fadeIn 1.2s ease;
+    }
+
+    p, ul, ol {
+        margin-bottom: 20px;
+        animation: fadeIn 1.5s ease;
+    }
+
+    ul, ol {
+        padding-left: 20px;
+    }
+
+    li {
+        margin-bottom: 8px;
+        position: relative;
+    }
+
+    .terms-container li::before {
+        content: "🍫";
+        position: absolute;
+        left: -25px;
+    }
+
+    .highlight {
+        background-color: rgba(210, 125, 70, 0.1);
+        padding: 2px 5px;
+        border-radius: 3px;
+    }
+
+    .contact-info {
+        background-color: var(--cream);
+        padding: 20px;
+        border-radius: 10px;
+        border-left: 5px solid var(--gold);
+        margin-top: 30px;
+        animation: fadeInUp 1.8s ease;
+    }
+
+    .chocolate-decoration {
+        text-align: center;
+        margin: 30px 0;
+        opacity: 0;
+        animation: fadeIn 2s ease forwards;
+        animation-delay: 0.5s;
+    }
+
+    /* Animations */
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    @@keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @@keyframes pulse {
+        0% {
+            transform: scale(1);
+        }
+
+        50% {
+            transform: scale(1.05);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    /* Responsive design */
+    @@media (max-width: 768px) {
+        .terms-container {
+            margin: 20px;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+
+<div class="terms-container">
+    <h1>Terms of Service</h1>
+
+    <div class="chocolate-decoration">
+        <svg width="100" height="60" viewBox="0 0 100 60" style="animation: pulse 2s infinite;">
+            <path d="M20,10 Q50,0 80,10 Q90,20 85,40 Q80,55 50,55 Q20,55 15,40 Q10,20 20,10" fill="var(--milk-chocolate)" />
+            <circle cx="35" cy="25" r="5" fill="var(--gold)" />
+            <circle cx="65" cy="25" r="5" fill="var(--gold)" />
+            <path d="M40,35 Q50,40 60,35" stroke="var(--gold)" stroke-width="2" fill="none" />
+        </svg>
+    </div>
+
+    <p><em>Last Updated: @DateTime.Now.ToString("MMMM dd, yyyy")</em></p>
+
+    <p>Welcome to <span class="highlight">[Your Chocolate Brand Name]</span>. These Terms of Service ("Terms") govern your use of our website, products, and services. By accessing or using our services, you agree to comply with these Terms.</p>
+
+    <h2>1. Acceptance of Terms</h2>
+    <p>By using our website or purchasing our products, you agree to these Terms and our Privacy Policy. If you do not agree, please do not use our services.</p>
+
+    <h2>2. Ordering & Payments</h2>
+    <ul>
+        <li>All orders are subject to product availability</li>
+        <li>Prices are subject to change without notice</li>
+        <li>We accept major credit cards and PayPal</li>
+        <li>You are responsible for providing accurate billing/shipping information</li>
+    </ul>
+
+    <h2>3. Shipping & Delivery</h2>
+    <ul>
+        <li>Shipping times are estimates, not guarantees</li>
+        <li>We are not responsible for delays due to weather or carrier issues</li>
+        <li>International orders may be subject to customs fees</li>
+    </ul>
+
+    <h2>4. Returns & Refunds</h2>
+    <ul>
+        <li>Perishable items cannot be returned unless defective</li>
+        <li>Damaged items must be reported within 48 hours of delivery</li>
+        <li>Refunds will be issued to the original payment method</li>
+    </ul>
+
+    <h2>5. Intellectual Property</h2>
+    <p>All content on our website (logos, images, text) is our property and protected by copyright laws. You may not use our content without written permission.</p>
+
+    <h2>6. User Conduct</h2>
+    <p>You agree not to:</p>
+    <ul>
+        <li>Use our website for illegal purposes</li>
+        <li>Attempt to gain unauthorized access to our systems</li>
+        <li>Submit false or misleading information</li>
+    </ul>
+
+    <h2>7. Limitation of Liability</h2>
+    <p>We are not liable for:</p>
+    <ul>
+        <li>Any allergic reactions to our products</li>
+        <li>Indirect, incidental, or consequential damages</li>
+        <li>Errors in product descriptions or pricing</li>
+    </ul>
+
+    <h2>8. Changes to Terms</h2>
+    <p>We may update these Terms periodically. Continued use after changes constitutes acceptance.</p>
+
+    <h2>9. Governing Law</h2>
+    <p>These Terms are governed by the laws of [Your Country/State]. Any disputes will be resolved in [Your Jurisdiction] courts.</p>
+
+    <div class="contact-info">
+        <h2>10. Contact Us</h2>
+        <p>For questions about these Terms, please contact:</p>
+        <p>
+            <strong>[Your Chocolate Brand Name]</strong><br>
+            Email: <strong>[Your Contact Email]</strong><br>
+            Address: <strong>[Your Business Address]</strong>
+        </p>
+    </div>
+
+    <div class="chocolate-decoration">
+        <p style="font-size: 1.2rem; color: var(--milk-chocolate);">Thank you for choosing [Your Chocolate Brand Name]! 🍫</p>
+    </div>
+</div>
+
+<script>
+    // Add smooth scrolling to all links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+</script>

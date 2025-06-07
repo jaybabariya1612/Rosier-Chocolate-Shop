@@ -1,0 +1,679 @@
+﻿@model RosierBars.Models.ProductModel
+
+@{
+    ViewBag.Title = "Edit Chocolate Product";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    input, select, textarea {
+        max-width: 100%;
+    }
+
+    :root {
+        --chocolate-dark: #4B2C20;
+        --chocolate-medium: #7B3F00;
+        --chocolate-light: #D2691E;
+        --chocolate-cream: #FFF8E1;
+        --chocolate-gold: #FFD700;
+        --chocolate-milk: #F5F5DC;
+    }
+
+    body {
+        font-family: 'Montserrat', sans-serif;
+        background-color: var(--chocolate-cream);
+    }
+
+    .edit-container {
+        max-width: 1000px;
+        margin: 120px auto;
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(75, 44, 32, 0.1);
+        border: 1px solid var(--chocolate-light);
+    }
+
+    .edit-header {
+        text-align: center;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid var(--chocolate-light);
+    }
+
+    .edit-title {
+        color: var(--chocolate-dark);
+        font-weight: 700;
+        font-size: 2rem;
+        position: relative;
+    }
+
+        .edit-title:after {
+            content: "";
+            position: absolute;
+            bottom: -17px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--chocolate-gold), var(--chocolate-light));
+            border-radius: 2px;
+        }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .control-label {
+        font-weight: 600;
+        color: var(--chocolate-dark);
+        margin-bottom: 8px;
+    }
+
+    .form-control {
+        border: 1px solid var(--chocolate-light);
+        border-radius: 6px;
+        padding: 10px 15px;
+        background-color: var(--chocolate-milk);
+        transition: all 0.3s;
+    }
+
+        .form-control:focus {
+            border-color: var(--chocolate-medium);
+            box-shadow: 0 0 0 0.25rem rgba(123, 63, 0, 0.25);
+            background-color: white;
+        }
+
+    .text-danger {
+        color: #dc3545;
+        font-size: 0.85rem;
+    }
+
+    .btn-save {
+        background-color: var(--chocolate-medium);
+        border-color: var(--chocolate-medium);
+        color: white;
+        font-weight: 600;
+        padding: 10px 30px;
+        border-radius: 50px;
+        transition: all 0.3s;
+        box-shadow: 0 4px 15px rgba(123, 63, 0, 0.3);
+    }
+
+        .btn-save:hover {
+            background-color: var(--chocolate-dark);
+            border-color: var(--chocolate-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(75, 44, 32, 0.4);
+        }
+
+    .back-link {
+        color: var(--chocolate-medium);
+        font-weight: 500;
+        margin-top: 20px;
+        display: inline-block;
+    }
+
+        .back-link:hover {
+            color: var(--chocolate-dark);
+            text-decoration: none;
+        }
+
+    .section-title {
+        font-size: 1.3rem;
+        color: var(--chocolate-medium);
+        font-weight: 600;
+        margin: 30px 0 15px;
+        border-bottom: 1px solid var(--chocolate-light);
+        padding-bottom: 8px;
+    }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0 -15px;
+    }
+
+    .col-md-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+        padding: 0 15px;
+    }
+
+    .col-md-12 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        padding: 0 15px;
+    }
+
+    .image-preview {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 2px solid var(--chocolate-light);
+        margin-top: 10px;
+    }
+
+    .image-upload-container {
+        border: 2px dashed var(--chocolate-light);
+        border-radius: 12px;
+        padding: 20px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.3s;
+        background-color: rgba(255, 248, 225, 0.5);
+    }
+
+        .image-upload-container:hover {
+            background-color: rgba(210, 105, 30, 0.1);
+            border-color: var(--chocolate-medium);
+        }
+
+    .image-preview {
+        width: 120px;
+        height: 120px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 2px solid var(--chocolate-light);
+    }
+
+    .remove-image-btn {
+        width: 25px;
+        height: 25px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    @@media (max-width: 768px) {
+        .col-md-6 {
+            flex: 0 0 100%;
+            max-width: 100%;
+        }
+
+        .edit-container {
+            padding: 20px;
+            margin: 120px auto;
+        }
+    }
+</style>
+
+<div class="edit-container">
+    <div class="edit-header">
+        <h2 class="edit-title">Edit Chocolate Product</h2>
+    </div>
+
+    @using (Html.BeginForm("ProductEdit", "Product", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <!-- Basic Information Section -->
+            <h4 class="section-title">Basic Information</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ProductId, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.ProductId, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.ProductId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Brand, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Brand, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Brand, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ModelName, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.ModelName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ModelName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ProductName, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextAreaFor(model => model.Description, new { @class = "form-control", rows = "3" })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pricing Section -->
+            <h4 class="section-title">Pricing Information</h4>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Price, htmlAttributes: new { @class = "control-label" })
+                        <div class="input-group">
+                            <span class="input-group-text">₹</span>
+                            @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.OriginalPrice, htmlAttributes: new { @class = "control-label" })
+                        <div class="input-group">
+                            <span class="input-group-text">₹</span>
+                            @Html.EditorFor(model => model.OriginalPrice, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        @Html.ValidationMessageFor(model => model.OriginalPrice, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.DiscountPercent, htmlAttributes: new { @class = "control-label" })
+                        <div class="input-group">
+                            @Html.EditorFor(model => model.DiscountPercent, new { htmlAttributes = new { @class = "form-control" } })
+                            <span class="input-group-text">%</span>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.DiscountPercent, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ratings Section -->
+            <h4 class="section-title">Ratings & Reviews</h4>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Rating, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Rating, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Rating, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.TotalRatings, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.TotalRatings, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.TotalRatings, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.TotalReviews, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.TotalReviews, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.TotalReviews, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inventory Section -->
+            <h4 class="section-title">Inventory Details</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Available, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.Available, new SelectList(new[] { "Yes", "No" }), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.Available, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Stock, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Stock, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Stock, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Characteristics -->
+            <h4 class="section-title">Product Characteristics</h4>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Flavor, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Flavor, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Flavor, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Type, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FoodPreference, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.FoodPreference, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.FoodPreference, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.PackOf, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.PackOf, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.PackOf, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.NetQuantity, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.NetQuantity, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.NetQuantity, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ShelfLife, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.ShelfLife, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ShelfLife, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.IsGourmet, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.IsGourmet, new SelectList(new[] { "Yes", "No" }), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.IsGourmet, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.IsHomemade, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.IsHomemade, new SelectList(new[] { "Yes", "No" }), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.IsHomemade, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.IsGiftPack, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.IsGiftPack, new SelectList(new[] { "Yes", "No" }), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.IsGiftPack, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Seller, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.Seller, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Seller, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <!-- Business Details -->
+            <h4 class="section-title">Business Details</h4>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.NoReturnsAllowed, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.NoReturnsAllowed, new SelectList(new[] { "Yes", "No" }), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.NoReturnsAllowed, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.GstInvoiceAvailable, htmlAttributes: new { @class = "control-label" })
+                        @Html.DropDownListFor(model => model.GstInvoiceAvailable, new SelectList(new[] { "Yes", "No" }), new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.GstInvoiceAvailable, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ManufacturedBy, htmlAttributes: new { @class = "control-label" })
+                        @Html.EditorFor(model => model.ManufacturedBy, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ManufacturedBy, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Details -->
+            <h4 class="section-title">Product Details</h4>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Ingredients, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextAreaFor(model => model.Ingredients, new { @class = "form-control", rows = "3" })
+                        @Html.ValidationMessageFor(model => model.Ingredients, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.NutritionInfo, htmlAttributes: new { @class = "control-label" })
+                        @Html.TextAreaFor(model => model.NutritionInfo, new { @class = "form-control", rows = "3" })
+                        @Html.ValidationMessageFor(model => model.NutritionInfo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dimensions -->
+            <h4 class="section-title">Dimensions & Weight</h4>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.WidthCm, htmlAttributes: new { @class = "control-label" })
+                        <div class="input-group">
+                            @Html.EditorFor(model => model.WidthCm, new { htmlAttributes = new { @class = "form-control" } })
+                            <span class="input-group-text">cm</span>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.WidthCm, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.HeightCm, htmlAttributes: new { @class = "control-label" })
+                        <div class="input-group">
+                            @Html.EditorFor(model => model.HeightCm, new { htmlAttributes = new { @class = "form-control" } })
+                            <span class="input-group-text">cm</span>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.HeightCm, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.DepthCm, htmlAttributes: new { @class = "control-label" })
+                        <div class="input-group">
+                            @Html.EditorFor(model => model.DepthCm, new { htmlAttributes = new { @class = "form-control" } })
+                            <span class="input-group-text">cm</span>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.DepthCm, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.WeightG, htmlAttributes: new { @class = "control-label" })
+                        <div class="input-group">
+                            @Html.EditorFor(model => model.WeightG, new { htmlAttributes = new { @class = "form-control" } })
+                            <span class="input-group-text">g</span>
+                        </div>
+                        @Html.ValidationMessageFor(model => model.WeightG, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="section-title">Product Images</h4>
+            <div class="col-md-12">
+                <label class="form-label">
+                    <svg class="icon field-icon" width="24" height="24">
+                        <use xlink:href="#icon-upload" />
+                    </svg>
+                    Product Images (Max 5)
+                </label>
+                <div id="dropzone" class="dropzone border p-4 text-center" style="cursor: pointer;">
+                    <svg class="icon" width="48" height="48">
+                        <use xlink:href="#icon-chocolate-bar" />
+                    </svg>
+                    <p>Drag & drop chocolate photos or click to upload</p>
+                    <input type="file" id="ImageUpload" name="ImageFiles" accept="image/*" class="d-none" multiple />
+                    <div id="preview-container" class="mt-3 d-flex flex-wrap gap-3"></div>
+                </div>
+                @Html.HiddenFor(m => m.ImageUrl, new { id = "ImageUrl" })
+            </div>
+        </div>
+
+        <!-- Dates -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.UpdatedAt, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.CreatedAt, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.CreatedAt, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CreatedAt, htmlAttributes: new { @class = "control-label" })
+                    @Html.EditorFor(model => model.UpdatedAt, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.UpdatedAt, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group text-center">
+            <input type="submit" value="Save Changes" class="btn btn-save" />
+        </div>
+
+
+    }
+</div>
+<div class="text-center">
+    @Html.ActionLink("Back to Product List", "ProductList", null, new { @class = "back-link" })
+</div>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const maxFiles = 5;
+        const container = document.getElementById('dropzone');
+        const fileInput = document.getElementById('ImageUpload');
+        const previewsContainer = document.getElementById('preview-container');
+        const hiddenInput = document.getElementById('ImageUrl');
+        let currentFiles = [];
+
+        // Initialize with existing images
+        const existingImages = hiddenInput.value ? hiddenInput.value.split(',') : [];
+        existingImages.forEach(name => {
+            if (name.trim() !== '') {
+                addExistingImagePreview(name);
+                currentFiles.push(name);
+            }
+        });
+
+        container.addEventListener('click', function (e) {
+            if (!e.target.closest('.remove-image-btn') && !e.target.closest('.image-preview-container')) {
+                fileInput.click();
+            }
+        });
+
+        fileInput.addEventListener('change', function (e) {
+            if (e.target.files.length > 0) {
+                handleNewFiles(e.target.files);
+                //fileInput.value = '';
+            }
+        });
+
+        container.addEventListener('dragover', function (e) {
+            e.preventDefault();
+            container.classList.add('bg-light');
+        });
+
+        container.addEventListener('dragleave', function (e) {
+            e.preventDefault();
+            container.classList.remove('bg-light');
+        });
+
+        container.addEventListener('drop', function (e) {
+            e.preventDefault();
+            container.classList.remove('bg-light');
+            if (e.dataTransfer.files.length > 0) {
+                handleNewFiles(e.dataTransfer.files);
+            }
+        });
+
+        previewsContainer.addEventListener('click', function (e) {
+            const removeBtn = e.target.closest('.remove-image-btn');
+            if (removeBtn) {
+                const preview = removeBtn.closest('.image-preview-container');
+                const img = preview.querySelector('img');
+                const fileName = img.dataset.name;
+                currentFiles = currentFiles.filter(name => name !== fileName);
+                preview.remove();
+                updateHiddenInput();
+            }
+        });
+
+        function handleNewFiles(files) {
+            const remaining = maxFiles - currentFiles.length;
+            if (remaining <= 0) {
+                alert(`Maximum ${maxFiles} images allowed.`);
+                return;
+            }
+
+            const filesToAdd = Array.from(files).slice(0, remaining);
+
+            filesToAdd.forEach(file => {
+                if (!file.type.match('image.*')) return;
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    const fileName = file.name;
+                    currentFiles.push(fileName);
+                    addImagePreview(e.target.result, fileName);
+                    updateHiddenInput();
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function addImagePreview(src, name) {
+            const container = document.createElement('div');
+            container.className = 'image-preview-container position-relative';
+
+            const img = document.createElement('img');
+            img.src = src;
+            img.dataset.name = name;
+            img.className = 'img-thumbnail';
+            img.style.maxWidth = '120px';
+
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'btn btn-danger btn-sm remove-image-btn';
+            btn.style.position = 'absolute';
+            btn.style.top = '5px';
+            btn.style.right = '5px';
+            btn.innerHTML = '<i class="fas fa-times"></i>';
+
+            container.appendChild(img);
+            container.appendChild(btn);
+            previewsContainer.appendChild(container);
+        }
+
+        function addExistingImagePreview(fileName) {
+            const src = `/Content/images/${fileName}`;
+            addImagePreview(src, fileName);
+        }
+
+        function updateHiddenInput() {
+            hiddenInput.value = currentFiles.join(',');
+        }
+    });
+</script>
