@@ -1,16 +1,15 @@
-Thanks for sharing the folder structure. Based on your ASP.NET MVC project setup (`RosierBars`), here is the updated and **customized `README.md`** content including actual folder structure, key files, and controllers:
+Certainly! Here's the complete polished **README.md** for your **Rosier Chocolate Shop** ASP.NET MVC project, including the cleaned-up folder structure, key features, setup instructions, and contact info:
 
----
-
-```markdown
+````markdown
 # 🍫 Rosier Chocolate Shop - ASP.NET MVC E-Commerce Web App
 
 **Rosier Chocolate Shop** is a full-featured e-commerce application built with ASP.NET MVC. It provides both a customer-facing storefront and an admin dashboard for managing chocolates, orders, employees, and customers.
 
+---
+
 ## 🏗️ Project Structure
 
-```
-
+```plaintext
 RosierBars/
 ├── Controllers/            # All MVC Controllers
 │   ├── DashboardController.cs
@@ -41,55 +40,65 @@ RosierBars/
 │
 ├── Scripts/                # JavaScript files
 ├── Content/                # CSS files and static content
-├── App\_Data/
-├── App\_Start/
+├── App_Data/
+├── App_Start/
 ├── Global.asax
 ├── Web.config
 ├── RosierBars.sln
-
 ````
+
+---
 
 ## ✅ Key Features
 
 ### 🛒 Customer Features
-- Product catalog with detail view
-- Shopping cart with quantity control
-- Wishlist and Save for Later
-- Secure registration and login
-- Checkout with contact/address form
-- Order history and details
-- Invoice generation and printing
+
+* Product catalog with detailed views
+* Shopping cart with quantity controls
+* Wishlist and Save for Later functionality
+* Secure registration and login
+* Checkout with contact and shipping address forms
+* Order history and detailed views
+* Invoice generation and printing support
 
 ### 🛠 Admin Features
-- Dashboard with overview metrics
-- Add/Edit/Delete chocolate products
-- Manage customer orders
-- View order details and update status
-- Employee management system
-- Contact form handling
+
+* Dashboard with key metrics overview
+* Add, edit, and delete chocolate products
+* Manage customer orders and update status
+* View detailed order information
+* Employee management system
+* Contact form submission handling
+
+---
 
 ## 💻 Technologies Used
 
-- ASP.NET MVC 5 (C#)
-- SQL Server
-- Entity Framework
-- Bootstrap 4 & jQuery
-- Razor View Engine
-- HTML5/CSS3
-- Font Awesome & Boxicons
+* ASP.NET MVC 5 (C#)
+* SQL Server
+* Entity Framework
+* Bootstrap 4 & jQuery
+* Razor View Engine
+* HTML5 / CSS3
+* Font Awesome & Boxicons
+
+---
 
 ## 🔧 Setup Instructions
 
 ### Prerequisites
-- Visual Studio 2019/2022
-- SQL Server
-- .NET Framework 4.7.2+
+
+* Visual Studio 2019 or 2022
+* SQL Server
+* .NET Framework 4.7.2 or higher
 
 ### Steps
+
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/jaybabariya1612/Rosier-Chocolate-Shop.git
-````
+   ```
 
 2. **Open the solution**
 
@@ -97,19 +106,19 @@ RosierBars/
 
 3. **Configure the Database**
 
-   * Edit `Web.config`:
+   * Update the connection string in `Web.config`:
 
      ```xml
      <connectionStrings>
-       <add name="Dbconnection" 
-            connectionString="Data Source=.;Initial Catalog=RosierDB;Integrated Security=True" 
+       <add name="Dbconnection"
+            connectionString="Data Source=.;Initial Catalog=RosierDB;Integrated Security=True"
             providerName="System.Data.SqlClient" />
      </connectionStrings>
      ```
 
-4. **Restore NuGet packages**
+4. **Restore NuGet Packages**
 
-   * Visual Studio will prompt automatically or use:
+   * Visual Studio usually restores packages automatically, or manually via:
 
      ```
      Tools > NuGet Package Manager > Restore NuGet Packages
@@ -117,12 +126,13 @@ RosierBars/
 
 5. **Run the application**
 
-   * Press `F5` or click "Start Debugging".
+   * Press `F5` or click "Start Debugging" to launch the app.
 
+---
 
 ## 📄 License
 
-MIT License – Use freely for educational or commercial projects with attribution.
+This project is licensed under the [MIT License](LICENSE). You are free to use and modify it with proper attribution.
 
 ---
 
@@ -133,8 +143,3 @@ MIT License – Use freely for educational or commercial projects with attributi
 🌐 [GitHub Profile](https://github.com/jaybabariya1612)
 
 ---
-
-```
-
-Let me know if you want this `README.md` as a downloadable file or need to add badges (e.g., GitHub stars, forks, license).
-```
